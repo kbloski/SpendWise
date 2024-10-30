@@ -12,8 +12,11 @@ export default abstract class AbstractCrudController<T extends Model> {
         return await this.model.create(data as any);
     }
 
-    async getAll(): Promise<T[] | null> {
-        return await this.model.findAll();
+    async getAll(
+        orderBy: "ASC" | "DESC" = "ASC",
+        props: string = "id"
+    ): Promise<T[] | null> {
+        return await this.model.findAll({ order: [[orderBy, props]] });
     }
 
     async getById(id: number): Promise<T | null> {
