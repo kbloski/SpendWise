@@ -1,3 +1,6 @@
+import User from "./UserModel"
+import Report from "./ReportModel"
+
 // Tabela budget_shares
 // id: unikalny identyfikator współdzielenia budżetu
 // budget_id: identyfikator budżetu
@@ -17,4 +20,9 @@ export function syncDb(){
     } catch(err){
         console.error( err , "DataBase Synchronization Failed")
     }
+}
+
+export {
+    User,
+    Report
 }

@@ -3,7 +3,7 @@ import { DataTypes, InferAttributes, InferCreationAttributes, Model } from "sequ
 import UserType from "../types/UserType";
 
 
-export class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> implements UserType{
+export default class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> implements UserType{
     declare id: number;
     declare username: string;
     declare email: string;
