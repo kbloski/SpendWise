@@ -1,0 +1,2 @@
+# SpendWise-
+Mądre zarządzanie wydatkami.
