@@ -1,14 +1,14 @@
 export enum UserRoles {
-    'ADMIN',
-    "EDYTOR"
+    "ADMIN",
+    "EDITOR",
+    "VIEWER",
 }
 
 type BudgetShareType = {
     id: number;
-    fk_budget_id: number;
-    fk_user_id: number;
+    budget_id: number;
+    user_id: number;
     role: UserRoles;
 };
 
-
-export default BudgetShareType
+export default BudgetShareType;

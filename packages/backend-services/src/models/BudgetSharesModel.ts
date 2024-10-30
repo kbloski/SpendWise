@@ -4,8 +4,8 @@ import BudgetShareType, { UserRoles } from "../types/BudgetShareType";
 
 export default class BudgetShare extends Model<InferAttributes<BudgetShare>, InferCreationAttributes<BudgetShare>> implements BudgetShareType{
     declare id: number;
-    declare fk_budget_id: number;
-    declare fk_user_id: number;
+    declare user_id: number;
+    declare budget_id: number;
     declare role: UserRoles;
     
 }
@@ -20,17 +20,17 @@ BudgetShare.init({
             isInt: true,
         },
     },
-    fk_budget_id: {
+    budget_id: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    fk_user_id: {
+    user_id: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
     role: {
         type: DataTypes.INTEGER,
-        defaultValue: UserRoles.EDYTOR
+        defaultValue: UserRoles.EDITOR
     }
 }, {
     sequelize,

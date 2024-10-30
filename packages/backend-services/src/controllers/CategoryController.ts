@@ -1,4 +1,6 @@
+import Budget from "../models/BudgetModel";
 import Category from "../models/CategoryModel";
+import BudgetType from "../types/BudgetType";
 import CategoryType from "../types/CategoryType";
 import AbstractCrudController from "./AbstractCrudController";
 
@@ -11,7 +13,15 @@ export default class CategoryController extends AbstractCrudController<Category>
         return super.create(data);
     }
 
-    async updateById(id: number, data: CategoryType): Promise<Boolean> {
+    async setBudget( category : CategoryType | Category, budget : BudgetType | Budget){
+        const updated = this.updateById( category.id, { budget_id: budget.id})
+        return !!updated
+    }
+
+    async updateById(
+        id: number,
+        data: Partial<Omit<CategoryType, "id">>
+    ): Promise<Boolean> {
         return super.updateById(id, data);
     }
 }

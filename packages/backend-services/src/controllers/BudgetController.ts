@@ -1,5 +1,7 @@
 import Budget from "../models/BudgetModel";
+import User from "../models/UserModel";
 import BudgetType from "../types/BudgetType";
+import UserType from "../types/UserType";
 import AbstractCrudController from "./AbstractCrudController";
 
 export default class BudgetController extends AbstractCrudController<Budget> {
@@ -7,11 +9,21 @@ export default class BudgetController extends AbstractCrudController<Budget> {
         super(Budget);
     }
 
-    async create(data: Omit<BudgetType, "id">): Promise<Budget | null> {
+    async create(
+        data: Omit<BudgetType, "id" | "user_id" | "created_at">
+    ): Promise<Budget | null> {
         return super.create(data);
     }
 
-    async updateById(id: number, data: BudgetType): Promise<Boolean> {
+    async setOwner(budget: BudgetType | Budget, user: UserType | User) {
+        const updated = await this.updateById(budget.id, { user_id: user.id });
+        return !!updated // Bool
+    }
+
+    async updateById(
+        id: number,
+        data: Partial<Omit<BudgetType, "id">>
+    ): Promise<Boolean> {
         return super.updateById(id, data);
     }
 }

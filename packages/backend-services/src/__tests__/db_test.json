@@ -1,0 +1,168 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "username": "john_doe",
+            "email": "john@example.com",
+            "password": "test"
+        },
+        {
+            "id": 2,
+            "username": "jane_smith",
+            "email": "jane@example.com",
+            "password": "test"
+        },
+        {
+            "id": 3,
+            "username": "mark_jones",
+            "email": "mark@example.com",
+            "password": "test"
+        }
+    ],
+    "budgets": [
+        {
+            "id": 1,
+            "name": "Monthly Expenses",
+            "user_id": 1
+        },
+        {
+            "id": 2,
+            "name": "Vacation Saving",
+            "user_id": 1
+        },
+        {
+            "id": 3,
+            "name": "Grocery Budget",
+            "user_id": 2
+        },
+        {
+            "id": 4,
+            "name": "Home Renovation",
+            "user_id": 3
+        }
+    ],
+    "categories": [
+        {
+            "id": 1,
+            "name": "Renovation",
+            "budget_id": 4
+        },
+        {
+            "id": 2,
+            "name": "Food",
+            "budget_id": 1
+        },
+        {
+            "id": 3,
+            "name": "Utilities",
+            "budget_id": 1
+        },
+        {
+            "id": 4,
+            "name": "Travel",
+            "budget_id": 2
+        },
+        {
+            "id": 5,
+            "name": "Grocery",
+            "budget_id": 3
+        }
+    ],
+    "expenses": [
+        {
+            "id": 1,
+            "amount": 50.0,
+            "description": "Grocery Shopping",
+            "date": "2024-01-05T00:00:00Z",
+            "category_id": 2,
+            "user_id": 1
+        },
+        {
+            "id": 2,
+            "amount": 100.0,
+            "description": "Electricity Bill",
+            "date": "2024-01-05T00:00:00Z",
+            "category_id": 3,
+            "user_id": 1
+        },
+        {
+            "id": 3,
+            "amount": 200.0,
+            "description": "Flight Tickets",
+            "date": "2024-01-05T00:00:00Z",
+            "category_id": 4,
+            "user_id": 1
+        },
+        {
+            "id": 4,
+            "amount": 150.0,
+            "description": "Grocery Purchase",
+            "date": "2024-01-05T00:00:00Z",
+            "category_id": 2,
+            "user_id": 1
+        },
+        {
+            "id": 5,
+            "amount": 500.0,
+            "description": "Renovation Costs",
+            "date": "2024-01-05T00:00:00Z",
+            "category_id": 1,
+            "user_id": 1
+        }
+    ],
+    "budgetShares": [
+        {
+            "id": 1,
+            "budget_id": 1,
+            "user_id": 2,
+            "role": "EDITOR"
+        },
+        {
+            "id": 2,
+            "budget_id": 1,
+            "user_id": 3,
+            "role": "VIEWER"
+        },
+        {
+            "id": 3,
+            "budget_id": 1,
+            "user_id": 1,
+            "role": "ADMIN"
+        },
+        {
+            "id": 4,
+            "budget_id": 2,
+            "user_id": 1,
+            "role": "EDITOR"
+        },
+        {
+            "id": 5,
+            "budget_id": 2,
+            "user_id": 3,
+            "role": "VIEWER"
+        }
+    ],
+    "reports": [
+        {
+            "id": 1,
+            "period_start": "2024-01-01T00:00:00Z",
+            "period_end": "2024-01-31T00:00:00Z",
+            "total_expenses": 150,
+            "budget_id": 1
+        },
+        {
+            "id": 2,
+            "period_start": "2024-01-01T00:00:00Z",
+            "period_end": "2024-01-31T00:00:00Z",
+            "total_expenses": 150,
+            "budget_id": 3
+        },
+        {
+            "id": 3,
+            "period_start": "2024-01-01T00:00:00Z",
+            "period_end": "2024-01-31T00:00:00Z",
+            "total_expenses": 500,
+            "budget_id": 4
+        }
+    ]
+}

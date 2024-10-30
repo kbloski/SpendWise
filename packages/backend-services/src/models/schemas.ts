@@ -21,11 +21,11 @@ Report.belongsTo( Budget, { foreignKey: "budget_id"})
 // budgets mogą być współdzielone z wieloma users przez tabelę budget_shares.
 Budget.belongsToMany(User, {
     through: "budget_shares",
-    foreignKey: "fk_budget_id",
+    foreignKey: "budget_id",
 });
 User.belongsToMany(Budget, {
     through: "budget_shares",
-    foreignKey: "fk_user_id",
+    foreignKey: "user_id",
 });
 
 // categories mogą mieć wiele expenses.

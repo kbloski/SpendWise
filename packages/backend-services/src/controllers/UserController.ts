@@ -10,22 +10,30 @@ export default class UserController extends AbstractCrudController<User> {
     }
 
     async create(data: Omit<UserType, "id">): Promise<User | null> {
-        const userExist = await this.model.findAll({ where: { email: data.email}})
-        if (userExist) throw new Error(`User with email ${data.email} exist in database`)
-
+        const userExist = await this.model.findAll({
+            where: { email: data.email },
+        });
+        if (userExist.length)
+            throw new Error(`User with this email exist in database`);
         if (data.password) {
             data.password = await hashString(data.password);
         }
         return super.create(data);
     }
 
-    async updateById(id: number, data: UserType): Promise<Boolean> {
+    async updateById(
+        id: number,
+        data: Partial<Omit<UserType, "id">>
+    ): Promise<Boolean> {
         return super.updateById(id, data);
     }
 
     async getByEmail(email: string) {
-        const users = await this.model.findAll({ where: { email } as WhereOptions });
-        return users[0]
+        const users = await this.model.findAll({
+            where: { email } as WhereOptions,
+        });
+        if (users[0]) return users[0];
+        return undefined;
     }
 
     async validPassword(password: string, userDb: UserType | User) {

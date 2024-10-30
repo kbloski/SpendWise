@@ -27,10 +27,19 @@ export default abstract class AbstractCrudController<T extends Model> {
         return await this.model.findAll({ where: whereOptions });
     }
 
-    async updateById(id: number, data: any): Promise<Boolean> {
-        return !(await this.model.update(data, {
+    async updateById(
+        id: number,
+        data: Partial<Omit<any, "id">>
+    ): Promise<Boolean> {
+        const updCount = await this.model.update(data, {
             where: { id } as WhereOptions,
-        }));
+        })
+        return !(updCount);
+    }
+
+    async deleteAll(){
+        const deltedCount = await this.model.destroy({where: {}})
+        return !(deltedCount);
     }
 
     async deleteById(id: number): Promise<Boolean> {
