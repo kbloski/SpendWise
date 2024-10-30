@@ -1,6 +1,7 @@
+import { sequelize } from "../utils/db"
 import User from "./UserModel"
 import Report from "./ReportModel"
-import { sequelize } from "../utils/db"
+import Expense from "./ExpenseModel"
 
 // Tabela budget_shares
 // id: unikalny identyfikator współdzielenia budżetu
@@ -26,5 +27,6 @@ export async function syncDb(){
 
 export {
     User,
-    Report
+    Report,
+    Expense
 }

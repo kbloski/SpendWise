@@ -1,3 +1,53 @@
+import { sequelize } from "../utils/db";
+import { DataTypes, Model, InferAttributes, InferCreationAttributes } from 'sequelize'
+import ExpenseType from "../types/ExpenseType";
+
+export default class Expense extends Model<InferAttributes<Expense>, InferCreationAttributes<Expense>> implements ExpenseType
+{
+    declare id: number;
+    declare amount: number;
+    declare description: string;
+    declare date: Date;
+    declare category_id: number;
+    declare user_id: number;
+}
+
+Expense.init(
+    {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
+            allowNull: false,
+            validate: { isInt: true }
+        },
+        amount: {
+            type: DataTypes.DECIMAL,
+            allowNull: false,
+            validate: { isDecimal: true }
+        },
+        description: DataTypes.STRING,
+        date: {
+            type: DataTypes.DATE,
+            // defaultValue: DataTypes.NOW.
+            defaultValue: sequelize.fn("CURRENT_TIMESTAMP")
+        },
+        category_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            validate: { isInt: true }
+        },
+        user_id: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: { isInt: true }
+        },
+    }, 
+    {
+        sequelize,
+        timestamps: false
+    }
+)
 // Tabela expenses
 // id: unikalny identyfikator wydatku
 // amount: kwota wydatku
