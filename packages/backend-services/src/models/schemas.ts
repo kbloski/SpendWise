@@ -1,5 +1,6 @@
 import User from "./UserModel"
 import Report from "./ReportModel"
+import { sequelize } from "../utils/db"
 
 // Tabela budget_shares
 // id: unikalny identyfikator współdzielenia budżetu
@@ -14,8 +15,9 @@ import Report from "./ReportModel"
 // budgets mogą być współdzielone z wieloma users przez tabelę budget_shares.
 // budgets mogą mieć wiele reports.
 
-export function syncDb(){
+export async function syncDb(){
     try {
+        await sequelize.sync()
         console.log("Database Synchronization Success")
     } catch(err){
         console.error( err , "DataBase Synchronization Failed")
