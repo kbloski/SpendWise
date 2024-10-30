@@ -18,11 +18,7 @@ Report.init({
         allowNull: false,
         validate: { isInt: true}
     },
-    budget_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: { isInt: true}
-    },
+    budget_id: DataTypes.INTEGER,
     period_start: {
         type: DataTypes.DATE,
         allowNull: false,

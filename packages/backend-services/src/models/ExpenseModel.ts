@@ -32,16 +32,8 @@ Expense.init(
             // defaultValue: DataTypes.NOW.
             defaultValue: sequelize.fn("CURRENT_TIMESTAMP")
         },
-        category_id: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            validate: { isInt: true }
-        },
-        user_id: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            validate: { isInt: true }
-        },
+        category_id: DataTypes.INTEGER,
+        user_id: DataTypes.INTEGER
     }, 
     {
         sequelize,
