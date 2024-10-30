@@ -4,11 +4,9 @@ dotenv.config({path: '../../.env'})
 import registerRoutes from './routes';
 import { syncDb } from './models/schemas';
 import { connectDb } from './utils/db';
-import { createWebToken, decodedToken } from './services/jwtManget';
 
 const PORT = process.env.BACKEND_PORT || 8080;
 
-// syncDatabase
 registerRoutes( app )
 connectDb()
 syncDb()

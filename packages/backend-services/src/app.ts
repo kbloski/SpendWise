@@ -1,5 +1,6 @@
-import express from 'express';
+import express, { RequestHandler } from 'express';
 import cors from 'cors'
+import authTokenMiddleware from './middlewares/authToken';
 
 const app = express();
 
@@ -19,5 +20,6 @@ app.use(
 app.use( express.urlencoded());
 app.use( express.json() );
 app.use( express.static('./public') )
+app.use( authTokenMiddleware as RequestHandler )
 
 export default app;  

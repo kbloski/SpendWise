@@ -14,7 +14,7 @@ router.post(
         const userExist = await userController.getByEmail( email )
         if (userExist) return sendErrorResponse( res, 403 )
         const newUser = await userController.create( {email, password, username});
-        return sendSuccessResponse( res, { token: newUser}, 200)
+        return sendSuccessResponse( res, 200, { token: newUser})
     }
 )
 
@@ -27,7 +27,7 @@ router.post(
         if (!userDb) return sendErrorResponse(res, 404);
         if (!(await userController.validPassword(password, userDb)))
             return sendErrorResponse(res, 400);
-        sendSuccessResponse( res, {data: 'success'})
+        sendSuccessResponse( res, 200, {data: 'success'})
 });
 
 export default router;

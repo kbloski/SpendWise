@@ -3,7 +3,7 @@ import { Response } from "express";
 export async function sendErrorResponse(
     res: Response,
     errorCode: number = 500,
-    errorMessage?: string
+    errorMessage?: string,
 ): Promise<void> {
     let statusMessage: string;
     switch (errorCode) {
@@ -54,8 +54,8 @@ export async function sendErrorResponse(
 
 export async function sendSuccessResponse(
     res: Response,
+    statusCode: number = 200,
     data?: object,
-    statusCode: number = 200
 ): Promise<void> {
     res.status(statusCode).json(data);
 }
