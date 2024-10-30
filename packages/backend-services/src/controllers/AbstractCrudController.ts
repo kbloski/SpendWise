@@ -23,7 +23,7 @@ export default abstract class AbstractCrudController<T extends Model> {
         return await this.model.findByPk(id);
     }
 
-    async findOneWhere(whereOptions: WhereOptions) {
+    async getOneWhere(whereOptions: WhereOptions) {
         return await this.model.findAll({ where: whereOptions });
     }
 
