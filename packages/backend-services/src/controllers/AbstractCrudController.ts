@@ -1,6 +1,6 @@
 import { Model, ModelStatic, Optional, WhereOptions } from "sequelize";
 
-export abstract class AbstractCrudController<T extends Model> {
+export default abstract class AbstractCrudController<T extends Model> {
     protected model: ModelStatic<T>;
 
     constructor(sequelizeModel: ModelStatic<T>) {
