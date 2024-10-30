@@ -1,34 +1,44 @@
-import { sequelize } from "../utils/db"
-import User from "./UserModel"
-import Report from "./ReportModel"
-import Expense from "./ExpenseModel"
-import Category from "./CategoryModel"
+import { sequelize } from "../utils/db";
+import User from "./UserModel";
+import Report from "./ReportModel";
+import Expense from "./ExpenseModel";
+import Category from "./CategoryModel";
+import Budget from "./BudgetModel";
+import BudgetShare from "./BudgetSharesModel";
 
-// Tabela budget_shares
-// id: unikalny identyfikator współdzielenia budżetu
-// budget_id: identyfikator budżetu
-// user_id: identyfikator użytkownika, który ma dostęp do budżetu
-// role: rola użytkownika w budżecie (np. admin, edytor)
-
-// Opis relacji
 // users może mieć wiele budgets.
-// budgets mogą mieć wiele categories.
-// categories mogą mieć wiele expenses.
-// budgets mogą być współdzielone z wieloma users przez tabelę budget_shares.
-// budgets mogą mieć wiele reports.
+User.hasMany(Budget, { foreignKey: "user_id" });
+Budget.belongsTo(User, { foreignKey: "user_id" });
 
-export async function syncDb(){
+// budgets mogą mieć wiele categories.
+Budget.hasMany(Category, { foreignKey: "budget_id" });
+Category.belongsTo(Budget, { foreignKey: "budget_id" });
+
+// budgets mogą mieć wiele reports.
+Budget.hasMany( Report, { foreignKey: "budget_id"})
+Report.belongsTo( Budget, { foreignKey: "budget_id"})
+
+// budgets mogą być współdzielone z wieloma users przez tabelę budget_shares.
+Budget.belongsToMany(User, {
+    through: "budget_shares",
+    foreignKey: "fk_budget_id",
+});
+User.belongsToMany(Budget, {
+    through: "budget_shares",
+    foreignKey: "fk_user_id",
+});
+
+// categories mogą mieć wiele expenses.
+Category.hasMany(Expense, { foreignKey: "expense_id" });
+Expense.belongsTo(Category, { foreignKey: "expense_id" });
+
+export async function syncDb() {
     try {
-        await sequelize.sync()
-        console.log("Database Synchronization Success")
-    } catch(err){
-        console.error( err , "DataBase Synchronization Failed")
+        await sequelize.sync();
+        console.log("Database Synchronization Success");
+    } catch (err) {
+        console.error(err, "DataBase Synchronization Failed");
     }
 }
 
-export {
-    User,
-    Report,
-    Expense,
-    Category
-}
+export { User, Report, Expense, Category, Budget, BudgetShare };
