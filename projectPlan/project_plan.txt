@@ -1,0 +1,93 @@
+Aplikacja do zarządzania wydatkami z funkcją współdzielenia budżetu
+
+    Opis: Aplikacja do śledzenia wydatków, z możliwością współdzielenia budżetów (np. rodzinnych lub zespołowych).
+    Frontend: Vue.js + Vuex do zarządzania stanem, komponenty graficzne do wizualizacji wydatków.
+    Backend: NodeJs + Expresss z JWT do autoryzacji. 
+    Baza danych: MySQL
+
+Funkcjonalności:
+Rejestracja, logowanie, profil użytkownika.
+Tworzenie budżetów z podziałem na kategorie.
+Dodawanie i przypisywanie wydatków do kategorii.
+Współdzielenie budżetu z innymi użytkownikami.
+Podsumowania i wizualizacje wydatków (np. wykresy słupkowe, kołowe).
+Demo: Użytkownicy mogą tworzyć i współdzielić budżety, dodawać wydatki, a aplikacja generuje miesięczne raporty wydatków dla każdego budżetu.
+
+
+** ------------ Baza danych 
+
+Oto struktura bazy danych w formie schematu, bez kodowania:
+
+Schemat bazy danych
+
+Tabela users
+id: unikalny identyfikator użytkownika
+username: nazwa użytkownika (unikalna)
+email: adres e-mail (unikalny)
+password: hasło (szyfrowane)
+created_at: data utworzenia konta
+
+Tabela budgets
+id: unikalny identyfikator budżetu
+name: nazwa budżetu
+user_id: identyfikator użytkownika (właściciela budżetu)
+created_at: data utworzenia budżetu
+
+Tabela categories
+id: unikalny identyfikator kategorii
+name: nazwa kategorii
+budget_id: identyfikator budżetu, do którego należy kategoria
+
+Tabela expenses
+id: unikalny identyfikator wydatku
+amount: kwota wydatku
+description: opis wydatku
+date: data wydatku
+category_id: identyfikator kategorii, do której należy wydatek
+user_id: identyfikator użytkownika, który dodał wydatek
+
+Tabela budget_shares
+id: unikalny identyfikator współdzielenia budżetu
+budget_id: identyfikator budżetu
+user_id: identyfikator użytkownika, który ma dostęp do budżetu
+role: rola użytkownika w budżecie (np. admin, edytor)
+
+Tabela reports
+id: unikalny identyfikator raportu
+budget_id: identyfikator budżetu
+period_start: początek okresu raportowania
+period_end: koniec okresu raportowania
+total_expenses: całkowite wydatki w danym okresie
+
+Opis relacji
+users może mieć wiele budgets.
+budgets mogą mieć wiele categories.
+categories mogą mieć wiele expenses.
+budgets mogą być współdzielone z wieloma users przez tabelę budget_shares.
+budgets mogą mieć wiele reports.
+
+
+
+#####################
+Oto krótki opis każdej z tabel w bazie danych:
+
+Tabela users
+Cel: Przechowuje dane użytkowników, takie jak nazwa, e-mail oraz hasło, umożliwiając rejestrację i logowanie.
+Tabela budgets
+
+Cel: Zawiera informacje o budżetach tworzonych przez użytkowników, w tym ich nazwy oraz właściciela.
+Tabela categories
+
+Cel: Organizuje wydatki w ramach budżetów, grupując je w kategorie (np. jedzenie, transport).
+Tabela expenses
+
+Cel: Rejestruje szczegóły wydatków, takie jak kwota, opis, data i kategoria, do której dany wydatek należy.
+Tabela budget_shares
+
+Cel: Umożliwia współdzielenie budżetów między użytkownikami, przechowując informacje o użytkownikach mających dostęp do danego budżetu oraz ich rolach.
+Tabela reports
+
+Cel: Generuje raporty wydatków dla budżetów, zawierając podsumowania wydatków w określonych okresach czasu.
+Ta struktura bazy danych pozwala na efektywne zarządzanie budżetami i wydatkami, a także na współpracę między użytkownikami.
+
+
