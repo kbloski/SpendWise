@@ -12,7 +12,6 @@ export default class BudgetController extends AbstractCrudController<Budget> {
     }
 
     async updateById(id: number, data: BudgetType): Promise<Boolean> {
-        this.model.
         return super.updateById(id, data);
     }
 }

@@ -11,7 +11,12 @@ export default class ReportController extends AbstractCrudController<Report> {
         return super.create(data);
     }
 
+    async getByBudgetId( id: number ){
+        return this.model.findAll({where: {id}})
+    }
+
     async updateById(id: number, data: ReportType): Promise<Boolean> {
         return super.updateById(id, data);
     }
+
 }
