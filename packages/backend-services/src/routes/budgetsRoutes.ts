@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { buildApiPath } from "../utils/apiUtils";
 import BudgetType from "../types/BudgetType";
-import { budgetController, userController } from "../controllers/controllers";
+import { budgetController, budgetSharesController, userController } from "../controllers/controllers";
 import { sendErrorResponse, sendSuccessResponse } from "../utils/responseUtils";
 import { isNumber } from "../utils/utils";
 
@@ -33,14 +33,14 @@ router.get(
     buildApiPath("budgets", ":id"),
     async (req, res ) => {
         const { id } = req.params;
-        if (!isNumber(id)) return sendErrorResponse(res, 400, "Invalid Id");
-        const budgetExist = await userController.getById( Number(id) )
-        if (!budgetExist) return sendErrorResponse( res, 404, "Budget don't exist")
+        if (!isNumber(Number(id))) return sendErrorResponse(res, 400, "Invalid Id");
+        // const budgetExist = await userController.getById( Number(id) )
+        // if (!budgetExist) return sendErrorResponse( res, 404, "Budget don't exist")
         
         // checkOwner (budgets shares)
-        // console.log( )
+        console.log( await budgetSharesController.isUserBudgetRelated({id: 133} as any , { id: 174} as any ))
 
-        return sendSuccessResponse( res, 200, { budget: budgetExist})
+        return sendSuccessResponse( res, 200, { budget: 'budgetExist'})
     }
 );
 

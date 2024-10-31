@@ -27,7 +27,30 @@ export default function checkAccess(
 ){
     const [rolePermissions] = ACL.filter( v => v.role === role);
     if (!rolePermissions) return false;
-    const [allows] = rolePermissions.allows.filter(a => a.resource == resource )
+    const [allows] = rolePermissions.allows.filter( (a) => {
+       if ( a.resource == resource) return a
+
+        // For custom links with dynamic property :id etc    
+        else if ( a.resource.indexOf(':') >= 0 ){
+            const aResourceElement = a.resource.split('/')
+            const resourceElement = resource.split('/')
+
+            // Check url length elements
+            if (aResourceElement.length !== resourceElement.length) return;
+            
+            const newUrlA : string[] = []
+            const newUrlB : string[] = []
+            for(const [index, el] of aResourceElement.entries()){
+                if (el.includes(':')) {}
+                else {
+                    newUrlA.push( aResourceElement[index ] )
+                    newUrlB.push( resourceElement[index] )
+                }
+            }
+            if ( newUrlA.join('/') === newUrlB.join('/')) return a
+       }
+    
+    } )
     if (!allows) return false;
     
     const allowedMethods : string | string[] = allows.methods

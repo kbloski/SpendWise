@@ -32,6 +32,10 @@ export const ACL: ACLpermissionType[] = [
                 resource: buildApiPath("budgets","me"),
                 methods: ["GET", "POST"]
             },
+            {
+                resource: buildApiPath("budgets",":id"),
+                methods: ["GET", "POST"]
+            },
         ],
     },
 ];
