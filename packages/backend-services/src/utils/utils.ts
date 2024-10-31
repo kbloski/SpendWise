@@ -1,4 +1,5 @@
 export function isNumber( value: any ) :boolean 
 {
-    return typeof value === 'number' && !isNaN(value)
+    const checkedValue = Number(value)
+    return typeof checkedValue === 'number' && !isNaN(checkedValue)
 }
