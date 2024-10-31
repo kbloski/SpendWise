@@ -41,7 +41,8 @@ export async function sendErrorResponse(
             statusMessage = "Internal Server Error";
     }
 
-    const errMessage = `${statusMessage}: ${errorMessage ?? null}`;
+    const errMessage = `${statusMessage}` + ( errorMessage ? `: ${errorMessage}` : '');
+
     res.statusMessage = errMessage;
     res.status(errorCode)
         .json({

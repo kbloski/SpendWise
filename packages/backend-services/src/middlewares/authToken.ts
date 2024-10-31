@@ -29,7 +29,10 @@ export default async function authTokenMiddleware(
         const userDb = await userController.getById( decoded.id );
         if (!userDb) return sendErrorResponse(res, 404, 'Not found user by middleware auth')
 
+        role = Roles.USER
         req.user = userDb.dataValues
+
+        if (!checkAccess(role, req.path, req.method) ) return sendErrorResponse(res, 401 );
         next()
     } catch (err : any){
         throw new Error( "Middleware authorization error: " + err.message)
