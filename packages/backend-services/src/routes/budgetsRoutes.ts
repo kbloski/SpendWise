@@ -30,7 +30,7 @@ router.post(buildApiPath("budgets", "me"), async (req, res) => {
 });
 
 router.get(
-    buildApiPath("budgets", "id"),
+    buildApiPath("budgets", ":id"),
     async (req, res ) => {
         const { id } = req.params;
         if (!isNumber(id)) return sendErrorResponse(res, 400, "Invalid Id");
@@ -38,7 +38,8 @@ router.get(
         if (!budgetExist) return sendErrorResponse( res, 404, "Budget don't exist")
         
         // checkOwner (budgets shares)
-        
+        // console.log( )
+
         return sendSuccessResponse( res, 200, { budget: budgetExist})
     }
 );
