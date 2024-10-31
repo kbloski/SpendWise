@@ -8,7 +8,6 @@ function checkMethod(
     enteredMethod: string,
     allowedMethods : string | string[]
 ){
-    access = false
     if (typeof allowedMethods !== 'string') {
         allowedMethods.forEach( method => checkMethod( enteredMethod, method ) )
     }
@@ -32,5 +31,6 @@ export default function checkAccess(
     if (!allows) return false;
     
     const allowedMethods : string | string[] = allows.methods
+    access = false
     return checkMethod( method, allowedMethods )
 }

@@ -13,9 +13,9 @@ export default async function authTokenMiddleware(
         let role = Roles.GUEST
         const authHeader = req.headers['authorization']
 
-        if (!authHeader && checkAccess(role, req.path, req.method)) next();
+        if (!authHeader && checkAccess(role, req.path, req.method)) return next();
         if (!authHeader) return sendErrorResponse(res, 401)
-
+            
         const authorization = authHeader.split(' ')
         if (authorization.length !== 2) return sendErrorResponse(res, 401, 'Invalid authorization header form');
 
@@ -31,9 +31,9 @@ export default async function authTokenMiddleware(
 
         role = Roles.USER
         req.user = userDb.dataValues
-
+        
         if (!checkAccess(role, req.path, req.method) ) return sendErrorResponse(res, 401 );
-        next()
+        return next()
     } catch (err : any){
         throw new Error( "Middleware authorization error: " + err.message)
     }

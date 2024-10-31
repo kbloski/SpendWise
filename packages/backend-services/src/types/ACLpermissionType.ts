@@ -1,4 +1,4 @@
-import RolesEnum from "../enum/RolesEnum"
+import RolesEnum from "../enum/RolesEnum";
 
 type ACLpermissionType = {
     role: RolesEnum;
@@ -7,11 +7,12 @@ type ACLpermissionType = {
         methods:
             | "*"
             | "GET"
-            | "PATCH"
             | "POST"
+            | "PUT"
+            | "PATCH"
             | "DELETE"
-            | ("GET" | "PATCH" | "POST" | "DELETE")[];
+            | ("GET" | "POST" | "PUT" | "PATCH" | "DELETE")[];
     }[];
 };
 
-export default ACLpermissionType
+export default ACLpermissionType;

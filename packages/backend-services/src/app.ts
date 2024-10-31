@@ -12,7 +12,7 @@ app.use(
             if ( allowedOrigins?.includes('*') ) return callback(null, true)
             return callback(new Error("Not allowed by cors"), false)
         },
-        methods: ["GET", "POST", "PATCH","DELETE"],
+        methods: ["GET", "POST", "PUT" , "PATCH","DELETE"],
         allowedHeaders: ['Content-Type', "authorization"]
     })
 )

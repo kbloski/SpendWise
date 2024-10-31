@@ -10,27 +10,36 @@ const router = Router();
 router.post(
     buildApiPath('register'),
     async (req, res) => {
-        const { username, email, password } : UserType = req.body
-        if (!username || !email || !password) return sendErrorResponse( res, 400);
-        const userExist = await userController.getByEmail( email )
-        if (userExist) return sendErrorResponse( res, 403 )
-        const newUser = await userController.create( {email, password, username});
-        return sendSuccessResponse( res, 201 )
+        try {
+            const { username, email, password } : UserType = req.body
+            if (!username || !email || !password) return sendErrorResponse( res, 400);
+            const userExist = await userController.getByEmail( email )
+            if (userExist) return sendErrorResponse( res, 403 )
+            const newUser = await userController.create( {email, password, username});
+            if (!newUser)return sendErrorResponse(res, 500, "Cannot create user")
+            return sendSuccessResponse( res, 201 )
+        } catch (err){
+            sendErrorResponse( res , 500)
+        }
     }
 )
 
 router.post(
     buildApiPath("login"),
     async (req, res) => {
-        const { email, password }: Partial<UserType> = req.body;
-        if (!email || !password) return sendErrorResponse(res, 400);
-        const userDb = await userController.getByEmail(email);
-        if (!userDb) return sendErrorResponse(res, 404);
-        if (!(await userController.validPassword(password, userDb)))
-            return sendErrorResponse(res, 400);
-
-        const token = createWebToken( userDb.dataValues )
-        sendSuccessResponse( res, 200, { token: token} )
+        try {
+            const { email, password }: Partial<UserType> = req.body;
+            if (!email || !password) return sendErrorResponse(res, 400);
+            const userDb = await userController.getByEmail(email);
+            if (!userDb) return sendErrorResponse(res, 404);
+            if (!(await userController.validPassword(password, userDb)))
+                return sendErrorResponse(res, 400);
+    
+            const token = createWebToken( userDb.dataValues )
+            sendSuccessResponse( res, 200, { token: token} )
+        } catch (err){
+            return sendErrorResponse( res, 500)
+        }
 });
 
 export default router;
