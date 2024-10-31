@@ -38,7 +38,7 @@ router.get(
         // if (!budgetExist) return sendErrorResponse( res, 404, "Budget don't exist")
         
         // checkOwner (budgets shares)
-        console.log( await budgetSharesController.isUserBudgetRelated({id: 133} as any , { id: 174} as any ))
+        // console.log( await budgetSharesController.isUserBudgetRelated({id: 133} as any , { id: 174} as any ))
 
         return sendSuccessResponse( res, 200, { budget: 'budgetExist'})
     }

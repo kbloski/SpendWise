@@ -3,6 +3,7 @@ import User from "../models/UserModel";
 import BudgetType from "../types/BudgetType";
 import UserType from "../types/UserType";
 import AbstractCrudController from "./AbstractCrudController";
+import { budgetController } from "./controllers";
 
 export default class BudgetController extends AbstractCrudController<Budget> {
     constructor() {
@@ -23,7 +24,8 @@ export default class BudgetController extends AbstractCrudController<Budget> {
         const updated = await this.updateById(budget.id, { user_id: user.id });
         return !!updated; // Bool
     }
-
+    
+    
     async updateById(
         id: number,
         data: Partial<Omit<BudgetType, "id">>

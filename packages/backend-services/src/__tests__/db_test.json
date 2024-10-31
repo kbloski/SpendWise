@@ -125,14 +125,14 @@
         },
         {
             "id": 3,
-            "budget_id": 1,
+            "budget_id": 3,
             "user_id": 1,
             "role": "ADMIN"
         },
         {
             "id": 4,
-            "budget_id": 2,
-            "user_id": 1,
+            "budget_id": 4,
+            "user_id": 2,
             "role": "EDITOR"
         },
         {

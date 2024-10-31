@@ -18,15 +18,20 @@ Category.belongsTo(Budget, { foreignKey: "budget_id" });
 Budget.hasMany(Report, { foreignKey: "budget_id" });
 Report.belongsTo(Budget, { foreignKey: "budget_id" });
 
-// budgets mogą być współdzielone z wieloma users przez tabelę budget_shares.
-Budget.belongsToMany(User, {
-    through: "budget_shares",
-    foreignKey: "budget_id",
-});
-User.belongsToMany(Budget, {
-    through: "budget_shares",
-    foreignKey: "user_id",
-});
+// Many to many budget-user
+// Budget.belongsToMany(User, {
+//     through: "budget_shares",
+//     foreignKey: "budget_id",
+// });
+// User.belongsToMany(Budget, {
+//     through: "budget_shares",
+//     foreignKey: "user_id",
+// });
+Budget.hasOne( BudgetShare, { foreignKey: 'budget_id'}),
+BudgetShare.belongsTo(Budget, { foreignKey: 'budget_id'})
+User.hasMany(BudgetShare, { foreignKey: "user_id"})
+BudgetShare.belongsTo( User, { foreignKey: "user_id"})
+
 
 // categories mogą mieć wiele expenses.
 Category.hasMany(Expense, { foreignKey: "expense_id" });

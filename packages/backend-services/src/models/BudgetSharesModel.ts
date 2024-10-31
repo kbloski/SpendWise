@@ -15,18 +15,17 @@ BudgetShare.init({
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-        allowNull: false,
         validate: {
             isInt: true,
         },
     },
     budget_id: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        // allowNull: false - bug in create controller
     },
     user_id: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        // allowNull: false - bug in create controller
     },
     role: {
         type: DataTypes.INTEGER,
