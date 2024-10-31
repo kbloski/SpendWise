@@ -1,4 +1,4 @@
-import { Optional } from "sequelize";
+import { Op, Optional } from "sequelize";
 import Budget from "../models/BudgetModel";
 import User from "../models/UserModel";
 import BudgetType from "../types/BudgetType";
@@ -12,13 +12,16 @@ export default class BudgetController extends AbstractCrudController<Budget> {
     }
     async getAccessibleBudgetsForUser( userId: number) {
         const allRelations = await budgetSharesController.getAllforUser( userId )
-        const budgets : Budget[] = []
         if (!allRelations) return null
-        for (const bg of allRelations){
-            const finded = await budgetController.getById(bg.budget_id);
-            if (finded) budgets.push( finded )
-        }
-        return budgets
+        const budgetsIds : number[] = []
+
+        allRelations.forEach( r => budgetsIds.push( r.budget_id ))
+
+        return await this.model.findAll({
+            where: {
+                id: { [Op.in] : budgetsIds}
+            }
+        })
     }
 
     async getAllForOwner( ownerId: number) {
