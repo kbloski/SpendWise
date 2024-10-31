@@ -31,7 +31,7 @@ export default class BudgetSharesController extends AbstractCrudController<Budge
         if (!budgetExist) return null;
 
 
-        const idExist = await this.getIdUserBudgetRelation( userExist, budgetExist);
+        const idExist = await this.getIdUserBudgetRelation( budgetExist, userExist);
         if (idExist) return await this.getById(idExist);
             
         return super.create({
@@ -53,11 +53,18 @@ export default class BudgetSharesController extends AbstractCrudController<Budge
     }
 
     async getIdUserBudgetRelation( 
+        budget: BudgetType | Budget,
         user: UserType | User,
-        budget: BudgetType | Budget
     ){
         const relation = await this.model.findOne({where: { user_id: user.id , budget_id: budget.id}})
         if (!relation) return null;
         return relation.id
+    }
+    
+    isAccessUserToBudget(
+        budget: BudgetType | Budget,
+        user: UserType | User,
+    ){
+        return !!this.getIdUserBudgetRelation( budget, user)
     }
 }

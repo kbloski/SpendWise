@@ -5,8 +5,9 @@ import BudgetType from "../types/BudgetType";
 import UserType from "../types/UserType";
 import AbstractCrudController from "./AbstractCrudController";
 import {
-    budgetController,
     budgetSharesController,
+    categoryController,
+    expenseController,
     userController,
 } from "./controllers";
 
@@ -14,6 +15,21 @@ export default class BudgetController extends AbstractCrudController<Budget> {
     constructor() {
         super(Budget);
     }
+
+    async getTotalBudgetCategoryExpenses(budget: BudgetType) {
+        let totalExpenses = 0;
+        const budgetCategories = await categoryController.getAllByBudgetId(
+            budget.id
+        );
+        if (!budgetCategories) return totalExpenses;
+        for (const category of budgetCategories) {
+            totalExpenses += await expenseController.getTotalCategoryExpenses(
+                category.id
+            );
+        }
+        return totalExpenses;
+    }
+
     async getAccessibleBudgetsForUser(userId: number) {
         const allRelations = await budgetSharesController.getAllforUser(userId);
         if (!allRelations) return null;

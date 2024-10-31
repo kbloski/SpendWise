@@ -7,34 +7,50 @@ import { UserRoles } from "../types/BudgetShareType";
 import { userController } from "../controllers/controllers";
 
 export default async function authTokenMiddleware(
-    req : Request, res : Response, next : NextFunction) 
-{
+    req: Request,
+    res: Response,
+    next: NextFunction
+) {
     try {
-        let role = Roles.GUEST
-        const authHeader = req.headers['authorization']
+        let role = Roles.GUEST;
+        const authHeader = req.headers["authorization"];
 
-        if (!authHeader && checkAccess(role, req.path, req.method)) return next();
-        if (!authHeader) return sendErrorResponse(res, 401)
-            
-        const authorization = authHeader.split(' ')
-        if (authorization.length !== 2) return sendErrorResponse(res, 401, 'Invalid authorization header form');
+        if (!authHeader && checkAccess(role, req.path, req.method))
+            return next();
+        if (!authHeader) return sendErrorResponse(res, 401);
 
-        const token = authorization[1]
-        const decoded =  decodeWebToken( token )        
+        const authorization = authHeader.split(" ");
+        if (authorization.length !== 2)
+            return sendErrorResponse(
+                res,
+                401,
+                "Invalid authorization header form"
+            );
 
-        if (!decoded || !(typeof decoded === 'object')) return sendErrorResponse( res, 401, 'Invalid payload token' )
+        const token = authorization[1];
+        const decoded = decodeWebToken(token);
 
-        if (decoded && !decoded.id ) return sendErrorResponse( res, 401, "Invalid payload token")
+        if (!decoded || !(typeof decoded === "object"))
+            return sendErrorResponse(res, 401, "Invalid payload token");
 
-        const userDb = await userController.getById( decoded.id );
-        if (!userDb) return sendErrorResponse(res, 404, 'Not found user by middleware auth')
+        if (decoded && !decoded.id)
+            return sendErrorResponse(res, 401, "Invalid payload token");
 
-        role = Roles.USER
-        req.user = userDb.dataValues
-        
-        if (!checkAccess(role, req.path, req.method) ) return sendErrorResponse(res, 401 );
-        return next()
-    } catch (err : any){
-        throw new Error( "Middleware authorization error: " + err.message)
+        const userDb = await userController.getById(decoded.id);
+        if (!userDb)
+            return sendErrorResponse(
+                res,
+                404,
+                "Not found user by middleware auth"
+            );
+
+        role = Roles.USER;
+        req.user = userDb.dataValues;
+
+        if (!checkAccess(role, req.path, req.method))
+            return sendErrorResponse(res, 401);
+        return next();
+    } catch (err: any) {
+        throw new Error("Middleware authorization error: " + err.message);
     }
 }

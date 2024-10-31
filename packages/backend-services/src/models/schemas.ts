@@ -34,8 +34,8 @@ BudgetShare.belongsTo( User, { foreignKey: "user_id"})
 
 
 // categories mogą mieć wiele expenses.
-Category.hasMany(Expense, { foreignKey: "expense_id" });
-Expense.belongsTo(Category, { foreignKey: "expense_id" });
+Category.hasMany(Expense, { foreignKey: "category_id" });
+Expense.belongsTo(Category, { foreignKey: "category_id" });
 
 export async function syncDb() {
     try {

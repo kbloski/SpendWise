@@ -15,7 +15,7 @@ router.get(buildApiPath("budgets", "me"), async (req, res) => {
     const budgets = await budgetController.getAccessibleBudgetsForUser(
         req.user.id
     );
-    return sendSuccessResponse(res, 200, { budgets });
+    return sendSuccessResponse(res, 200, { budgets }); // maybe with user-role for frontend
 });
 
 router.post(buildApiPath("budgets", "me"), async (req, res) => {
@@ -38,18 +38,13 @@ router.get(buildApiPath("budgets", ":id"), async (req, res) => {
         const budgetExist = await budgetController.getById(Number(id));
         if (!budgetExist)
             return sendErrorResponse(res, 404, "Budget don't exist");
-
-        const access = await budgetSharesController.getIdUserBudgetRelation(
-            req.user,
-            budgetExist
-        );
-        if (!access) return sendErrorResponse(res, 401);
-        return sendSuccessResponse(res, 200, { budget: budgetExist });
+        if (!budgetSharesController.isAccessUserToBudget(budgetExist, req.user)) return sendErrorResponse(res, 403)
+        return sendSuccessResponse(res, 200, { budget: budgetExist }); // maybe with user-role for frontend
     } catch (err) {
         // console.error(err)
         sendErrorResponse(res, 500);
     }
-});
+}); 
 
 router.patch(buildApiPath("budgets", ":id"), async (req, res) => {
     try {
@@ -60,11 +55,8 @@ router.patch(buildApiPath("budgets", ":id"), async (req, res) => {
         if (!name) return sendErrorResponse(res, 404);
         const budgetDb = await budgetController.getById(Number(id));
         if (!budgetDb) return sendErrorResponse(res, 404);
-        const access = await budgetSharesController.getIdUserBudgetRelation(
-            req.user,
-            budgetDb
-        );
-        if (!access) return sendErrorResponse(res, 403);
+       
+        if (!budgetSharesController.isAccessUserToBudget(budgetDb, req.user)) return sendErrorResponse(res, 403);
         const updated = await budgetController.updateById(budgetDb.id, {
             name,
             user_id,
@@ -84,15 +76,36 @@ router.delete(buildApiPath("budgets", ":id"), async (req, res) => {
         const budgetDb = await budgetController.getById(Number(id));
         if (!budgetDb) return sendErrorResponse(res, 404);
 
-        const access = await budgetSharesController.getIdUserBudgetRelation(
-            req.user,
-            budgetDb
-        );
-        if (!access) return sendErrorResponse(res, 403);
+        if (!budgetSharesController.isAccessUserToBudget(budgetDb, req.user)) return sendErrorResponse(res, 403);
         const deleted = await budgetController.deleteById(budgetDb.id);
         if (!deleted) throw new Error("Cannot delete budget resource");
     } catch (err) {
         return sendErrorResponse(res, 500);
     }
 });
+
+
+router.get(
+    buildApiPath("budgets", ":id", "summary"),
+    async (req, res) => {
+        try {
+            if (!req.user) return sendErrorResponse(res, 401)
+            const {id} = req.params
+            if (!isNumber(id)) return sendErrorResponse(res, 404)
+            const budgetDb = await budgetController.getById( Number(id))
+            if (!budgetDb) return sendErrorResponse(res, 404)
+            if (!budgetSharesController.isAccessUserToBudget(budgetDb, req.user)) return sendErrorResponse(res, 403)
+
+            const totalExpenses = await budgetController.getTotalBudgetCategoryExpenses( budgetDb )
+            console.log(totalExpenses) 
+            
+            return sendSuccessResponse( res, 200, { total: totalExpenses})
+
+        } catch(err){
+            return sendErrorResponse(res, 500)
+        }
+
+    }
+)
+
 export default router;
