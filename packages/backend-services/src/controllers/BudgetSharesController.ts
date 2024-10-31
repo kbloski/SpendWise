@@ -41,6 +41,10 @@ export default class BudgetSharesController extends AbstractCrudController<Budge
         } as any)        
     }
 
+    async getAllforUser( userId: number){
+        return await this.getAll("DESC", "id", { user_id: userId})
+    }
+
     async updateById(
         id: number, 
         data: Partial<Omit<BudgetShare, "id">>): Promise<Boolean> 

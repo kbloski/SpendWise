@@ -11,7 +11,7 @@ router.get(buildApiPath("budgets", "me"), async (req, res) => {
     if (!req.user) return;
 
     // @ts-ignore
-    const budgets = await budgetController.getAllByUserId(req.user.id);
+    const budgets = await budgetController.getAccessibleBudgetsForUser(req.user.id );
     return sendSuccessResponse(res, 200, { budgets });
 });
 
@@ -32,15 +32,17 @@ router.post(buildApiPath("budgets", "me"), async (req, res) => {
 router.get(
     buildApiPath("budgets", ":id"),
     async (req, res ) => {
+        if (!req.user) return sendErrorResponse(res, 401)
         const { id } = req.params;
         if (!isNumber(Number(id))) return sendErrorResponse(res, 400, "Invalid Id");
-        // const budgetExist = await userController.getById( Number(id) )
-        // if (!budgetExist) return sendErrorResponse( res, 404, "Budget don't exist")
+        const budgetExist = await budgetController.getById( Number(id) )
+        if (!budgetExist) return sendErrorResponse( res, 404, "Budget don't exist")
         
-        // checkOwner (budgets shares)
-        // console.log( await budgetSharesController.isUserBudgetRelated({id: 133} as any , { id: 174} as any ))
-
-        return sendSuccessResponse( res, 200, { budget: 'budgetExist'})
+        const access = await budgetSharesController.getIdUserBudgetRelation(
+            req.user, budgetExist
+        )
+        if (!access) return sendErrorResponse(res, 401)
+        return sendSuccessResponse( res, 200, { budget: budgetExist})
     }
 );
 

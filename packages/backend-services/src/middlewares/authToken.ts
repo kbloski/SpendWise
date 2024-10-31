@@ -10,7 +10,6 @@ export default async function authTokenMiddleware(
     req : Request, res : Response, next : NextFunction) 
 {
     try {
-        console.log( req.path)
         let role = Roles.GUEST
         const authHeader = req.headers['authorization']
 
