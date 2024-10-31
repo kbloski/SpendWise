@@ -69,7 +69,7 @@ export default class BudgetController extends AbstractCrudController<Budget> {
             user_id: user.id,
             budget_id: budget.id,
         });
-        const updated = await this.updateById(budget.id, { user_id: user.id });
+        const updated = await this.model.update( {...budgetShare} ,{where: { id: budget.id}});
         return !!updated; // Bool
     }
 
@@ -79,6 +79,7 @@ export default class BudgetController extends AbstractCrudController<Budget> {
     ): Promise<Boolean> {
         const isUpdated = false;
         const budgetDb = await this.getById(id);
+        
         if (!budgetDb) return isUpdated;
         if (data.user_id) {
             const userDb = await userController.getById(data.user_id);

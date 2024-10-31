@@ -62,11 +62,13 @@ async function load() {
             try {
                 const b = await budgetController.create({
                     name: budget.name,
+                    user_id: usersDb[budget.user_id - 1]?.id,
                 });
-                await budgetController.setOwner(
-                    b as any,
-                    { id: usersDb[budget.user_id - 1]?.id } as any
-                );
+                // await budgetController.setOwner(
+                //     b as any,
+                //     { id: usersDb[budget.user_id - 1]?.id } as any
+                // );
+
                 budgetsDb.push(b);
             } catch (error) {
                 console.error(`Error creating budget: ${error}`);
@@ -131,12 +133,7 @@ async function load() {
 
 
             await budgetSharesController.create( newBs )
-            console.log(
-                await budgetSharesController.getIdUserBudgetRelation(
-                    usersDb[bs.user_id - 1],
-                    budgetsDb[bs.budget_id - 1]
-                )
-            );
+      
         } 
 
         trans.commit

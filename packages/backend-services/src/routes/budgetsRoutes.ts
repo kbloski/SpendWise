@@ -97,7 +97,6 @@ router.get(
             if (!budgetSharesController.isAccessUserToBudget(budgetDb, req.user)) return sendErrorResponse(res, 403)
 
             const totalExpenses = await budgetController.getTotalBudgetCategoryExpenses( budgetDb )
-            console.log(totalExpenses) 
             
             return sendSuccessResponse( res, 200, { total: totalExpenses})
 
