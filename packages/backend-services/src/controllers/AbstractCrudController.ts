@@ -1,4 +1,5 @@
 import { Model, ModelStatic, Optional, WhereOptions } from "sequelize";
+import UserType from "../types/UserType";
 
 export default abstract class AbstractCrudController<T extends Model> {
     protected model: ModelStatic<T>;
@@ -14,9 +15,10 @@ export default abstract class AbstractCrudController<T extends Model> {
 
     async getAll(
         orderBy: "ASC" | "DESC" = "ASC",
-        props: string = "id"
+        sortedProp: string = "id",
+        where : Partial<T> = {}
     ): Promise<T[] | null> {
-        return await this.model.findAll({ order: [[orderBy, props]] });
+        return await this.model.findAll({ order: [[sortedProp, orderBy]] , where : where as WhereOptions});
     }
 
     async getById(id: number): Promise<T | null> {

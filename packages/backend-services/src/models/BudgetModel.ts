@@ -9,10 +9,11 @@ import BudgetType from "../types/BudgetType";
 
 export default class Budget extends Model<InferAttributes<Budget>, InferCreationAttributes<Budget>> implements BudgetType
 {
+    declare createdAt: Date;
+    declare updatedAt: Date;
     declare id: number;
     declare name: string;
     declare user_id: number;
-    declare created_at: Date;
 }
 
 Budget.init(
@@ -26,17 +27,17 @@ Budget.init(
         },
         name: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
         },
         user_id: DataTypes.INTEGER,
-        created_at: {
-            type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW // or sequelize.fn("CURRENT_TIMESTAMP")
-        }
+        createdAt: DataTypes.DATE,
+        updatedAt: DataTypes.DATE,
     },
     {
         sequelize,
         timestamps: true,
+        createdAt: "createdAt",
+        updatedAt: "updatedAt",
     }
 );
 

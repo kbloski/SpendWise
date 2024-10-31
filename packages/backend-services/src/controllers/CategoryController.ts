@@ -1,4 +1,4 @@
-import Budget from "../models/BudgetShares";
+import Budget from "../models/BudgetModel";
 import Category from "../models/CategoryModel";
 import BudgetType from "../types/BudgetType";
 import CategoryType from "../types/CategoryType";

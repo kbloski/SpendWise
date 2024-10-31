@@ -1,4 +1,4 @@
-import Budget from "../models/BudgetShares";
+import Budget from "../models/BudgetModel";
 import User from "../models/UserModel";
 import BudgetType from "../types/BudgetType";
 import UserType from "../types/UserType";
@@ -9,8 +9,12 @@ export default class BudgetController extends AbstractCrudController<Budget> {
         super(Budget);
     }
 
+    async getAllByUserId(userId: number) {
+        return await this.getAll("DESC", "updatedAt", { user_id: userId });
+    }
+
     async create(
-        data: Omit<BudgetType, "id" | "user_id" | "created_at">
+        data: Omit<BudgetType, "id" | "user_id" | "createdAt" | "updatedAt">
     ): Promise<Budget | null> {
         return super.create(data);
     }

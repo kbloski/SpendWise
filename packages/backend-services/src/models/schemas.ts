@@ -3,7 +3,7 @@ import User from "./UserModel";
 import Report from "./ReportModel";
 import Expense from "./ExpenseModel";
 import Category from "./CategoryModel";
-import Budget from "./BudgetShares";
+import Budget from "./BudgetModel";
 import BudgetShare from "./BudgetSharesModel";
 
 // users może mieć wiele budgets.
@@ -38,7 +38,7 @@ export async function syncDb() {
         console.log("Database Synchronization Success");
     } catch (err) {
         console.error("DataBase Synchronization Failed");
-        console.error( err )
+        console.error(err);
     }
 }
 

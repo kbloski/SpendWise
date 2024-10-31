@@ -1,7 +1,7 @@
 import AbstractCrudController from "./AbstractCrudController";
 import Report from "../models/ReportModel";
 import ReportType from "../types/ReportType";
-import Budget from "../models/BudgetShares";
+import Budget from "../models/BudgetModel";
 import BudgetType from "../types/BudgetType";
 
 export default class ReportController extends AbstractCrudController<Report> {

@@ -19,7 +19,7 @@ import { sequelize } from "../utils/db";
 import path from "path";
 import fs from "fs";
 import User from "../models/UserModel";
-import Budget from "../models/BudgetShares";
+import Budget from "../models/BudgetModel";
 import { Expense, syncDb } from "../models/schemas";
 
 const pathFile = path.join(__dirname, "db_test.json");
