@@ -3,6 +3,7 @@ import { buildApiPath } from "../utils/apiUtils";
 import UserType from "../types/UserType";
 import { sendErrorResponse, sendSuccessResponse } from "../utils/responseUtils";
 import { userController } from "../controllers/controllers";
+import { createWebToken } from "../utils/jwtUtils";
 
 const router = Router();
 
@@ -14,7 +15,7 @@ router.post(
         const userExist = await userController.getByEmail( email )
         if (userExist) return sendErrorResponse( res, 403 )
         const newUser = await userController.create( {email, password, username});
-        return sendSuccessResponse( res, 200, { token: newUser})
+        return sendSuccessResponse( res, 201 )
     }
 )
 
@@ -27,7 +28,9 @@ router.post(
         if (!userDb) return sendErrorResponse(res, 404);
         if (!(await userController.validPassword(password, userDb)))
             return sendErrorResponse(res, 400);
-        sendSuccessResponse( res, 200, {data: 'success'})
+
+        const token = createWebToken( userDb.dataValues )
+        sendSuccessResponse( res, 200, { token: token} )
 });
 
 export default router;

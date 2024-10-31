@@ -1,10 +1,10 @@
 1. Użytkownicy
 POST /api/register
-
 Rejestracja nowego użytkownika.
-POST /api/login
 
+POST /api/login
 Logowanie użytkownika i zwrócenie tokena JWT.
+
 GET /api/users/
 
 Pobieranie danych profilowych użytkownika.
