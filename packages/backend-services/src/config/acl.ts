@@ -25,8 +25,12 @@ export const ACL: ACLpermissionType[] = [
         role: Roles.USER,
         allows: [
             {
-                resource: buildApiPath("users", 'me'),
+                resource: buildApiPath("users", "me"),
                 methods: ["GET", "PATCH", "DELETE"],
+            },
+            {
+                resource: buildApiPath("budgets"),
+                methods: ["GET", "POST"]
             },
         ],
     },
