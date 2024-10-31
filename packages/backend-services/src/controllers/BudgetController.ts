@@ -1,4 +1,4 @@
-import Budget from "../models/BudgetModel";
+import Budget from "../models/BudgetShares";
 import User from "../models/UserModel";
 import BudgetType from "../types/BudgetType";
 import UserType from "../types/UserType";
@@ -17,7 +17,7 @@ export default class BudgetController extends AbstractCrudController<Budget> {
 
     async setOwner(budget: BudgetType | Budget, user: UserType | User) {
         const updated = await this.updateById(budget.id, { user_id: user.id });
-        return !!updated // Bool
+        return !!updated; // Bool
     }
 
     async updateById(

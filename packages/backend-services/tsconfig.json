@@ -5,13 +5,13 @@
     "rootDir": "./src",
     "outDir": "./dist",  
     "typeRoots": [
-      // "./src/types", 
-      "../../node_modules/@types"
+      "src/types",
+      "../../node_modules/@types",
     ],
     "paths": {
       "@/*": ["./*"]
     },
   },
-  "include": [ "src/**/*" ],
+  "include": [ "./src/**/*" ],
   "exclude": [ "dist", "node_modules" ]
 }

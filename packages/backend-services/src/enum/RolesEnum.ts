@@ -1,8 +1,8 @@
 enum Roles {
     "GUEST",
-    "VIEWER",
-    "EDITOR",
-    "ADMIN",
+    "USER",
+    // "EDITOR",
+    // "ADMIN",
 }
 
 export default Roles 

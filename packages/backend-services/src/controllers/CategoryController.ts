@@ -1,4 +1,4 @@
-import Budget from "../models/BudgetModel";
+import Budget from "../models/BudgetShares";
 import Category from "../models/CategoryModel";
 import BudgetType from "../types/BudgetType";
 import CategoryType from "../types/CategoryType";
@@ -13,9 +13,12 @@ export default class CategoryController extends AbstractCrudController<Category>
         return super.create(data);
     }
 
-    async setBudget( category : CategoryType | Category, budget : BudgetType | Budget){
-        const updated = this.updateById( category.id, { budget_id: budget.id})
-        return !!updated
+    async setBudget(
+        category: CategoryType | Category,
+        budget: BudgetType | Budget
+    ) {
+        const updated = this.updateById(category.id, { budget_id: budget.id });
+        return !!updated;
     }
 
     async updateById(

@@ -1,23 +1,28 @@
 import Roles from "../enum/RolesEnum";
 import ACLpermissionType from "../types/ACLpermissionType";
+import { UserRoles } from "../types/BudgetShareType";
 import { buildApiPath } from "../utils/apiUtils";
 
-const ACL : ACLpermissionType[] = [
+export const ACL : ACLpermissionType[] = [
     { 
         role: Roles.GUEST,
         allows: [ 
+            { 
+                resource: '/',
+                methods: '*'
+            },
             { 
                 resource: buildApiPath('register'),
                 methods: "POST"
             },
             { 
                 resource: buildApiPath('login'),
-                methods: 'POST'
+                methods: ["POST"]
             },
         ]
     },
     {
-        role: Roles.VIEWER,
+        role: Roles.USER,
         allows: [
             {
                 resource: '',

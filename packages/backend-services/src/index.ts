@@ -1,6 +1,10 @@
-import app from './app';
-import dotenv from 'dotenv';
+import dotenv from 'dotenv'; // musi być ładowany przed wszystkimi importami 
 dotenv.config({path: '../../.env'})
+
+
+import app from './app';
+
+
 import registerRoutes from './routes';
 import { syncDb } from './models/schemas';
 import { connectDb } from './utils/db';

@@ -1,7 +1,7 @@
 import AbstractCrudController from "./AbstractCrudController";
 import Report from "../models/ReportModel";
 import ReportType from "../types/ReportType";
-import Budget from "../models/BudgetModel";
+import Budget from "../models/BudgetShares";
 import BudgetType from "../types/BudgetType";
 
 export default class ReportController extends AbstractCrudController<Report> {
@@ -9,7 +9,9 @@ export default class ReportController extends AbstractCrudController<Report> {
         super(Report);
     }
 
-    async create(data: Omit<ReportType, "id" | "budget_id">): Promise<Report | null> {
+    async create(
+        data: Omit<ReportType, "id" | "budget_id">
+    ): Promise<Report | null> {
         return super.create(data);
     }
 
@@ -17,9 +19,9 @@ export default class ReportController extends AbstractCrudController<Report> {
         return this.model.findAll({ where: { id } });
     }
 
-    async setBudget( report : Report | ReportType, budget: Budget | BudgetType){
-        const updated = this.updateById( report.id , { budget_id: budget.id})
-        return !!updated
+    async setBudget(report: Report | ReportType, budget: Budget | BudgetType) {
+        const updated = this.updateById(report.id, { budget_id: budget.id });
+        return !!updated;
     }
 
     async updateById(

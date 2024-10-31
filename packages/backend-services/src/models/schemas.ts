@@ -3,7 +3,7 @@ import User from "./UserModel";
 import Report from "./ReportModel";
 import Expense from "./ExpenseModel";
 import Category from "./CategoryModel";
-import Budget from "./BudgetModel";
+import Budget from "./BudgetShares";
 import BudgetShare from "./BudgetSharesModel";
 
 // users może mieć wiele budgets.
@@ -15,8 +15,8 @@ Budget.hasMany(Category, { foreignKey: "budget_id" });
 Category.belongsTo(Budget, { foreignKey: "budget_id" });
 
 // budgets mogą mieć wiele reports.
-Budget.hasMany( Report, { foreignKey: "budget_id"})
-Report.belongsTo( Budget, { foreignKey: "budget_id"})
+Budget.hasMany(Report, { foreignKey: "budget_id" });
+Report.belongsTo(Budget, { foreignKey: "budget_id" });
 
 // budgets mogą być współdzielone z wieloma users przez tabelę budget_shares.
 Budget.belongsToMany(User, {
@@ -37,7 +37,8 @@ export async function syncDb() {
         await sequelize.sync();
         console.log("Database Synchronization Success");
     } catch (err) {
-        console.error(err, "DataBase Synchronization Failed");
+        console.error("DataBase Synchronization Failed");
+        console.error( err )
     }
 }
 
