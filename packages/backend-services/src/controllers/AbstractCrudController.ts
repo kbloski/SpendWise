@@ -34,7 +34,7 @@ export default abstract class AbstractCrudController<T extends Model> {
         const updCount = await this.model.update(data, {
             where: { id } as WhereOptions,
         })
-        return !(updCount);
+        return !!(updCount);
     }
 
     async deleteAll(){
