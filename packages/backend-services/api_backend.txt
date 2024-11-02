@@ -66,7 +66,7 @@ Usuwanie wydatku.
 
 5. Współdzielenie budżetów
 
-/api/budgets/:budgetId/shares     
+POST /api/budgets/:budgetId/shares     
 Zapraszanie innych użytkowników do współdzielenia budżetu.
 
 GET  /api/budgets/:budgetId/shares   

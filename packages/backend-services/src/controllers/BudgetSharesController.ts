@@ -1,4 +1,4 @@
-import { Optional } from "sequelize";
+import { Op, Optional } from "sequelize";
 import Budget from "../models/BudgetModel";
 import BudgetShare from "../models/BudgetSharesModel";
 import User from "../models/UserModel";
@@ -23,6 +23,7 @@ export default class BudgetSharesController extends AbstractCrudController<Budge
         super(BudgetShare);
     }
 
+    // CHANGE ON - createIfNotExist()
     async create(
         data: Optional<BudgetShareType, "id" | "role">): Promise<BudgetShare | null> 
     {
@@ -45,6 +46,22 @@ export default class BudgetSharesController extends AbstractCrudController<Budge
             console.error(err)
             throw new Error("Failed create BudgetShareType.create()")
         }     
+    }
+
+    async getAllUsersforBudget(
+        budget: BudgetType | Budget
+    ){
+        const budgetShares = await this.model.findAll({
+            where: {
+                budget_id: budget.id
+            }
+        });
+        const usersIds = budgetShares.map( bs => bs.user_id);
+        if (!usersIds.length) return [];
+
+        return userController.getAll( "ASC" , "id", {
+            id: { [Op.in] : usersIds}
+        })
     }
 
     async getAllforUser( userId: number){

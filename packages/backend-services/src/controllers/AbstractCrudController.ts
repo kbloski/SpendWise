@@ -16,7 +16,7 @@ export default abstract class AbstractCrudController<T extends Model> {
     async getAll(
         orderBy: "ASC" | "DESC" = "ASC",
         sortedProp: string = "id",
-        where : Partial<T> = {}
+        where : WhereOptions
     ): Promise<T[] | null> {
         return await this.model.findAll({ order: [[sortedProp, orderBy]] , where : where as WhereOptions});
     }

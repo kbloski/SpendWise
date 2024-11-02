@@ -9,7 +9,6 @@ export default class UserController extends AbstractCrudController<User> {
         super(User);
     }
 
-    
     async create(data: Omit<UserType, "id">): Promise<User | null> {
         try {
             const userExist = await this.model.findAll({
