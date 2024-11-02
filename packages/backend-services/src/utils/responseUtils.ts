@@ -41,14 +41,13 @@ export async function sendErrorResponse(
             statusMessage = "Internal Server Error";
     }
 
-    const errMessage = `${statusMessage}` + ( errorMessage ? `: ${errorMessage}` : '');
+    const errMessage = `${statusMessage}` + ( errorMessage ? `: ${String(errorMessage)}` : '');
 
     res.statusMessage = errMessage;
     res.status(errorCode)
         .json({
-            success: false,
-            message: errMessage,
             errorCode,
+            message: errMessage,
         })
         .end();
 }

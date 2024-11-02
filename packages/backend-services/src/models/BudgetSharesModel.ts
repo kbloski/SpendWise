@@ -29,7 +29,8 @@ BudgetShare.init({
     },
     role: {
         type: DataTypes.INTEGER,
-        defaultValue: UserRoles.EDITOR
+        defaultValue: UserRoles.EDITOR,
+        comment: `admin(${UserRoles.ADMIN}),editor(${UserRoles.EDITOR},viewer(${UserRoles.VIEWER})`
     }
 }, {
     sequelize,
