@@ -41,7 +41,10 @@ export default function checkAccess(
             const newUrlA : string[] = []
             const newUrlB : string[] = []
             for(const [index, el] of aResourceElement.entries()){
-                if (el.includes(':')) {}
+                if (el.includes(':')) {
+                    newUrlA.push( '_' )
+                    newUrlB.push( '_' )
+                }
                 else {
                     newUrlA.push( aResourceElement[index ] )
                     newUrlB.push( resourceElement[index] )

@@ -13,7 +13,7 @@ router.get(
         try {
             if (!req.user) return sendErrorResponse(res, 401);
             const {id} = req.params;
-            if(!isNumber) return sendErrorResponse(res, 400, "Invalid type id, id must be a number");
+            if(!isNumber(id)) return sendErrorResponse(res, 400, "Invalid type id, id must be a number");
 
             const budgetDb = await budgetController.getById( Number(id));
             if (!budgetDb) return sendErrorResponse(res, 404, "Budget not found");
@@ -37,7 +37,7 @@ router.put(
 
             if (!req.user) return sendErrorResponse(res, 401);
             const {id} = req.params;
-            if(!isNumber) return sendErrorResponse(res, 400, "Invalid type id, id must be a number");
+            if(!isNumber(id)) return sendErrorResponse(res, 400, "Invalid type id, id must be a number");
             const { user_id, role } : BudgetShareType = req.body;
             if (!user_id) return sendErrorResponse(res, 400, "Please provide user_id");
 
@@ -79,5 +79,39 @@ router.put(
         }
     }
 );
+
+
+router.delete(buildApiPath("budgets", ":id", "shares", ":userId"), async (req, res) => {
+    try {
+        if (!req.user) return sendErrorResponse(res, 401);
+        const { id , userId} = req.params;
+        if (!isNumber(id) || !isNumber(userId))
+            return sendErrorResponse(
+                res,
+                400,
+                "Invalid type id, id must be a number"
+            );
+
+        const budgetDb = await budgetController.getById(Number(id));
+        if (!budgetDb) return sendErrorResponse(res, 404, "Budget not found");
+        
+        const accessToBudget =
+        await budgetSharesController.isAccessUserToBudget(
+            budgetDb,
+                req.user
+            );
+        if (!accessToBudget) return sendErrorResponse(res, 403);
+
+        const relationId = await budgetSharesController.getIdUserBudgetRelation( budgetDb, {id: userId} as any);
+        if (!relationId) return sendErrorResponse(res, 404);
+
+        const isDeleted = await budgetSharesController.deleteById( relationId );
+        if (!isDeleted) throw new Error("Failed in deleted relation from database")
+
+        return sendSuccessResponse(res, 204);
+    } catch (err) {
+        return sendErrorResponse(res, 500);
+    }
+});
 
 export default router;
