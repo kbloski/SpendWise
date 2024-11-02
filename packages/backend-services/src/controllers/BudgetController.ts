@@ -10,6 +10,7 @@ import {
     expenseController,
     userController,
 } from "./controllers";
+import { sequelize } from "../utils/db";
 
 export default class BudgetController extends AbstractCrudController<Budget> {
     constructor() {
@@ -51,18 +52,39 @@ export default class BudgetController extends AbstractCrudController<Budget> {
     async create(
         data: Omit<BudgetType, "id" | "createdAt" | "updatedAt">
     ): Promise<Budget | null> {
-        const userExist = await userController.getById( data.user_id);
-        if (!userExist) throw new Error("User dot't exists")
-        return await super.create(data);
+        const transaction = await sequelize.transaction()
+        try {
+            const userDb = await userController.getById( data.user_id);
+            if (!userDb) throw new Error("User don't exits")
+            const newBudget = await super.create(data);
+            if (!newBudget) throw new Error("Cannot create budget")
+
+            const createdRelation = this.setOwner( newBudget, userDb)
+            if (!createdRelation) throw new Error('Not created budget relation')
+            transaction.commit()
+            return newBudget;
+        } catch ( err ){
+            transaction.rollback()
+            throw new Error("Failed budgetController.create()")
+        }
     }
 
     async setOwner(budget: BudgetType | Budget, user: UserType | User) {
-        const budgetShare = await budgetSharesController.create({
-            user_id: user.id,
-            budget_id: budget.id,
-        });
-        const updated = await this.model.update( {...budgetShare} ,{where: { id: budget.id}});
-        return !!updated; // Bool
+        try {
+            const budgetDb = await this.getById(budget.id);
+            if (!budgetDb) throw new Error("Budget don't exits");
+            const userDb = await userController.getById( user.id )
+            if (!userDb) throw new Error("User dont exis't in db")
+
+            const budgetShare = await budgetSharesController.create({
+                user_id: userDb.id,
+                budget_id: budgetDb.id,
+            });
+            return !!budgetShare;
+        } catch (err) {
+            // console.error(err)
+            throw new Error("Failed budgetController.setOwner()");
+        }
     }
 
     async updateById(
@@ -71,7 +93,7 @@ export default class BudgetController extends AbstractCrudController<Budget> {
     ): Promise<Boolean> {
         const isUpdated = false;
         const budgetDb = await this.getById(id);
-        
+
         if (!budgetDb) return isUpdated;
         if (data.user_id) {
             const userDb = await userController.getById(data.user_id);
