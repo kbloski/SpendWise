@@ -1,89 +1,115 @@
 1. Użytkownicy
 POST /api/register
 Rejestracja nowego użytkownika.
+{ username, email, password}
 
 POST /api/login
 Logowanie użytkownika i zwrócenie tokena JWT.
+{ email, password}
 
-GET /api/users/
-
+GET /api/users/me
 Pobieranie danych profilowych użytkownika.
-PUT /api/users/
 
+PATCH /api/users/me
 Aktualizacja profilu użytkownika (np. zmiana hasła, edycja danych).
-DELETE /api/users/
+{ username or password}
 
-Usuwanie konta użytkownika (możliwe z potwierdzeniem).
+DELETE /api/users/me
+Usuwanie konta użytkownika.
+
+
+
+
+
 2. Budżety
-POST /api/budgets
-
+POST /api/budgets/me
 Tworzenie nowego budżetu.
-GET /api/budgets
+{ name, user_id }
 
+GET /api/budgets/me
 Pobieranie listy budżetów użytkownika.
-GET /api/budgets/
 
+GET /api/budgets/:id
 Pobieranie szczegółów konkretnego budżetu.
-PUT /api/budgets/
 
+PATCH /api/budgets/:id
 Aktualizacja danych budżetu.
-DELETE /api/budgets/
+{ name, user_id}
 
+DELETE /api/budgets/:id
 Usuwanie budżetu.
-GET /api/budgets/
-/summary
 
-Pobieranie podsumowania wydatków w danym budżecie (np. całkowite wydatki, oszczędności).
+GET /api/budgets/:id/summary
+Pobieranie podsumowania wydatków w danym budżecie.
+
+
+
+
+
 3. Kategorie
-POST /api/categories
-
+POST /api/budgets/:id/categories
 Tworzenie nowej kategorii wydatków w danym budżecie.
-GET /api/categories/
+{ name , budget_id }
 
+GET /api/categories/:id
 Pobieranie listy kategorii dla konkretnego budżetu.
-PUT /api/categories/
 
+PATCH /api/categories/:id
 Aktualizacja danych kategorii.
-DELETE /api/categories/
+{ name or budget_id}
 
+DELETE /api/categories/:id
 Usuwanie kategorii.
+
+
+
+
+
 4. Wydatki
-POST /api/expenses
-
+POST /api/budgets/:budgetId/categories/:categoryId/expenses
 Dodawanie nowego wydatku.
-GET /api/expenses/
+{ amount, description*, category_id, user_id }
 
+GET /api/budgets/:budgetId/expenses
 Pobieranie listy wydatków dla konkretnego budżetu.
-PUT /api/expenses/
 
+PATCH /api/budgets/:id
 Aktualizacja danych wydatku.
-DELETE /api/expenses/
+{amount or description}
 
+DELETE /api/expenses/:id
 Usuwanie wydatku.
-GET /api/expenses/
 
+GET /api/expenses/:id
 Pobieranie szczegółów konkretnego wydatku.
+
+
+
+
+
 5. Współdzielenie budżetów
-POST /api/budgets/
-/share
-
+PUT /api/budgets/:id/shares
 Zapraszanie innych użytkowników do współdzielenia budżetu.
-GET /api/budgets/
-/shares
 
+GET /api/budgets/:id/shares
 Pobieranie listy użytkowników współdzielących dany budżet.
-DELETE /api/budgets/
-/share/
 
+DELETE /api/budgets/:id/share/:userId
 Usuwanie użytkownika z listy współdzielących budżet.
+
+
+
+
+
 6. Raporty
 GET /api/reports/
-
-Generowanie raportu wydatków dla danego budżetu w określonym okresie (możliwe dodanie parametrów dla daty).
-GET /api/reports/
-/summary
-
+Generowanie raportu wydatków dla danego budżetu w określonym okresie.
 Pobieranie podsumowania wydatków w określonym okresie.
+query = { peroid_start, peroid_end}
+
+
+
+=============================== TODO BOTTOM ============================
 7. Dodatkowe funkcjonalności
 POST /api/categories/
 /expenses
