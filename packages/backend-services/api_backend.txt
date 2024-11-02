@@ -77,7 +77,10 @@ Usuwanie użytkownika z listy współdzielących budżet.
 
 6. Raporty
 
-GET /api/budgets/:budgetId/reports     
+GET /api/budgets/:budgetId/reports    
+query - 
+    period_start=date, 
+    period_end=date 
 Generowanie raportu wydatków dla danego budżetu w określonym okresie 
 (możliwe dodanie parametrów dla daty).
 

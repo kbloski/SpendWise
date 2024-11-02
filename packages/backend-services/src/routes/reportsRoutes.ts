@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { buildApiPath } from '../utils/apiUtils';
 import { sendErrorResponse, sendSuccessResponse } from '../utils/responseUtils';
 import { isNumber, isValidDate } from '../utils/utils';
-import { budgetController, budgetSharesController, expenseController, reportController } from '../controllers/controllers';
+import { budgetController, budgetSharesController, categoryController, expenseController, reportController } from '../controllers/controllers';
 
 const router = Router();
 
@@ -36,7 +36,27 @@ router.get(
                     : undefined,
             });
 
-            return sendSuccessResponse(res, 200, { report: newReport})
+            const categories = await categoryController.getAllByBudgetId( budgetDb.id );
+            let categoriesToSend : unknown[] = [];
+            if (categories) {
+                const newCategoriesData = await Promise.all(
+                categories.map( async cat => {
+                    const total = await expenseController.getTotalCategoryExpenses(cat.id);
+
+                    return {
+                        ...cat.dataValues,
+                        totalAmount: total
+                    }
+                })
+                )
+                categoriesToSend = [...newCategoriesData];
+            }
+
+            return sendSuccessResponse(res, 200, { 
+                report: {
+                    ...newReport?.dataValues,
+                    categories: categoriesToSend
+                }})
         } catch (err){
             return sendErrorResponse(res, 500)
         }

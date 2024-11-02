@@ -36,11 +36,22 @@ export default class ExpenseController extends AbstractCrudController<Expense> {
         });
     }
 
-    async getTotalCategoryExpenses(categoryId: number) {
+    async getTotalCategoryExpenses(
+        categoryId: number,
+        period? : {
+            start_date?: Date,
+            end_date : Date
+        }
+    ) {
         try {
-            return await this.model.sum("amount", {
-                where: { category_id: categoryId },
-            });
+            const where : WhereOptions = {
+                category_id: categoryId,
+            } 
+
+            if (period?.start_date) where.date[Op.lte] = period.start_date
+            if (period?.end_date) where.date[Op.lte] = period.end_date
+
+            return await this.model.sum("amount", {where}) ?? 0
         } catch (err) {
             console.error("Error calculating total expenses:", err);
             throw new Error("Failed to calculate total expenses"); //
