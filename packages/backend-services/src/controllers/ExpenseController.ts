@@ -1,4 +1,4 @@
-import { Op, Optional } from "sequelize";
+import { Op, Optional, WhereOptions } from "sequelize";
 import Category from "../models/CategoryModel";
 import Expense from "../models/ExpenseModel";
 import User from "../models/UserModel";
@@ -6,7 +6,7 @@ import CategoryType from "../types/CategoryType";
 import ExpenseType from "../types/ExpenseType";
 import UserType from "../types/UserType";
 import AbstractCrudController from "./AbstractCrudController";
-import { categoryController, userController } from "./controllers";
+import { budgetController, categoryController, userController } from "./controllers";
 import BudgetType from "../types/BudgetType";
 import Budget from "../models/BudgetModel";
 
@@ -45,6 +45,44 @@ export default class ExpenseController extends AbstractCrudController<Expense> {
             console.error("Error calculating total expenses:", err);
             throw new Error("Failed to calculate total expenses"); //
         }
+    }
+
+    async getTotalForBudget(
+        budget : BudgetType | Budget,
+        betweenDate?: {
+            period_start_date : Date | undefined | null,
+            period_end_date : Date | undefined | null
+        }
+    ){
+        try {
+            const budgetDb = await budgetController.getById( budget.id);
+            if (!budgetDb) throw new Error("Budget not exist in database");
+
+            const budgetCategories = await categoryController.getAllByBudgetId( budget.id );
+            if (!budgetCategories) return 0;
+
+            const categoriesIds = budgetCategories.map( c => c.id );
+
+            const whereOptions : WhereOptions = {
+                category_id: { [Op.in] : categoriesIds},
+            } 
+
+            if (betweenDate?.period_start_date || betweenDate?.period_end_date){
+                const date = {};
+                // @ts-ignore
+                if( betweenDate?.period_start_date) date[Op.gte] = betweenDate.period_start_date 
+                // @ts-ignore
+                if(betweenDate?.period_end_date) date[Op.lte] = betweenDate.period_end_date 
+                whereOptions.date = date;
+            }
+
+            return await this.model.sum('amount', {where: whereOptions})
+
+        } catch (err){
+            console.error(err)
+            throw new Error("Failed ExpenseController.getTotalForBudget()")
+        }
+
     }
 
     async isAccessForUser( 

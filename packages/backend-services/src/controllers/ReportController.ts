@@ -3,7 +3,8 @@ import Report from "../models/ReportModel";
 import ReportType from "../types/ReportType";
 import Budget from "../models/BudgetModel";
 import BudgetType from "../types/BudgetType";
-import { budgetController } from "./controllers";
+import { budgetController, expenseController } from "./controllers";
+import { Optional } from "sequelize";
 
 export default class ReportController extends AbstractCrudController<Report> {
     constructor() {
@@ -11,12 +12,19 @@ export default class ReportController extends AbstractCrudController<Report> {
     }
 
     async create(
-        data: Omit<ReportType, "id">
+        data: Optional<Omit<ReportType, "id">, "total_expenses" | "period_start" | "period_end">
     ): Promise<Report | null> {
         try {
             const {budget_id} = data
-            const budgetDb = await budgetController.getById( budget_id) ;
-            if (!budgetDb) throw new Error("Budget with id: " + budget_id + ' not exist')
+            const budgetDb = await budgetController.getById( budget_id);
+            if (!budgetDb) throw new Error("Budget with id "+ budget_id + ' not exist');
+
+            data.total_expenses = await expenseController.getTotalForBudget(budgetDb, {
+                period_start_date: data.period_start,
+                period_end_date: data.period_end
+            });
+
+            if (!data.total_expenses) data.total_expenses = 0
             return await super.create(data);
         } catch(err){
             console.error(err)

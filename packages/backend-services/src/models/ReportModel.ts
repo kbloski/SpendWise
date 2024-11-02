@@ -21,12 +21,13 @@ Report.init({
     budget_id: DataTypes.INTEGER,
     period_start: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
         validate: {isDate: true}
     },
     period_end: {
         type: DataTypes.DATE,
-        validate: {isDate: true}
+        validate: {isDate: true},
+        defaultValue: DataTypes.NOW
     },
     total_expenses: {
         type: DataTypes.DECIMAL,
