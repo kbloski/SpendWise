@@ -25,27 +25,31 @@ router.post(buildApiPath("categories"), async (req, res) => {
         if (!newCategory) throw new Error("Cannot create category");
         return sendSuccessResponse(res, 201);
     } catch (err) {
-        console.log( err )
         return sendErrorResponse(res, 500);
     }
 });
 
-// router.get(
-//     buildApiPath("categories", ":id"),
-//     async (req, res) => {
-//         if (!req.user) return sendErrorResponse(res, 401)
-//         const { id } = req.params;
-//         if (!isNumber(id)) return sendErrorResponse(res, 400)
-        
-//         const categoryDb = await categoryController.getById( Number(id));
-//         if (!categoryDb) return sendErrorResponse(res, 404)
+router.get(
+    buildApiPath("categories", ":id"),
+    async (req, res) => {
+        try {
+            // if (!req.user) throw new Error("req.user is empty")
+            // const { id } = req.params;
+            // if (!isNumber(id)) return sendErrorResponse(res, 400, "Invalid id");
+    
+            // const category = await categoryController.getById( Number(id) );
+            // if (!category) return sendErrorResponse(res, 404);
+    
+            // const accessToCategory = await categoryController.isAccessibleCategoryForUser( category, req.user )
 
-//         const relative_budget = await budgetController.getById(categoryDb.budget_id) as Budget
-//         if (!budgetSharesController.isAccessUserToBudget(relative_budget, req.user)) return sendErrorResponse(res, 403);
-
-//         return sendSuccessResponse(res, 200, { category: categoryDb})
-//     }
-// );
+            return sendSuccessResponse(res, 200, {
+                // category: accessToCategory
+            })
+        } catch (err){
+            return sendErrorResponse( res, 500)
+        }
+    }
+);
 
 
 export default router;

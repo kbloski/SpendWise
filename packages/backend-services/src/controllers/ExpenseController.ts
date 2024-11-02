@@ -5,7 +5,7 @@ import CategoryType from "../types/CategoryType";
 import ExpenseType from "../types/ExpenseType";
 import UserType from "../types/UserType";
 import AbstractCrudController from "./AbstractCrudController";
-import { categoryController } from "./controllers";
+import { categoryController, userController } from "./controllers";
 
 export default class ExpenseController extends AbstractCrudController<Expense> {
     constructor() {
@@ -26,7 +26,17 @@ export default class ExpenseController extends AbstractCrudController<Expense> {
     }
 
     async create(data: Omit<ExpenseType, "id">): Promise<Expense | null> {
-        return super.create(data);
+        try {
+            const {category_id, user_id} = data
+            const categoryDb = await categoryController.getById( category_id);
+            if (!categoryDb) throw new Error("Category with id: " + category_id + ' not exist' )
+            const userDb = await userController.getById( user_id);
+            if (!userDb) throw new Error("User with id:" + user_id + " not exist")
+            return await super.create(data);
+        } catch (err){
+            console.error(err)
+            throw new Error("Failed create ExpenseController.create()")
+        }
     }
 
     async setCategory(

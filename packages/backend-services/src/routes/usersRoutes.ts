@@ -34,16 +34,19 @@ router.patch(buildApiPath("users", "me"), async (req, res) => {
         if (!isUpdated) return sendErrorResponse(res, 500);
         return sendSuccessResponse(res, 201);
     } catch (err) {
-        console.log(err);
         sendErrorResponse(res, 500);
     }
 });
 
 router.delete(buildApiPath("users", "me"), async (req, res) => {
-    if (!req.user) return sendErrorResponse(res, 401);
-    const isDeleted = await userController.deleteById(req.user.id);
-    if (!isDeleted) return sendErrorResponse(res, 404, "User don't exist");
-    return sendSuccessResponse(res, 204);
+    try {
+        if (!req.user) return sendErrorResponse(res, 401);
+        const isDeleted = await userController.deleteById(req.user.id);
+        if (!isDeleted) return sendErrorResponse(res, 404, "User don't exist");
+        return sendSuccessResponse(res, 204);
+    } catch (err){
+        return sendErrorResponse(res, 500)
+    }
 });
 
 export default router;

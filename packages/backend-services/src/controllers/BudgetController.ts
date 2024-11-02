@@ -59,15 +59,14 @@ export default class BudgetController extends AbstractCrudController<Budget> {
             if (!userDb) throw new Error("User don't exits");
             const newBudget = await super.create(data);
             if (!newBudget) throw new Error("Cannot create budget");
-
             const createdRelation = this.setOwner(newBudget, userDb);
-            if (!createdRelation)
-                throw new Error("Not created budget relation");
+            if (!createdRelation) throw new Error("Not created budget relation");
             transaction.commit();
             return newBudget;
         } catch (err) {
             transaction.rollback();
-            throw new Error("Failed budgetController.create()");
+            console.error(err)
+            throw new Error("Failed BudgetController.create()");
         }
     }
 

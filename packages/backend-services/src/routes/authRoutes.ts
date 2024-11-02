@@ -19,7 +19,7 @@ router.post(
             if (!newUser)return sendErrorResponse(res, 500, "Cannot create user")
             return sendSuccessResponse( res, 201 )
         } catch (err){
-            sendErrorResponse( res , 500)
+            return sendErrorResponse( res , 500)
         }
     }
 )

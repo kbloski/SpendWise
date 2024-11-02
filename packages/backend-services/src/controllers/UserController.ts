@@ -11,15 +11,17 @@ export default class UserController extends AbstractCrudController<User> {
 
     
     async create(data: Omit<UserType, "id">): Promise<User | null> {
-        const userExist = await this.model.findAll({
+        try {
+            const userExist = await this.model.findAll({
             where: { email: data.email },
-        });
-        if (userExist.length)
-            throw new Error(`User with this email exist in database`);
-        if (data.password) {
+            });
+            if (userExist.length) throw new Error(`User with this email exist in database`);
             data.password = await this.hashPassword(data.password);
+            return super.create(data);
+        } catch (err){
+            console.error(err)
+            throw new Error("Failed create UserControler.create() ")
         }
-        return super.create(data);
     }
     
     async updateById(

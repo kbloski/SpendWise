@@ -3,6 +3,7 @@ import Report from "../models/ReportModel";
 import ReportType from "../types/ReportType";
 import Budget from "../models/BudgetModel";
 import BudgetType from "../types/BudgetType";
+import { budgetController } from "./controllers";
 
 export default class ReportController extends AbstractCrudController<Report> {
     constructor() {
@@ -10,9 +11,17 @@ export default class ReportController extends AbstractCrudController<Report> {
     }
 
     async create(
-        data: Omit<ReportType, "id" | "budget_id">
+        data: Omit<ReportType, "id">
     ): Promise<Report | null> {
-        return super.create(data);
+        try {
+            const {budget_id} = data
+            const budgetDb = await budgetController.getById( budget_id) ;
+            if (!budgetDb) throw new Error("Budget with id: " + budget_id + ' not exist')
+            return await super.create(data);
+        } catch(err){
+            console.error(err)
+            throw new Error("Failed create ReportController.create()")
+        }
     }
 
     async getByBudgetId(id: number) {

@@ -64,11 +64,6 @@ async function load() {
                     name: budget.name,
                     user_id: usersDb[budget.user_id - 1]?.id,
                 });
-                // await budgetController.setOwner(
-                //     b as any,
-                //     { id: usersDb[budget.user_id - 1]?.id } as any
-                // );
-
                 budgetsDb.push(b);
             } catch (error) {
                 console.error(`Error creating budget: ${error}`);
@@ -79,47 +74,25 @@ async function load() {
         for (const category of dataDb.categories) {
             const c = await categoryController.create({
                 name: category.name,
-            } as any);
-            categoryController.setBudget(
-                c as any,
-                {
-                    id: budgetsDb[category.budget_id - 1].id,
-                } as any
-            );
+                budget_id: budgetsDb[ category.budget_id -1].id
+            });
             categoriesDb.push(c);
         }
     
         for (const expense of dataDb.expenses) {
-            const tmpCategoryId = expense.category_id;
-            const tmpUserId = expense.user_id;
-    
             delete expense.id;
-            delete expense.category_id;
-            delete expense.user_id;
-            const e = await expenseController.create(expense as any);
-    
-            await expenseController.setCategory(
-                e as Expense,
-                {
-                    id: categoriesDb[tmpCategoryId - 1].id,
-                } as any
-            );
-    
-            await expenseController.setUser(
-                e as any,
-                { id: usersDb[tmpUserId - 1].id } as any
-            );
+            const e = await expenseController.create({
+                ...expense,
+                category_id: categoriesDb[expense.category_id-1].id,
+                user_id: usersDb[ expense.user_id - 1].id
+            });
         }
     
         for (const report of dataDb.reports) {
-            const tmpBudgetId = report.budget_id;
-            delete report.id;
-            delete report.budget_id;
-            const r = await reportController.create(report);
-            reportController.setBudget(
-                r as any,
-                { id: budgetsDb[tmpBudgetId - 1].id } as any
-            );
+            const r = await reportController.create({
+                ...report,
+                budget_id: budgetsDb[ report.budget_id -1].id
+            });
         }
     
         for (const bs of dataDb.budgetShares){

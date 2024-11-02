@@ -11,11 +11,13 @@ import { isNumber } from "../utils/utils";
 const router = Router();
 
 router.get(buildApiPath("budgets", "me"), async (req, res) => {
-    if (!req.user) return;
-    const budgets = await budgetController.getAccessibleBudgetsForUser(
-        req.user.id
-    );
-    return sendSuccessResponse(res, 200, { budgets }); // maybe with user-role for frontend
+    try {
+        if (!req.user) return;
+        const budgets = await budgetController.getAccessibleBudgetsForUser(req.user.id);
+        return sendSuccessResponse(res, 200, { budgets }); // maybe with user-role for frontend
+    } catch (err){
+        return sendErrorResponse(res, 500)
+    }
 });
 
 router.post(buildApiPath("budgets", "me"), async (req, res) => {
@@ -48,7 +50,6 @@ router.get(buildApiPath("budgets", ":id"), async (req, res) => {
             return sendErrorResponse(res, 403);
         return sendSuccessResponse(res, 200, { budget: budgetExist }); // maybe with user-role for frontend
     } catch (err) {
-        // console.error(err)
         sendErrorResponse(res, 500);
     }
 });

@@ -24,21 +24,27 @@ export default class BudgetSharesController extends AbstractCrudController<Budge
     }
 
     async create(
-        data: Optional<BudgetShareType, "id" | "role">): Promise<BudgetShare | null> {
-        const userExist = await userController.getById( data.user_id )
-        if (!userExist) return null;
-        const budgetExist =  await budgetController.getById( data.budget_id )
-        if (!budgetExist) return null;
+        data: Optional<BudgetShareType, "id" | "role">): Promise<BudgetShare | null> 
+    {
+        try {
+            const { user_id, budget_id} = data;
+            const userExist = await userController.getById( user_id )
+            if (!userExist) throw new Error("User with id: " + user_id + ' not exist');
+            const budgetExist =  await budgetController.getById( budget_id )
+            if (!budgetExist) throw new Error("Budget with id: " + budget_id + ' not exist');
 
-
-        const idExist = await this.getIdUserBudgetRelation( budgetExist, userExist);
-        if (idExist) return await this.getById(idExist);
-            
-        return super.create({
-            user_id: data.user_id,
-            budget_id: data.budget_id,
-            role: data.role
-        } as any)        
+            const idExist = await this.getIdUserBudgetRelation( budgetExist, userExist);
+            if (idExist) return await this.getById(idExist);
+                
+            return await super.create({
+                user_id: data.user_id,
+                budget_id: data.budget_id,
+                role: data.role
+            })        
+        } catch(err){
+            console.error(err)
+            throw new Error("Failed create BudgetShareType.create()")
+        }     
     }
 
     async getAllforUser( userId: number){
