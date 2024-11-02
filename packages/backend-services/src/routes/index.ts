@@ -2,11 +2,13 @@ import { Express } from "express";
 import authRoutes from './authRoutes'
 import usersRoutes from './usersRoutes'
 import budgetsRoutes from './budgetsRoutes'
+import categoriesRoutes from './categoriesRoutes'
 
 const routes :  any[] = [
     authRoutes,
     usersRoutes,
-    budgetsRoutes
+    budgetsRoutes,
+    categoriesRoutes
 ]
 
 

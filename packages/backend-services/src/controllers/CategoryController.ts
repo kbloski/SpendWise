@@ -12,11 +12,17 @@ export default class CategoryController extends AbstractCrudController<Category>
     }
 
     async create(data: Omit<CategoryType, "id">): Promise<Category | null> {
-        return super.create(data);
+        try {
+            const budgetExist = await budgetController.getById( data.budget_id )
+            if (!budgetExist) throw new Error('Budget with id, ' + data.budget_id + ', not exist');
+            return await super.create(data);
+        } catch (err ) {
+            throw new Error("Failed create category");
+        }
     }
 
-    async getAllByBudgetId( budgetId: number){
-        return await this.getAll("ASC", "id", { budget_id: budgetId})
+    async getAllByBudgetId(budgetId: number) {
+        return await this.getAll("ASC", "id", { budget_id: budgetId });
     }
 
     async setBudget(
