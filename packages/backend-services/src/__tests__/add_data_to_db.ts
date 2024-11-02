@@ -9,29 +9,23 @@ import {
     reportController,
     userController,
 } from "../controllers/controllers";
-import BudgetShare from "../models/BudgetSharesModel";
-import BudgetShareType, { UserRoles } from "../types/BudgetShareType";
-import BudgetType from "../types/BudgetType";
-import CategoryType from "../types/CategoryType";
-import ExpenseType from "../types/ExpenseType";
-import ReportType from "../types/ReportType";
-import UserType from "../types/UserType";
 import { connectDb, sequelize } from "../utils/db";
 import path from "path";
 import fs from "fs";
-import User from "../models/UserModel";
-import Budget from "../models/BudgetModel";
-import { Expense, syncDb } from "../models/schemas";
-import Roles from "../enum/RolesEnum";
-import { Sequelize } from "sequelize";
+import { syncDb } from "../models/schemas";
 
 const pathFile = path.join(__dirname, "db_test.json");
 const file = fs.readFileSync(pathFile, "utf-8");
 const dataDb = JSON.parse(file);
 
-connectDb()
-syncDb();
-load();
+
+init()
+
+async function init(){
+    connectDb()
+    await syncDb()
+    await load();
+}
 
 async function load() {
     const usersDb: any[] = [];
