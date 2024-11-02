@@ -47,6 +47,24 @@ export default class ExpenseController extends AbstractCrudController<Expense> {
         }
     }
 
+    async isAccessForUser( 
+        expense: ExpenseType | Expense,
+        user: UserType | User,
+    ){
+        try {
+            const expenseDb = await this.model.findByPk( expense.id );
+            if (!expenseDb) throw new Error("Not find expense in database");
+
+            const categoryDb = await categoryController.getById( expenseDb.category_id);
+            if (!categoryDb) throw new Error("not find category in database");
+            
+            return await categoryController.isAccessibleCategoryForUser(categoryDb, user);
+        } catch (err){
+            console.error(err);
+            throw new Error("Failed check access in ExpenseController.isAccessForUser()")
+        }
+    }
+
     async create(
         data: Optional<Omit<ExpenseType, "id">, "date">
     ): Promise<Expense | null> {

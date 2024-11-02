@@ -54,15 +54,16 @@ Dodawanie nowego wydatku.
 GET    /api/budgets/:budgetId/expenses  
 Pobieranie listy wydatków dla konkretnego budżetu.
 
-PATCH /api/expenses/:id
-
-Aktualizacja danych wydatku.
-DELETE /api/expenses/:id
-
-Usuwanie wydatku.
 GET /api/expenses/:id
-
 Pobieranie szczegółów konkretnego wydatku.
+
+PATCH /api/expenses/:id
+Aktualizacja danych wydatku.
+
+DELETE /api/expenses/:id
+Usuwanie wydatku.
+
+
 5. Współdzielenie budżetów
 
 /api/budgets/:budgetId/shares     

@@ -75,4 +75,24 @@ router.post(
     }
 );
 
+router.get(
+    buildApiPath("expenses", ":id"),
+    async (req, res) =>{
+        try {
+            if (!req.user) return sendErrorResponse(res, 401);
+            const {id} = req.params;
+            if (!isNumber(id)) return sendErrorResponse(res, 400, "Invalid type id, id must be a number");
+            const expenseDb = await expenseController.getById(Number(id));
+            if (!expenseDb) return sendErrorResponse(res, 404);
+
+            const accessToExpense = await expenseController.isAccessForUser(expenseDb,  req.user);
+            if (!accessToExpense) return sendErrorResponse(res, 403);
+
+            return sendSuccessResponse(res, 200, { expense: expenseDb})
+        } catch(err){
+            return sendErrorResponse(res, 500)
+        }
+    }
+);
+
 export default router;
