@@ -30,12 +30,15 @@ export default class CategoryController extends AbstractCrudController<Category>
         user: UserType | User
     ){
         const availableBudgets = await budgetController.getAccessibleBudgetsForUser( user.id);
-        if (!availableBudgets) return false;
-
+        if (!availableBudgets?.length) return false;
         const budgetsIds = availableBudgets.map( v => v.id)
-        return !!(await this.model.count({
-            where: { id: category.id,budget_id: { [Op.in] : budgetsIds} }
-        }))
+        const finded = await this.model.count({
+            where: {
+                id: category.id,
+                budget_id: { [Op.in] : [...budgetsIds]}
+            }
+        })
+        return !!( finded )
     }
 
     async getAllByBudgetId(budgetId: number) {

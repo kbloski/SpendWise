@@ -18,7 +18,6 @@ export default async function authTokenMiddleware(
         if (!authHeader && checkAccess(role, req.path, req.method))
             return next();
         if (!authHeader) return sendErrorResponse(res, 401);
-
         const authorization = authHeader.split(" ");
         if (authorization.length !== 2)
             return sendErrorResponse(
@@ -48,7 +47,7 @@ export default async function authTokenMiddleware(
         req.user = userDb.dataValues;
 
         if (!checkAccess(role, req.path, req.method))
-            return sendErrorResponse(res, 401);
+            return sendErrorResponse(res, 401, "Unauthorized by middleware");
         return next();
     } catch (err: any) {
         throw new Error("Middleware authorization error: " + err.message);
