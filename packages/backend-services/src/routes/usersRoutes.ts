@@ -25,7 +25,7 @@ router.patch(buildApiPath("users", "me"), async (req, res) => {
 
         const { password, username } = req.body;
         if (!password && !username) return sendErrorResponse( 
-            res, 400, "Please provide email or password to update" );
+            res, 400, "Please provide email or password to update." );
 
         const isUpdated = await userController.updateById(
             req.user.id, { password: password, username: username });
@@ -42,7 +42,7 @@ router.delete(buildApiPath("users", "me"), async (req, res) => {
         if (!req.user) return sendErrorResponse(res, 401);
 
         const isDeleted = await userController.deleteById(req.user.id);
-        if (!isDeleted) return sendErrorResponse(res, 404, "User don't exist");
+        if (!isDeleted) return sendErrorResponse(res, 404 );
         
         return sendSuccessResponse(res, 204);
     } catch (err){

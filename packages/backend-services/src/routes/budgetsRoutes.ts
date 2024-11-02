@@ -22,10 +22,10 @@ router.get(buildApiPath("budgets", "me"), async (req, res) => {
 
 router.post(buildApiPath("budgets", "me"), async (req, res) => {
     try {
-        if (!req.user) return sendErrorResponse(res, 401);
+        if (!req.user) return sendErrorResponse(res, 401, "Not authorized user.");
 
         const { name }: Partial<BudgetType> = req.body;
-        if (!name) return sendErrorResponse(res, 400);
+        if (!name) return sendErrorResponse(res, 400, "Please provide name for budget.");
 
         const newBudget = await budgetController.create({
             name, user_id: req.user.id });
@@ -39,16 +39,16 @@ router.post(buildApiPath("budgets", "me"), async (req, res) => {
 
 router.get( buildApiPath("budgets", ":id"), async (req, res) => {
     try {
-        if (!req.user) return sendErrorResponse(res, 401);
+        if (!req.user) return sendErrorResponse(res, 401, "Not authorized user.");
 
         const { id } = req.params;
-        if (!isNumber(id)) return sendErrorResponse(res, 400, "Invalid Id");
+        if (!isNumber(id)) return sendErrorResponse(res, 400, "Invalid type Id - Id must be number.");
 
         const budgetExist = await budgetController.getById(Number(id));
-        if (!budgetExist)return sendErrorResponse(res, 404, "Budget don't exist");
+        if (!budgetExist)return sendErrorResponse(res, 404, "Budget don't exist.");
         
         const access = (await budgetSharesController.isAccessUserToBudget( budgetExist, req.user))
-        if (!access) return sendErrorResponse(res, 403);
+        if (!access) return sendErrorResponse(res, 403, "Forbidden to resource.");
 
         return sendSuccessResponse(res, 200, { budget: budgetExist });
     } catch (err) {
@@ -58,15 +58,15 @@ router.get( buildApiPath("budgets", ":id"), async (req, res) => {
 
 router.patch(buildApiPath("budgets", ":id"), async (req, res) => {
     try {
-        if (!req.user) return sendErrorResponse(res, 401);
+        if (!req.user) return sendErrorResponse(res, 401, "Not authorized user.");
         const { id } = req.params;
 
-        if (!isNumber(id)) return sendErrorResponse(res, 400);
+        if (!isNumber(id)) return sendErrorResponse(res, 400, "Invalid type Id - Id must be number.");
         const { name, user_id }: Partial<Omit<BudgetType, "id">> = req.body;
 
-        if (!name) return sendErrorResponse(res, 404);
+        if (!name) return sendErrorResponse(res, 400, "Please provide name.");
         const budgetDb = await budgetController.getById(Number(id));
-        if (!budgetDb) return sendErrorResponse(res, 400);
+        if (!budgetDb) return sendErrorResponse(res, 404);
 
         const access = await budgetSharesController.isAccessUserToBudget( budgetDb,req.user)
         if ( !access ) return sendErrorResponse(res, 403);
@@ -86,7 +86,7 @@ router.delete(buildApiPath("budgets", ":id"), async (req, res) => {
         if (!req.user) return sendErrorResponse(res, 401);
 
         const { id } = req.params;
-        if (!isNumber(id)) return sendErrorResponse(res, 400);
+        if (!isNumber(id)) return sendErrorResponse(res, 400, "Invalid type Id - Id must be number.");
 
         const budgetDb = await budgetController.getById(Number(id));
         if (!budgetDb) return sendErrorResponse(res, 404);
@@ -108,7 +108,7 @@ router.get(buildApiPath("budgets", ":id", "summary"), async (req, res) => {
         if (!req.user) return sendErrorResponse(res, 401);
 
         const { id } = req.params;
-        if (!isNumber(id)) return sendErrorResponse(res, 400);
+        if (!isNumber(id)) return sendErrorResponse(res, 400, "Invalid type Id - Id must be number.");
 
         const budgetDb = await budgetController.getById(Number(id));
         if (!budgetDb) return sendErrorResponse(res, 404);

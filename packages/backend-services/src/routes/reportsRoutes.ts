@@ -13,7 +13,7 @@ router.get(
             if (!req.user) return sendErrorResponse(res, 401);
 
             const { id } = req.params;
-            if (!isNumber(id)) return sendErrorResponse(res, 400, 'Ivalid type number - must be string');
+            if (!isNumber(id)) return sendErrorResponse(res, 400, 'Ivalid type Id - Id must be number.');
 
             const { per_start , per_end } = { 
                 per_start: req.query.period_start,
@@ -21,7 +21,7 @@ router.get(
             };
             
             const budgetDb = await budgetController.getById( Number(id));
-            if (!budgetDb) return sendErrorResponse(res, 404, "Budget not found")
+            if (!budgetDb) return sendErrorResponse(res, 404, "Budget not found.")
                 
             const isAccess = await budgetSharesController.isAccessUserToBudget( budgetDb, req.user);
             if (!isAccess) return sendErrorResponse(res, 403);
@@ -67,7 +67,7 @@ router.delete(
             if (!req.user) return sendErrorResponse(res, 401);
 
             const {id} = req.params;
-            if (!isNumber(id)) return sendErrorResponse(res, 400);
+            if (!isNumber(id)) return sendErrorResponse(res, 400, "Invalid type Id - Id must be number.");
 
             const reportDb = await reportController.getById( Number(id) );
             if (!reportDb) return sendErrorResponse(res, 404)

@@ -17,8 +17,9 @@ router.get(
     async (req, res) => {
         try {
             if (!req.user) return sendErrorResponse(res, 401);
+
             const { budgetId } = req.params;
-            if (!isNumber(budgetId)) return sendErrorResponse(res, 400, "Invalid id , id must be a number");
+            if (!isNumber(budgetId)) return sendErrorResponse(res, 400, "Invalid type Id - Id must be a number");
 
             const budgetDb = await budgetController.getById( Number(budgetId));
             if (!budgetDb) return sendErrorResponse(res, 404, "Budget with id: " + budgetId + " not found");

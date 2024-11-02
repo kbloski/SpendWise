@@ -15,7 +15,7 @@ router.post(
 
             const { budgetId  } = req.params;
             const { name }: Partial<CategoryType> = req.body;
-            if (!name || !isNumber(budgetId) ) return sendErrorResponse(res, 400);
+            if (!name || !isNumber(budgetId) ) return sendErrorResponse(res, 400, "Invalid Id or name. Id must be number. Name must be string. ");
 
             const budgetExist = await budgetController.getById( Number(budgetId)  );
             if (!budgetExist) return sendErrorResponse(
@@ -39,7 +39,7 @@ router.get(
             if (!req.user) return sendErrorResponse(res, 401)
 
             const { id } = req.params;
-            if (!isNumber(id)) return sendErrorResponse(res, 400, "Invalid id");
+            if (!isNumber(id)) return sendErrorResponse(res, 400, "Invalid type Id - Id must be number.");
 
             const categoryDb = await categoryController.getById( Number(id) );
             if (!categoryDb) return sendErrorResponse(res, 404);
@@ -62,9 +62,9 @@ router.patch(
 
             const { id } = req.params;
             const { name, budget_id} : CategoryType = req.body;
-            if (!name || !budget_id) return sendErrorResponse(res, 400);
+            if (!name || !budget_id) return sendErrorResponse(res, 400, "Please provide name and budget_id");
 
-            if (!isNumber(id)) return sendErrorResponse(res, 400, "Invalid type id, id must be number");
+            if (!isNumber(id)) return sendErrorResponse(res, 400, "Invalid type Id - Id must be number.");
 
             const categoryDb = await categoryController.getById( Number(id));
             if (!categoryDb) return sendErrorResponse(res, 404);
@@ -88,7 +88,7 @@ router.delete(
             if (!req.user) return sendErrorResponse(res, 401);
 
             const { id } = req.params;
-            if (!isNumber(id)) return sendErrorResponse(res, 400);
+            if (!isNumber(id)) return sendErrorResponse(res, 400, "Invalid type Id - Id must be number.");
 
             const categoryDb = await categoryController.getById( Number(id ));
             if (!categoryDb) return sendErrorResponse(res, 404)

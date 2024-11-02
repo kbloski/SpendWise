@@ -14,10 +14,10 @@ router.get(
         try {
             if (!req.user) return sendErrorResponse(res, 401);
             const {id} = req.params;
-            if(!isNumber(id)) return sendErrorResponse(res, 400, "Invalid type id, id must be a number");
+            if(!isNumber(id)) return sendErrorResponse(res, 400, "Invalid type Id - Id must be a number.");
 
             const budgetDb = await budgetController.getById( Number(id));
-            if (!budgetDb) return sendErrorResponse(res, 404, "Budget not found");
+            if (!budgetDb) return sendErrorResponse(res, 404 );
 
             const accessToBudget = await budgetSharesController.isAccessUserToBudget(budgetDb, req.user);
             if (!accessToBudget) return sendErrorResponse(res, 403);
@@ -39,9 +39,9 @@ router.put(
 
             if (!req.user) return sendErrorResponse(res, 401);
             const {id} = req.params;
-            if(!isNumber(id)) return sendErrorResponse(res, 400, "Invalid type id, id must be a number");
+            if(!isNumber(id)) return sendErrorResponse(res, 400, "Invalid type id, id must be a number.");
             const { user_id, role } : BudgetShareType = req.body;
-            if (!user_id) return sendErrorResponse(res, 400, "Please provide user_id");
+            if (!user_id) return sendErrorResponse(res, 400, "Please provide user_id.");
 
             if (
                 role && !isNumber(role) ||
@@ -51,9 +51,8 @@ router.put(
                     role != Number(UserRoles.VIEWER)
                 )
             ) return sendErrorResponse(
-                res,
-                400,
-                `variable role must be: admin=${Number(UserRoles.ADMIN)} or editor=${Number(UserRoles.EDITOR)} or viewer=${Number(UserRoles.VIEWER)}. If you not provide value, default will be a viewer`
+                res, 400,
+                `variable role must be: admin=${Number(UserRoles.ADMIN)} or editor=${Number(UserRoles.EDITOR)} or viewer=${Number(UserRoles.VIEWER)}. If you not provide value, default will be a viewer.`
             );
 
             const budgetDb = await budgetController.getById( Number(id));
