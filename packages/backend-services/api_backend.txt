@@ -47,12 +47,10 @@ Aktualizacja danych kategorii.
 DELETE /api/categories/
 Usuwanie kategorii.
 
-
-
 4. Wydatki
-POST /api/expenses
-
+POST /api/expenses/me
 Dodawanie nowego wydatku.
+
 GET /api/expenses/
 
 Pobieranie listy wydatków dla konkretnego budżetu.

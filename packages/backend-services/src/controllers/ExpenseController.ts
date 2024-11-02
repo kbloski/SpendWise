@@ -1,3 +1,4 @@
+import { Optional } from "sequelize";
 import Category from "../models/CategoryModel";
 import Expense from "../models/ExpenseModel";
 import User from "../models/UserModel";
@@ -25,7 +26,7 @@ export default class ExpenseController extends AbstractCrudController<Expense> {
         }
     }
 
-    async create(data: Omit<ExpenseType, "id">): Promise<Expense | null> {
+    async create(data: Optional<Omit<ExpenseType, "id">, "date">): Promise<Expense | null> {
         try {
             const {category_id, user_id} = data
             const categoryDb = await categoryController.getById( category_id);

@@ -3,12 +3,14 @@ import authRoutes from './authRoutes'
 import usersRoutes from './usersRoutes'
 import budgetsRoutes from './budgetsRoutes'
 import categoriesRoutes from './categoriesRoutes'
+import expensesRoutes from './expensesRoutes'
 
 const routes :  any[] = [
     authRoutes,
     usersRoutes,
     budgetsRoutes,
-    categoriesRoutes
+    categoriesRoutes,
+    expensesRoutes
 ]
 
 

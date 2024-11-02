@@ -29,24 +29,28 @@ export const ACL: ACLpermissionType[] = [
                 methods: ["GET", "PATCH", "DELETE"],
             },
             {
-                resource: buildApiPath("budgets","me"),
-                methods: ["GET", "POST"]
+                resource: buildApiPath("budgets", "me"),
+                methods: ["GET", "POST"],
             },
             {
-                resource: buildApiPath("budgets",":id"),
-                methods: ["GET", "PATCH", "DELETE"]
+                resource: buildApiPath("budgets", ":id"),
+                methods: ["GET", "PATCH", "DELETE"],
             },
             {
-                resource: buildApiPath("budgets",":id", "summary"),
-                methods: ["GET"]
+                resource: buildApiPath("budgets", ":id", "summary"),
+                methods: ["GET"],
             },
             {
                 resource: buildApiPath("categories"),
-                methods: ["POST"]
+                methods: ["POST"],
             },
             {
                 resource: buildApiPath("categories", ":id"),
-                methods: ["GET" , "PATCH", "DELETE"]
+                methods: ["GET", "PATCH", "DELETE"],
+            },
+            {
+                resource: buildApiPath("expenses", "me"),
+                methods: ["POST"],
             },
         ],
     },
