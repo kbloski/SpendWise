@@ -20,11 +20,13 @@ router.get(buildApiPath("budgets", "me"), async (req, res) => {
 
 router.post(buildApiPath("budgets", "me"), async (req, res) => {
     try {
-        const { name } = req.body;
+        if (!req.user) return sendErrorResponse(res, 401)
+        const { name } : Partial<BudgetType> = req.body;
         if (!name) return sendErrorResponse(res, 400);
-        const newBudget = await budgetController.create({ name });
+
+        const newBudget = await budgetController.create({ name , user_id: req.user.id });
         if (!newBudget) throw new Error("Cannot create budget");
-        return sendErrorResponse(res, 201);
+        return sendSuccessResponse(res, 201);
     } catch (err) {
         return sendErrorResponse(res, 500);
     }
@@ -79,6 +81,7 @@ router.delete(buildApiPath("budgets", ":id"), async (req, res) => {
         if (!budgetSharesController.isAccessUserToBudget(budgetDb, req.user)) return sendErrorResponse(res, 403);
         const deleted = await budgetController.deleteById(budgetDb.id);
         if (!deleted) throw new Error("Cannot delete budget resource");
+        return sendSuccessResponse(res, 204)
     } catch (err) {
         return sendErrorResponse(res, 500);
     }

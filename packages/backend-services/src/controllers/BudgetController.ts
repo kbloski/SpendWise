@@ -49,19 +49,11 @@ export default class BudgetController extends AbstractCrudController<Budget> {
     }
 
     async create(
-        data: Optional<
-            Omit<BudgetType, "id" | "createdAt" | "updatedAt">,
-            "user_id"
-        >
+        data: Omit<BudgetType, "id" | "createdAt" | "updatedAt">
     ): Promise<Budget | null> {
-        const userId = data.user_id;
-        delete data.user_id;
-        const budgetDb = await super.create(data);
-        if (userId && budgetDb) {
-            const userDB = await userController.getById(userId);
-            if (userDB) this.setOwner(budgetDb, userDB);
-        }
-        return budgetDb;
+        const userExist = await userController.getById( data.user_id);
+        if (!userExist) throw new Error("User dot't exists")
+        return await super.create(data);
     }
 
     async setOwner(budget: BudgetType | Budget, user: UserType | User) {
