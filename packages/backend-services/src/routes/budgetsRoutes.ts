@@ -59,12 +59,12 @@ router.patch(buildApiPath("budgets", ":id"), async (req, res) => {
         if (!req.user) return sendErrorResponse(res, 401);
         const { id } = req.params;
 
-        if (!isNumber(id)) return sendErrorResponse(res, 404);
+        if (!isNumber(id)) return sendErrorResponse(res, 400);
         const { name, user_id }: Partial<Omit<BudgetType, "id">> = req.body;
 
         if (!name) return sendErrorResponse(res, 404);
         const budgetDb = await budgetController.getById(Number(id));
-        if (!budgetDb) return sendErrorResponse(res, 404);
+        if (!budgetDb) return sendErrorResponse(res, 400);
 
         const access = await budgetSharesController.isAccessUserToBudget( budgetDb,req.user)
             console.log(access)
@@ -85,7 +85,7 @@ router.patch(buildApiPath("budgets", ":id"), async (req, res) => {
 router.delete(buildApiPath("budgets", ":id"), async (req, res) => {
     try {
         const { id } = req.params;
-        if (!isNumber(id)) return sendErrorResponse(res, 404);
+        if (!isNumber(id)) return sendErrorResponse(res, 400);
         if (!req.user) return sendErrorResponse(res, 401);
         const budgetDb = await budgetController.getById(Number(id));
         if (!budgetDb) return sendErrorResponse(res, 404);
@@ -105,7 +105,7 @@ router.get(buildApiPath("budgets", ":id", "summary"), async (req, res) => {
     try {
         if (!req.user) return sendErrorResponse(res, 401);
         const { id } = req.params;
-        if (!isNumber(id)) return sendErrorResponse(res, 404);
+        if (!isNumber(id)) return sendErrorResponse(res, 400);
         const budgetDb = await budgetController.getById(Number(id));
         if (!budgetDb) return sendErrorResponse(res, 404);
         const access =await budgetSharesController.isAccessUserToBudget(budgetDb, req.user)

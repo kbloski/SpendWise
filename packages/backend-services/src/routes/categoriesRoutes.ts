@@ -4,8 +4,6 @@ import { sendErrorResponse, sendSuccessResponse } from "../utils/responseUtils";
 import CategoryType from "../types/CategoryType";
 import { budgetController, budgetSharesController, categoryController } from "../controllers/controllers";
 import { isNumber } from "../utils/utils";
-import Budget from "../models/BudgetModel";
-import { UserRoles } from "../types/BudgetShareType";
 
 const router = Router();
 
@@ -13,7 +11,7 @@ router.post(buildApiPath("categories"), async (req, res) => {
     try {
         if (!req.user) return sendErrorResponse(res, 401);
         const { name, budget_id }: Partial<CategoryType> = req.body;
-        if (!name || !budget_id) return sendErrorResponse(res, 404);
+        if (!name || !budget_id) return sendErrorResponse(res, 400);
 
         const budgetExist = await budgetController.getById(Number(budget_id));
 
@@ -58,7 +56,7 @@ router.patch(
             if (!req.user) return sendErrorResponse(res, 401)
             const { id } = req.params;
             const { name, budget_id} : CategoryType = req.body;
-            if (!name || !budget_id) return sendErrorResponse(res, 404);
+            if (!name || !budget_id) return sendErrorResponse(res, 400);
 
             if (!isNumber(id)) return sendErrorResponse(res, 400, "Invalid type id, id must be number");
             const categoryDb = await categoryController.getById( Number(id));
@@ -76,5 +74,24 @@ router.patch(
     }
 );
 
+router.delete(
+    buildApiPath("categories", ":id"),
+    async (req, res) => {
+        try {
+            if (!req.user) return sendErrorResponse(res, 401);
+            const { id } = req.params;
+            if (!isNumber(id)) return sendErrorResponse(res, 400);
+            const categoryDb = await categoryController.getById( Number(id ));
+            if (!categoryDb) return sendErrorResponse(res, 404)
+            const isAccess = await categoryController.isAccessibleCategoryForUser(categoryDb, req.user);
+            if (!isAccess) return sendErrorResponse(res, 403);
+            const isDeleted = await categoryController.deleteById( Number(id));
+            if (!isDeleted) throw new Error("Cannot delete resource with id " + id);
+            return sendSuccessResponse(res, 204)            
+        } catch (err){
+            return sendErrorResponse(res, 500)
+        }
+    }
+);
 
 export default router;
