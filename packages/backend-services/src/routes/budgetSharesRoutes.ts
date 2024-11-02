@@ -6,7 +6,7 @@ import { budgetController, budgetSharesController } from '../controllers/control
 
 const router = Router();
 
-router.post(
+router.get(
     buildApiPath("budgets", ":id", "shares"),
     async (req, res )=>{
         try {
