@@ -15,9 +15,6 @@ Demo: Użytkownicy mogą tworzyć i współdzielić budżety, dodawać wydatki, 
 
 
 ** ------------ Baza danych 
-
-Oto struktura bazy danych w formie schematu, bez kodowania:
-
 Schemat bazy danych
 
 Tabela users
