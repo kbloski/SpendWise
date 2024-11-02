@@ -8,6 +8,7 @@ export default class Report extends Model<InferAttributes<Report>, InferCreation
     declare period_start: Date;
     declare period_end: Date;
     declare total_expenses: number;
+    declare createdAt: Date;
 }
 
 Report.init({
@@ -33,6 +34,11 @@ Report.init({
         type: DataTypes.DECIMAL,
         allowNull: false,
         defaultValue: 0.00
+    },
+    createdAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+        allowNull: false
     }
 }, {
     sequelize,

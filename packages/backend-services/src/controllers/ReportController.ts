@@ -12,7 +12,7 @@ export default class ReportController extends AbstractCrudController<Report> {
     }
 
     async create(
-        data: Optional<Omit<ReportType, "id">, "total_expenses" | "period_start" | "period_end">
+        data: Optional<Omit<ReportType, "id" | "createdAt">, "total_expenses" | "period_start" | "period_end">
     ): Promise<Report | null> {
         try {
             const {budget_id} = data

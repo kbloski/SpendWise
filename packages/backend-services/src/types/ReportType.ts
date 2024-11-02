@@ -3,7 +3,8 @@ type ReportType = {
     budget_id: number,
     period_start: Date,
     period_end: Date,
-    total_expenses: number
+    total_expenses: number,
+    createdAt: Date
 }
 
 export default ReportType;
