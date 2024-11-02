@@ -11,6 +11,7 @@ import {
     userController,
 } from "./controllers";
 import { sequelize } from "../utils/db";
+import UserController from "./UserController";
 
 export default class BudgetController extends AbstractCrudController<Budget> {
     constructor() {
@@ -52,37 +53,62 @@ export default class BudgetController extends AbstractCrudController<Budget> {
     async create(
         data: Omit<BudgetType, "id" | "createdAt" | "updatedAt">
     ): Promise<Budget | null> {
-        const transaction = await sequelize.transaction()
+        const transaction = await sequelize.transaction();
         try {
-            const userDb = await userController.getById( data.user_id);
-            if (!userDb) throw new Error("User don't exits")
+            const userDb = await userController.getById(data.user_id);
+            if (!userDb) throw new Error("User don't exits");
             const newBudget = await super.create(data);
-            if (!newBudget) throw new Error("Cannot create budget")
+            if (!newBudget) throw new Error("Cannot create budget");
 
-            const createdRelation = this.setOwner( newBudget, userDb)
-            if (!createdRelation) throw new Error('Not created budget relation')
-            transaction.commit()
+            const createdRelation = this.setOwner(newBudget, userDb);
+            if (!createdRelation)
+                throw new Error("Not created budget relation");
+            transaction.commit();
             return newBudget;
-        } catch ( err ){
-            transaction.rollback()
-            throw new Error("Failed budgetController.create()")
+        } catch (err) {
+            transaction.rollback();
+            throw new Error("Failed budgetController.create()");
         }
     }
 
     async setOwner(budget: BudgetType | Budget, user: UserType | User) {
+        const transaction = await sequelize.transaction()
         try {
             const budgetDb = await this.getById(budget.id);
             if (!budgetDb) throw new Error("Budget don't exits");
-            const userDb = await userController.getById( user.id )
-            if (!userDb) throw new Error("User dont exis't in db")
+            const userDb = await userController.getById(user.id);
+            if (!userDb) throw new Error("User dont exis't in db");
+            
+            
+            let result = null;
+            if (budget.user_id) {
+                const oldOwner = await userController.getById( budget.user_id)
+                if (!oldOwner) throw new Error("Cannot find oldOwner in database")
 
-            const budgetShare = await budgetSharesController.create({
-                user_id: userDb.id,
-                budget_id: budgetDb.id,
-            });
-            return !!budgetShare;
+                const relatedId = await budgetSharesController.getIdUserBudgetRelation( budget, oldOwner) as number;
+
+                const isUpdateBs = await budgetSharesController.updateById(relatedId, {
+                    user_id: userDb.id
+                });
+                const isUpdateB = await this.model.update({ user_id: userDb.id}, {
+                    where: { id: budget.id}
+                })
+                result = isUpdateB && isUpdateBs;
+            } else {
+                const isCratedRel = await budgetSharesController.create({
+                    user_id: userDb.id,
+                    budget_id: budgetDb.id,
+                });
+                const isUpdateB = await this.model.update({ user_id: userDb.id}, {
+                    where: { id: budget.id}
+                })
+                result = isCratedRel && isUpdateB
+            }
+
+            transaction.commit()
+            return !!result;
         } catch (err) {
-            // console.error(err)
+            transaction.rollback()
             throw new Error("Failed budgetController.setOwner()");
         }
     }
@@ -91,18 +117,17 @@ export default class BudgetController extends AbstractCrudController<Budget> {
         id: number,
         data: Partial<Omit<BudgetType, "id">>
     ): Promise<Boolean> {
-        const isUpdated = false;
+        let isUpdated = false;
         const budgetDb = await this.getById(id);
-
         if (!budgetDb) return isUpdated;
+
         if (data.user_id) {
             const userDb = await userController.getById(data.user_id);
             if (userDb) {
-                this.setOwner(budgetDb, userDb);
-                isUpdated;
+                isUpdated = await this.setOwner(budgetDb, userDb);
             }
+            delete data.user_id;
         }
-        delete data.user_id;
         return super.updateById(id, data) || isUpdated;
     }
 }

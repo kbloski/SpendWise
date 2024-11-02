@@ -61,10 +61,11 @@ export default class BudgetSharesController extends AbstractCrudController<Budge
         return relation.id
     }
     
-    isAccessUserToBudget(
+    async isAccessUserToBudget(
         budget: BudgetType | Budget,
         user: UserType | User,
     ){
-        return !!this.getIdUserBudgetRelation( budget, user)
+        const result = await this.getIdUserBudgetRelation( budget, user)
+        return !!result
     }
 }
