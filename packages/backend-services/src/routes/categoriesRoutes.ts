@@ -7,26 +7,37 @@ import { isNumber } from "../utils/utils";
 
 const router = Router();
 
-router.post(buildApiPath("categories"), async (req, res) => {
-    try {
-        if (!req.user) return sendErrorResponse(res, 401);
-        const { name, budget_id }: Partial<CategoryType> = req.body;
-        if (!name || !budget_id) return sendErrorResponse(res, 400);
+router.post(
+    buildApiPath("budgets", ":budgetId", "categories"),
+    async (req, res) => {
+        try {
+            if (!req.user) return sendErrorResponse(res, 401);
+            const { budgetId  } = req.params;
+            const { name }: Partial<CategoryType> = req.body;
+            if (!name || !isNumber(budgetId) ) return sendErrorResponse(res, 400);
 
-        const budgetExist = await budgetController.getById(Number(budget_id));
+            const budgetExist = await budgetController.getById(
+                Number(budgetId)
+            );
 
-        if (!budgetExist) return sendErrorResponse(res, 404, "Budget with id: "+budget_id+" not exist");
+            if (!budgetExist)
+                return sendErrorResponse(
+                    res,
+                    404,
+                    "Budget with id: " + budgetId + " not exist"
+                );
 
-        const newCategory = await categoryController.create({
-            budget_id: Number(budget_id),
-            name: String(name),
-        });
-        if (!newCategory) throw new Error("Cannot create category");
-        return sendSuccessResponse(res, 201);
-    } catch (err) {
-        return sendErrorResponse(res, 500);
+            const newCategory = await categoryController.create({
+                budget_id: Number(budgetId),
+                name: String(name),
+            });
+            if (!newCategory) throw new Error("Cannot create category");
+            return sendSuccessResponse(res, 201);
+        } catch (err) {
+            return sendErrorResponse(res, 500);
+        }
     }
-});
+);
 
 router.get(
     buildApiPath("categories", ":id"),
