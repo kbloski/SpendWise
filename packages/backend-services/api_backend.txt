@@ -84,8 +84,13 @@ query -
 Generowanie raportu wydatków dla danego budżetu w określonym okresie 
 (możliwe dodanie parametrów dla daty).
 
-GET /api/budgets/:budgetId/reports/summary 
+GET /api/budgets/:budgetId/reports/summary //- powyższe api bez podawania dat 
 Pobieranie podsumowania wydatków w określonym okresie.
+
+
+
+
+// TODO - in router
 
 7. Dodatkowe funkcjonalności
 Dodawanie wydatków do konkretnej kategorii.
