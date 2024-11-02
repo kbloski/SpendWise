@@ -5,49 +5,50 @@ Rejestracja nowego użytkownika.
 POST /api/login
 Logowanie użytkownika i zwrócenie tokena JWT.
 
-GET /api/users/
-
+GET /api/users/me
 Pobieranie danych profilowych użytkownika.
-PUT /api/users/
 
+PATCH /api/users/me
 Aktualizacja profilu użytkownika (np. zmiana hasła, edycja danych).
-DELETE /api/users/
 
+DELETE /api/users/me
 Usuwanie konta użytkownika (możliwe z potwierdzeniem).
+
 2. Budżety
-POST /api/budgets
-
+POST /api/budgets/me
 Tworzenie nowego budżetu.
-GET /api/budgets
 
+GET /api/budgets/me
 Pobieranie listy budżetów użytkownika.
-GET /api/budgets/
 
+GET /api/budgets/:id
 Pobieranie szczegółów konkretnego budżetu.
-PUT /api/budgets/
 
+PATCH /api/budgets/:id
 Aktualizacja danych budżetu.
-DELETE /api/budgets/
 
+DELETE /api/budgets/:id
 Usuwanie budżetu.
-GET /api/budgets/
-/summary
 
+GET /api/budgets/:id/summary
 Pobieranie podsumowania wydatków w danym budżecie (np. całkowite wydatki, oszczędności).
+
 3. Kategorie
+
 POST /api/categories
-
-
 Tworzenie nowej kategorii wydatków w danym budżecie.
+
 GET /api/categories/
-
 Pobieranie listy kategorii dla konkretnego budżetu.
-PUT /api/categories/
 
+PATCH /api/categories/
 Aktualizacja danych kategorii.
-DELETE /api/categories/
 
+DELETE /api/categories/
 Usuwanie kategorii.
+
+
+
 4. Wydatki
 POST /api/expenses
 
@@ -55,7 +56,7 @@ Dodawanie nowego wydatku.
 GET /api/expenses/
 
 Pobieranie listy wydatków dla konkretnego budżetu.
-PUT /api/expenses/
+PATCH /api/expenses/
 
 Aktualizacja danych wydatku.
 DELETE /api/expenses/
