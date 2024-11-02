@@ -12,23 +12,30 @@ export default class ReportController extends AbstractCrudController<Report> {
     }
 
     async create(
-        data: Optional<Omit<ReportType, "id" | "createdAt">, "total_expenses" | "period_start" | "period_end">
+        data: Optional<
+            Omit<ReportType, "id" | "createdAt">,
+            "total_expenses" | "period_start" | "period_end"
+        >
     ): Promise<Report | null> {
         try {
-            const {budget_id} = data
-            const budgetDb = await budgetController.getById( budget_id);
-            if (!budgetDb) throw new Error("Budget with id "+ budget_id + ' not exist');
+            const { budget_id } = data;
+            const budgetDb = await budgetController.getById(budget_id);
+            if (!budgetDb)
+                throw new Error("Budget with id " + budget_id + " not exist");
 
-            data.total_expenses = await expenseController.getTotalForBudget(budgetDb, {
-                period_start_date: data.period_start,
-                period_end_date: data.period_end
-            });
+            data.total_expenses = await expenseController.getTotalForBudget(
+                budgetDb,
+                {
+                    period_start_date: data.period_start,
+                    period_end_date: data.period_end,
+                }
+            );
 
-            if (!data.total_expenses) data.total_expenses = 0
+            if (!data.total_expenses) data.total_expenses = 0;
             return await super.create(data);
-        } catch(err){
-            console.error(err)
-            throw new Error("Failed create ReportController.create()")
+        } catch (err) {
+            console.error(err);
+            throw new Error("Failed create ReportController.create()");
         }
     }
 
@@ -46,5 +53,16 @@ export default class ReportController extends AbstractCrudController<Report> {
         data: Partial<Omit<ReportType, "id">>
     ): Promise<Boolean> {
         return super.updateById(id, data);
+    }
+
+    async deleteByBudgetId(budgetId: number) {
+        try {
+            return this.model.destroy({where: {
+                budget_id: budgetId
+            }})
+        } catch (err) {
+            console.error(err);
+            throw new Error("Failed ReportControllers.deleteByBudgetId()");
+        }
     }
 }

@@ -8,6 +8,7 @@ import {
     budgetSharesController,
     categoryController,
     expenseController,
+    reportController,
     userController,
 } from "./controllers";
 import { sequelize } from "../utils/db";
@@ -128,5 +129,30 @@ export default class BudgetController extends AbstractCrudController<Budget> {
             delete data.user_id;
         }
         return super.updateById(id, data) || isUpdated;
+    }
+
+    async deleteById(id: number): Promise<Boolean> {
+        const transaction = await sequelize.transaction()
+        try {
+            const budgetsCategories = await categoryController.getAllByBudgetId( id );
+
+            for(const c of budgetsCategories){
+                await categoryController.deleteById( c.id )
+            }
+
+            await reportController.deleteByBudgetId( id );
+
+            await budgetSharesController.deleteWhere({
+                budget_id: id
+            })
+
+            const isDeleted = super.deleteById(id)
+            transaction.commit()
+            return isDeleted;
+        } catch (err){
+            transaction.rollback()
+            console.error(err)
+            throw new Error("Failed deleted by BudgetController.deleteById()")
+        }
     }
 }

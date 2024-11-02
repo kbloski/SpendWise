@@ -7,7 +7,8 @@ import CategoryType from "../types/CategoryType";
 import UserType from "../types/UserType";
 import { sendErrorResponse } from "../utils/responseUtils";
 import AbstractCrudController from "./AbstractCrudController";
-import { budgetController } from "./controllers";
+import { budgetController, expenseController } from "./controllers";
+import { sequelize } from "../utils/db";
 
 export default class CategoryController extends AbstractCrudController<Category> {
     constructor() {
@@ -59,4 +60,20 @@ export default class CategoryController extends AbstractCrudController<Category>
     ): Promise<Boolean> {
         return super.updateById(id, data);
     }
+
+    async deleteById(id: number): Promise<Boolean> 
+    {
+        const transaction = await sequelize.transaction()
+        try {
+            await expenseController.deleteByCategoryId( id );
+            const isDeleted =  await super.deleteById(id)    
+            transaction.commit();
+            return isDeleted;
+        } catch (err){
+            console.error(err)
+            throw new Error("Failed delete category with id "+ id)
+        }
+    }
+
+
 }

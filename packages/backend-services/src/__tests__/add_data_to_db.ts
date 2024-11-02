@@ -39,12 +39,12 @@ async function load() {
     try {
 
         // Usuwamy wszystkie dane przed dodaniem nowych
-        await userController.deleteAll();
-        await budgetController.deleteAll();
-        await budgetSharesController.deleteAll()
-        await categoryController.deleteAll();
-        await expenseController.deleteAll();
-        await reportController.deleteAll();
+        // await userController.deleteAll();
+        // await budgetController.deleteAll();
+        // await budgetSharesController.deleteAll()
+        // await categoryController.deleteAll();
+        // await expenseController.deleteAll();
+        // await reportController.deleteAll();
     
         // Dodajemy użytkowników do bazy danych
         for (const user of dataDb.users) {

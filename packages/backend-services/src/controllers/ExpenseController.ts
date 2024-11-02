@@ -155,4 +155,17 @@ export default class ExpenseController extends AbstractCrudController<Expense> {
     ): Promise<Boolean> {
         return super.updateById(id, data);
     }
+
+    async deleteByCategoryId( categoryId: number){
+        try {
+            return this.model.destroy( {where: {
+                category_id: categoryId
+            }})
+             
+        } catch (err){
+            console.error(err)
+            throw new Error("Failed ExpenseController.deleteByCategoryId() ")
+        }
+    }
+    
 }

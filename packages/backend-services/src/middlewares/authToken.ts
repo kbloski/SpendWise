@@ -14,7 +14,7 @@ export default async function authTokenMiddleware(
     try {
         let role = Roles.GUEST;
         const authHeader = req.headers["authorization"];
-
+        
         if (!authHeader && checkAccess(role, req.path, req.method))
             return next();
         if (!authHeader) return sendErrorResponse(res, 401);

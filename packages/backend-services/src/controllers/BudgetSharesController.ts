@@ -91,4 +91,18 @@ export default class BudgetSharesController extends AbstractCrudController<Budge
         const result = await this.getIdUserBudgetRelation( budget, user)
         return !!result
     }
+
+    async deleteWhere( where :  {
+        user_id? : number ,
+        budget_id? : number
+    }){
+        try {
+            if (where.user_id) this.model.destroy( {where: { user_id: where.user_id}});
+            if (where.budget_id) this.model.destroy( {where: { budget_id: where.budget_id}});
+            return true;
+        } catch (err){
+            console.error(err)
+            throw new Error("Failed BudgetSharesController.deleteWher() ")
+        }
+    }
 }
