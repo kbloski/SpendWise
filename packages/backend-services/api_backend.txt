@@ -87,6 +87,8 @@ Generowanie raportu wydatków dla danego budżetu w określonym okresie
 GET /api/budgets/:budgetId/reports/summary //- powyższe api bez podawania dat 
 Pobieranie podsumowania wydatków w określonym okresie.
 
+DELETE /api/reports/:id
+Usuwanie raportu
 
 
 

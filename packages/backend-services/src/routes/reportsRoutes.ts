@@ -63,5 +63,31 @@ router.get(
     }
 )
 
+router.delete(
+    buildApiPath("reports",":id"),
+    async (req, res) => {
+        try {
+            if (!req.user) return sendErrorResponse(res, 401);
+            const {id} = req.params;
+            if (!isNumber(id)) return sendErrorResponse(res, 400);
+            const reportDb = await reportController.getById( Number(id) );
+            if (!reportDb) return sendErrorResponse(res, 404)
+            const budgetDb = await budgetController.getById( reportDb.budget_id);
+
+            let isAccess = false;
+            if (!budgetDb) isAccess = true;
+            else isAccess = await budgetSharesController.isAccessUserToBudget( budgetDb, req.user );
+
+            if (!isAccess) return sendErrorResponse(res, 403)
+            
+            const isDeleted = await reportController.deleteById( reportDb.id );
+            if (!isDeleted) throw new Error("Report exist in database but cannot delete this resource");
+
+            return sendSuccessResponse(res, 203);
+        } catch (err){
+            return sendErrorResponse(res, 500)
+        }
+    }
+);
 
 export default router;
