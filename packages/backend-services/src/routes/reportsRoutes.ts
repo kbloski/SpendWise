@@ -11,6 +11,7 @@ router.get(
     async (req, res )=>{
         try {
             if (!req.user) return sendErrorResponse(res, 401);
+
             const { id } = req.params;
             if (!isNumber(id)) return sendErrorResponse(res, 400, 'Ivalid type number - must be string');
 
@@ -19,7 +20,6 @@ router.get(
                 per_end: req.query.period_end
             };
             
-
             const budgetDb = await budgetController.getById( Number(id));
             if (!budgetDb) return sendErrorResponse(res, 404, "Budget not found")
                 
@@ -38,17 +38,14 @@ router.get(
 
             const categories = await categoryController.getAllByBudgetId( budgetDb.id );
             let categoriesToSend : unknown[] = [];
+
             if (categories) {
                 const newCategoriesData = await Promise.all(
                 categories.map( async cat => {
-                    const total = await expenseController.getTotalCategoryExpenses(cat.id);
 
-                    return {
-                        ...cat.dataValues,
-                        totalAmount: total
-                    }
-                })
-                )
+                    const total = await expenseController.getTotalCategoryExpenses(cat.id);
+                    return { ...cat.dataValues, totalAmount: total }
+                }))
                 categoriesToSend = [...newCategoriesData];
             }
 
@@ -68,16 +65,17 @@ router.delete(
     async (req, res) => {
         try {
             if (!req.user) return sendErrorResponse(res, 401);
+
             const {id} = req.params;
             if (!isNumber(id)) return sendErrorResponse(res, 400);
+
             const reportDb = await reportController.getById( Number(id) );
             if (!reportDb) return sendErrorResponse(res, 404)
-            const budgetDb = await budgetController.getById( reportDb.budget_id);
 
+            const budgetDb = await budgetController.getById( reportDb.budget_id);
             let isAccess = false;
             if (!budgetDb) isAccess = true;
             else isAccess = await budgetSharesController.isAccessUserToBudget( budgetDb, req.user );
-
             if (!isAccess) return sendErrorResponse(res, 403)
             
             const isDeleted = await reportController.deleteById( reportDb.id );

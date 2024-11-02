@@ -5,7 +5,6 @@ import User from "../models/UserModel";
 import BudgetType from "../types/BudgetType";
 import CategoryType from "../types/CategoryType";
 import UserType from "../types/UserType";
-import { sendErrorResponse } from "../utils/responseUtils";
 import AbstractCrudController from "./AbstractCrudController";
 import { budgetController, expenseController } from "./controllers";
 import { sequelize } from "../utils/db";
@@ -32,11 +31,12 @@ export default class CategoryController extends AbstractCrudController<Category>
     ){
         const availableBudgets = await budgetController.getAccessibleBudgetsForUser( user.id);
         if (!availableBudgets?.length) return false;
-        const budgetsIds = availableBudgets.map( v => v.id)
-        const finded = await this.model.count({
-            where: {
-                id: category.id,
-                budget_id: { [Op.in] : [...budgetsIds]}
+        const budgetsIds = availableBudgets.map( v => v.id )
+        const finded = await this.model.count(
+            {
+                where: {
+                    id: category.id,
+                    budget_id: { [Op.in] : [...budgetsIds]}
             }
         })
         return !!( finded )

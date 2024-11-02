@@ -20,21 +20,21 @@ export default class ExpenseController extends AbstractCrudController<Expense> {
     }
 
     async getAllforBudget(budget: BudgetType | Budget) {
-        const budgetCategories = await categoryController.getAllByBudgetId(
-            budget.id
-        );
+        const budgetCategories = await categoryController.getAllByBudgetId(budget.id);
 
         if (!budgetCategories) return [];
 
         const categoriesIds = budgetCategories.map((cat) => cat.id);
-        return this.model.findAll({
-            where: {
-                category_id: {
-                    [Op.in]: categoriesIds,
+        return this.model.findAll(
+            {
+                where: {
+                    category_id: {
+                        [Op.in]: categoriesIds,
+                    },
                 },
-            },
-        });
+            });
     }
+
 
     async getTotalCategoryExpenses(
         categoryId: number,
@@ -60,9 +60,9 @@ export default class ExpenseController extends AbstractCrudController<Expense> {
 
     async getTotalForBudget(
         budget : BudgetType | Budget,
-        betweenDate?: {
-            period_start_date : Date | undefined | null,
-            period_end_date : Date | undefined | null
+        peroid?: {
+            start_date : Date | undefined | null,
+            end_date : Date | undefined | null
         }
     ){
         try {
@@ -78,15 +78,14 @@ export default class ExpenseController extends AbstractCrudController<Expense> {
                 category_id: { [Op.in] : categoriesIds},
             } 
 
-            if (betweenDate?.period_start_date || betweenDate?.period_end_date){
+            if (peroid?.start_date || peroid?.end_date){
                 const date = {};
                 // @ts-ignore
-                if( betweenDate?.period_start_date) date[Op.gte] = betweenDate.period_start_date 
+                if( peroid?.start_date ) date[Op.gte] = peroid.start_date 
                 // @ts-ignore
-                if(betweenDate?.period_end_date) date[Op.lte] = betweenDate.period_end_date 
+                if( peroid.end_date) date[Op.lte] = peroid.end_date
                 whereOptions.date = date;
             }
-
             return await this.model.sum('amount', {where: whereOptions})
 
         } catch (err){
@@ -120,13 +119,12 @@ export default class ExpenseController extends AbstractCrudController<Expense> {
         try {
             const { category_id, user_id } = data;
             const categoryDb = await categoryController.getById(category_id);
-            if (!categoryDb)
-                throw new Error(
-                    "Category with id: " + category_id + " not exist"
-                );
+            if (!categoryDb) throw new Error(
+                    "Category with id: " + category_id + " not exist" );
+
             const userDb = await userController.getById(user_id);
-            if (!userDb)
-                throw new Error("User with id:" + user_id + " not exist");
+            if (!userDb) throw new Error("User with id:" + user_id + " not exist");
+
             return await super.create(data);
         } catch (err) {
             console.error(err);
@@ -138,9 +136,7 @@ export default class ExpenseController extends AbstractCrudController<Expense> {
         expense: Expense | ExpenseType,
         category: Category | CategoryType
     ) {
-        const updated = this.updateById(expense.id, {
-            category_id: category.id,
-        });
+        const updated = this.updateById(expense.id, { category_id: category.id });
         return !!updated;
     }
 
@@ -158,14 +154,13 @@ export default class ExpenseController extends AbstractCrudController<Expense> {
 
     async deleteByCategoryId( categoryId: number){
         try {
-            return this.model.destroy( {where: {
-                category_id: categoryId
-            }})
+            return this.model.destroy( 
+                {where: { category_id: categoryId }})
              
         } catch (err){
             console.error(err)
             throw new Error("Failed ExpenseController.deleteByCategoryId() ")
         }
     }
-    
+
 }

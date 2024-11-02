@@ -4,6 +4,7 @@ import { sendErrorResponse, sendSuccessResponse } from '../utils/responseUtils';
 import { isNumber } from '../utils/utils';
 import { budgetController, budgetSharesController, userController } from '../controllers/controllers';
 import BudgetShareType, { UserRoles } from '../types/BudgetShareType';
+import { sequelize } from '../utils/db';
 
 const router = Router();
 
@@ -33,6 +34,7 @@ router.get(
 router.put(
     buildApiPath("budgets", ":id", "shares"),
     async (req, res )=>{
+        const transaction = await sequelize.transaction();
         try {
 
             if (!req.user) return sendErrorResponse(res, 401);
@@ -68,13 +70,15 @@ router.put(
                 console.log('exist', relationExist)
                 await budgetSharesController.updateById( relationExist, { role})
             } else {
-                await budgetSharesController.create({
+                await budgetSharesController.findOrCreate({
                     budget_id: budgetDb.id,
                     user_id: Number(user_id)
                 })
             }
+            transaction.commit()
             return sendSuccessResponse(res, 201)
         } catch (err){
+            transaction.rollback()
             return sendErrorResponse(res, 500)
         }
     }
@@ -87,22 +91,18 @@ router.delete(buildApiPath("budgets", ":id", "shares", ":userId"), async (req, r
         const { id , userId} = req.params;
         if (!isNumber(id) || !isNumber(userId))
             return sendErrorResponse(
-                res,
-                400,
-                "Invalid type id, id must be a number"
-            );
+                res, 400, "Invalid type id, id must be a number" );
 
         const budgetDb = await budgetController.getById(Number(id));
         if (!budgetDb) return sendErrorResponse(res, 404, "Budget not found");
         
         const accessToBudget =
         await budgetSharesController.isAccessUserToBudget(
-            budgetDb,
-                req.user
-            );
+            budgetDb, req.user );
         if (!accessToBudget) return sendErrorResponse(res, 403);
 
-        const relationId = await budgetSharesController.getIdUserBudgetRelation( budgetDb, {id: userId} as any);
+        const relationId = await budgetSharesController.getIdUserBudgetRelation( 
+            budgetDb, {id: userId} as any);
         if (!relationId) return sendErrorResponse(res, 404);
 
         const isDeleted = await budgetSharesController.deleteById( relationId );

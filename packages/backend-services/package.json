@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "loadTestData": "npx ts-node ./src/__tests__/add_data_to_db.ts",
+    "load-data-test": "npx ts-node ./src/__tests__/add_data_to_db.ts",
     "dev": "npx ts-node-dev --respawn --watch ./src src/index.ts"
   },
   "keywords": [],

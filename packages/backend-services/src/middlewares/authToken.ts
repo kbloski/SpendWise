@@ -1,9 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { sendErrorResponse, sendSuccessResponse } from "../utils/responseUtils";
-import { createWebToken, decodeWebToken } from "../utils/jwtUtils";
+import { sendErrorResponse } from "../utils/responseUtils";
+import {  decodeWebToken } from "../utils/jwtUtils";
 import checkAccess from "../utils/checkAccess";
 import Roles from "../enum/RolesEnum";
-import { UserRoles } from "../types/BudgetShareType";
 import { userController } from "../controllers/controllers";
 
 export default async function authTokenMiddleware(
@@ -15,16 +14,13 @@ export default async function authTokenMiddleware(
         let role = Roles.GUEST;
         const authHeader = req.headers["authorization"];
         
-        if (!authHeader && checkAccess(role, req.path, req.method))
-            return next();
+        if (!authHeader && checkAccess(role, req.path, req.method)) return next();
         if (!authHeader) return sendErrorResponse(res, 401);
+
         const authorization = authHeader.split(" ");
         if (authorization.length !== 2)
             return sendErrorResponse(
-                res,
-                401,
-                "Invalid authorization header form"
-            );
+                res, 401, "Invalid authorization header form" );
 
         const token = authorization[1];
         const decoded = decodeWebToken(token);
@@ -38,10 +34,7 @@ export default async function authTokenMiddleware(
         const userDb = await userController.getById(decoded.id);
         if (!userDb)
             return sendErrorResponse(
-                res,
-                404,
-                "Not found user by middleware auth"
-            );
+                res, 404, "Not found user by middleware auth" );
 
         role = Roles.USER;
         req.user = userDb.dataValues;

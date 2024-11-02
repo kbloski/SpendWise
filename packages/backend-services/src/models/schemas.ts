@@ -27,6 +27,7 @@ Report.belongsTo(Budget, { foreignKey: "budget_id" });
 //     through: "budget_shares",
 //     foreignKey: "user_id",
 // });
+
 Budget.hasOne( BudgetShare, { foreignKey: 'budget_id'}),
 BudgetShare.belongsTo(Budget, { foreignKey: 'budget_id'})
 User.hasMany(BudgetShare, { foreignKey: "user_id"})

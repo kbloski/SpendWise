@@ -24,7 +24,7 @@ Expense.init(
         amount: {
             type: DataTypes.DECIMAL(7,2),
             allowNull: false,
-            validate: { isDecimal: true }
+            validate: { isDecimal: true },
         },
         description: DataTypes.STRING,
         date: {

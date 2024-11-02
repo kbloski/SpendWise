@@ -21,11 +21,9 @@ BudgetShare.init({
     },
     budget_id: {
         type: DataTypes.INTEGER,
-        // allowNull: false - bug in create controller
     },
     user_id: {
         type: DataTypes.INTEGER,
-        // allowNull: false - bug in create controller
     },
     role: {
         type: DataTypes.INTEGER,

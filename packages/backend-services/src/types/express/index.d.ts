@@ -10,5 +10,4 @@ declare global {
     }
 }
 
-// Upewnij się, że dodany jest eksport
 export {};

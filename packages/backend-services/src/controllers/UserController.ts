@@ -2,12 +2,11 @@ import { User } from "../models/schemas";
 import AbstractCrudController from "./AbstractCrudController";
 import UserType from "../types/UserType";
 import { compareString, hashString } from "../utils/hashUtils";
-import { where, WhereOptions } from "sequelize";
+import { WhereOptions } from "sequelize";
 import { sequelize } from "../utils/db";
 import {
     budgetController,
     budgetSharesController,
-    userController,
 } from "./controllers";
 
 export default class UserController extends AbstractCrudController<User> {
@@ -17,11 +16,11 @@ export default class UserController extends AbstractCrudController<User> {
 
     async create(data: Omit<UserType, "id">): Promise<User | null> {
         try {
-            const userExist = await this.model.findAll({
-                where: { email: data.email },
-            });
+            const userExist = await this.model.findAll(
+                {where: { email: data.email }});
             if (userExist.length)
                 throw new Error(`User with this email exist in database`);
+
             data.password = await this.hashPassword(data.password);
             return super.create(data);
         } catch (err) {
@@ -34,16 +33,13 @@ export default class UserController extends AbstractCrudController<User> {
         id: number,
         data: Partial<Omit<UserType, "id">>
     ): Promise<Boolean> {
-        if (data.password) {
-            data.password = await this.hashPassword(data.password);
-        }
+        if (data.password) data.password = await this.hashPassword(data.password);
         return super.updateById(id, data);
     }
 
     async getByEmail(email: string) {
-        const users = await this.model.findAll({
-            where: { email } as WhereOptions,
-        });
+        const users = await this.model.findAll(
+            { where: { email } as WhereOptions });
         if (users[0]) return users[0];
         return undefined;
     }

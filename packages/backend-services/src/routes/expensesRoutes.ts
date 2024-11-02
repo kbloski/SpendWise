@@ -53,7 +53,6 @@ router.post(
                 || !amount
                 || !isNumber(amount)
             ) return sendErrorResponse(res, 400);
-                
 
             const categoryDb = await categoryController.getById(Number(categoryId));
             if (!categoryDb) return sendErrorResponse( res,404, "Not found category with id: " + categoryId );
@@ -80,9 +79,11 @@ router.get(
     async (req, res) =>{
         try {
             if (!req.user) return sendErrorResponse(res, 401);
+
             const {id} = req.params;
             if (!isNumber(id)) return sendErrorResponse(res, 400, "Invalid type id, id must be a number");
             const expenseDb = await expenseController.getById(Number(id));
+
             if (!expenseDb) return sendErrorResponse(res, 404);
 
             const accessToExpense = await expenseController.isAccessForUser(expenseDb,  req.user);
@@ -100,11 +101,10 @@ router.patch(
     async (req, res) =>{
         try {
             if (!req.user) return sendErrorResponse(res, 401);
+
             const {id} = req.params;
             const { amount, description, user_id, category_id  } : Partial<ExpenseType> = req.body;
-            if (
-                !isNumber(id) 
-            ) return sendErrorResponse(res, 400, "Invalid type id, id must be a number");
+            if ( !isNumber(id) ) return sendErrorResponse(res, 400, "Invalid type id, id must be a number");
             if (
                 !amount && !description && !user_id && !category_id ||
                 amount && !isNumber(amount) ||
@@ -118,9 +118,8 @@ router.patch(
             const accessToExpense = await expenseController.isAccessForUser(expenseDb,  req.user);
             if (!accessToExpense) return sendErrorResponse(res, 403);
 
-            await expenseController.updateById( expenseDb.id, {
-                amount, description, user_id, category_id
-            })
+            await expenseController.updateById( 
+                expenseDb.id, { amount, description, user_id, category_id })
 
             return sendSuccessResponse(res, 204)
         } catch(err){
@@ -132,21 +131,18 @@ router.patch(
 router.delete(buildApiPath("expenses", ":id"), async (req, res) => {
     try {
         if (!req.user) return sendErrorResponse(res, 401);
+
         const { id } = req.params;
-        if (!isNumber(id))
-            return sendErrorResponse(
-                res,
-                400,
-                "Invalid type id, id must be a number"
-            );
+        if (!isNumber(id)) return sendErrorResponse(
+                res, 400, "Invalid type id, id must be a number" );
+
         const expenseDb = await expenseController.getById(Number(id));
         if (!expenseDb) return sendErrorResponse(res, 404);
 
         const accessToExpense = await expenseController.isAccessForUser(
-            expenseDb,
-            req.user
-        );
+            expenseDb,req.user );
         if (!accessToExpense) return sendErrorResponse(res, 403);
+        
         const isDeleted = await expenseController.deleteById( Number(id));
         if (!isDeleted) throw new Error("Cannot delete expense with id: " + id);
 

@@ -10,7 +10,6 @@ import { budgetController, userController } from "./controllers";
 
 export default class BudgetSharesController extends AbstractCrudController<BudgetShare> {
     // I need more information, and i cannot use through relation in schema
-    // 
     // async setBudgetUserRelation(  budget user ){
     //     const budgetDb = await budgetController.getById(budget.id);
     //     const userDb = await userController.getById(user.id);
@@ -24,7 +23,7 @@ export default class BudgetSharesController extends AbstractCrudController<Budge
     }
 
     // CHANGE ON - createIfNotExist()
-    async create(
+    async findOrCreate (
         data: Optional<BudgetShareType, "id" | "role">): Promise<BudgetShare | null> 
     {
         try {
@@ -51,17 +50,13 @@ export default class BudgetSharesController extends AbstractCrudController<Budge
     async getAllUsersforBudget(
         budget: BudgetType | Budget
     ){
-        const budgetShares = await this.model.findAll({
-            where: {
-                budget_id: budget.id
-            }
-        });
+        const budgetShares = await this.model.findAll(
+            {where: {budget_id: budget.id }});
+
         const usersIds = budgetShares.map( bs => bs.user_id);
         if (!usersIds.length) return [];
 
-        return userController.getAll( "ASC" , "id", {
-            id: { [Op.in] : usersIds}
-        })
+        return userController.getAll( "ASC" , "id", { id: { [Op.in] : usersIds}})
     }
 
     async getAllforUser( userId: number){
@@ -79,7 +74,8 @@ export default class BudgetSharesController extends AbstractCrudController<Budge
         budget: BudgetType | Budget,
         user: UserType | User,
     ){
-        const relation = await this.model.findOne({where: { user_id: user.id , budget_id: budget.id}})
+        const relation = await this.model.findOne(
+            {where: { user_id: user.id , budget_id: budget.id}})
         if (!relation) return null;
         return relation.id
     }
@@ -88,7 +84,7 @@ export default class BudgetSharesController extends AbstractCrudController<Budge
         budget: BudgetType | Budget,
         user: UserType | User,
     ){
-        const result = await this.getIdUserBudgetRelation( budget, user)
+        const result = await this.getIdUserBudgetRelation( budget, user )
         return !!result
     }
 

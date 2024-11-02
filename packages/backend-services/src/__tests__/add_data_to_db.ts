@@ -37,19 +37,14 @@ async function load() {
     const usersDb: any[] = [];
     const trans =  await sequelize.transaction()
     try {
-
-        // Usuwamy wszystkie dane przed dodaniem nowych
-        // await userController.deleteAll();
-        // await budgetController.deleteAll();
-        // await budgetSharesController.deleteAll()
-        // await categoryController.deleteAll();
-        // await expenseController.deleteAll();
-        // await reportController.deleteAll();
-    
         // Dodajemy użytkowników do bazy danych
         for (const user of dataDb.users) {
             try {
-                const u = await userController.create(user);
+                const u = await userController.create({
+                    username: user.username,
+                    email: user.email,
+                    password: user.password
+                });
                 usersDb.push(u);
             } catch (error) {
                 console.error(`Error creating user: ${error}`);
@@ -66,19 +61,22 @@ async function load() {
                 });
                 budgetsDb.push(b);
             } catch (error) {
+                console.group( '-------------------', usersDb[budget.user_id-1].id)
                 console.error(`Error creating budget: ${error}`);
             }
         }
     
+        console.log('------------checkpoitn-categories--------')
         const categoriesDb: any[] = [];
         for (const category of dataDb.categories) {
             const c = await categoryController.create({
                 name: category.name,
-                budget_id: budgetsDb[ category.budget_id -1].id
+                budget_id: budgetsDb[ category.budget_id -1 ].id
             });
             categoriesDb.push(c);
         }
-    
+        
+        console.log('------------checkpoitn-expense--------')
         for (const expense of dataDb.expenses) {
             delete expense.id;
             const e = await expenseController.create({
@@ -87,7 +85,8 @@ async function load() {
                 user_id: usersDb[ expense.user_id - 1].id
             });
         }
-    
+        
+        console.log('------------checkpoitn-reports--------')
         for (const report of dataDb.reports) {
             const r = await reportController.create({
                 ...report,
@@ -95,19 +94,6 @@ async function load() {
             });
         }
     
-        for (const bs of dataDb.budgetShares){
-            const newBs = {
-                budget_id: budgetsDb[ bs.budget_id - 1].id,
-                user_id: usersDb[ bs.user_id -1].id,
-                role: UserRoles.VIEWER
-            } 
-            if (bs.role === "ADMIN") newBs.role = UserRoles.ADMIN
-            if (bs.role === "EDITOR") newBs.role = UserRoles.EDITOR
-
-
-            await budgetSharesController.create( newBs )
-      
-        } 
 
         trans.commit
     } catch (err){

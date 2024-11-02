@@ -20,14 +20,13 @@ export default class ReportController extends AbstractCrudController<Report> {
         try {
             const { budget_id } = data;
             const budgetDb = await budgetController.getById(budget_id);
-            if (!budgetDb)
-                throw new Error("Budget with id " + budget_id + " not exist");
+            if (!budgetDb) throw new Error("Budget with id " + budget_id + " not exist");
 
             data.total_expenses = await expenseController.getTotalForBudget(
-                budgetDb,
+                budgetDb, 
                 {
-                    period_start_date: data.period_start,
-                    period_end_date: data.period_end,
+                    start_date: data.period_start,
+                    end_date: data.period_end
                 }
             );
 

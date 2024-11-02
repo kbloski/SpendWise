@@ -1,5 +1,4 @@
 import { Model, ModelStatic, Optional, WhereOptions } from "sequelize";
-import UserType from "../types/UserType";
 
 export default abstract class AbstractCrudController<T extends Model> {
     protected model: ModelStatic<T>;
@@ -18,33 +17,31 @@ export default abstract class AbstractCrudController<T extends Model> {
         sortedProp: string = "id",
         where : WhereOptions
     ): Promise<T[]> {
-        return await this.model.findAll({ order: [[sortedProp, orderBy]] , where : where as WhereOptions});
+        return await this.model.findAll(
+            { order: [[sortedProp, orderBy]] , where : where as WhereOptions});
     }
 
     async getById(id: number): Promise<T | null> {
         return await this.model.findByPk(id);
     }
 
-    async getOneWhere(whereOptions: WhereOptions) {
+    async getOneWhere(whereOptions: WhereOptions) 
+    {
         return await this.model.findAll({ where: whereOptions });
     }
 
-    async updateById(
+    async updateById
+    (
         id: number,
         data: Partial<Omit<any, "id">>
-    ): Promise<Boolean> {
-        const updCount = await this.model.update(data, {
-            where: { id } as WhereOptions,
-        })
+    ): Promise<Boolean> 
+    {
+        const updCount = await this.model.update(data, {where: { id } as WhereOptions,})
         return !!(updCount);
     }
 
-    // async deleteAll(){
-    //     const deltedCount = await this.model.destroy({where: {}})
-    //     return !!(deltedCount);
-    // }
-
-    async deleteById(id: number): Promise<Boolean> {
+    async deleteById(id: number): Promise<Boolean> 
+    {
         return !!(await this.model.destroy({ where: { id } as WhereOptions }));
     }
 }

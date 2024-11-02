@@ -20,6 +20,7 @@ function checkMethod(
 }
 
 
+
 export default function checkAccess(
     role: Roles,
     resource: string,
@@ -27,6 +28,7 @@ export default function checkAccess(
 ){
     const [rolePermissions] = ACL.filter( v => v.role === role);
     if (!rolePermissions) return false;
+    
     const [allows] = rolePermissions.allows.filter( (a) => {
        if ( a.resource == resource) return a
 
