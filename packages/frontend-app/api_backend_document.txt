@@ -1,0 +1,129 @@
+1. Użytkownicy
+POST /api/register
+Rejestracja nowego użytkownika.
+{ username, email, password}
+
+POST /api/login
+Logowanie użytkownika i zwrócenie tokena JWT.
+{ email, password}
+
+GET /api/users/me
+Pobieranie danych profilowych użytkownika.
+
+PATCH /api/users/me
+Aktualizacja profilu użytkownika (np. zmiana hasła, edycja danych).
+{ username or password}
+
+DELETE /api/users/me
+Usuwanie konta użytkownika.
+
+
+
+
+
+2. Budżety
+POST /api/budgets/me
+Tworzenie nowego budżetu.
+{ name, user_id }
+
+GET /api/budgets/me
+Pobieranie listy budżetów użytkownika.
+
+GET /api/budgets/:id
+Pobieranie szczegółów konkretnego budżetu.
+
+PATCH /api/budgets/:id
+Aktualizacja danych budżetu.
+{ name, user_id}
+
+DELETE /api/budgets/:id
+Usuwanie budżetu.
+
+GET /api/budgets/:id/summary
+Pobieranie podsumowania wydatków w danym budżecie.
+
+
+
+
+
+3. Kategorie
+POST /api/budgets/:id/categories
+Tworzenie nowej kategorii wydatków w danym budżecie.
+{ name , budget_id }
+
+GET /api/categories/:id
+Pobieranie listy kategorii dla konkretnego budżetu.
+
+PATCH /api/categories/:id
+Aktualizacja danych kategorii.
+{ name or budget_id}
+
+DELETE /api/categories/:id
+Usuwanie kategorii.
+
+
+
+
+
+4. Wydatki
+POST /api/budgets/:budgetId/categories/:categoryId/expenses
+Dodawanie nowego wydatku.
+{ amount, description*, category_id, user_id }
+
+GET /api/budgets/:budgetId/expenses
+Pobieranie listy wydatków dla konkretnego budżetu.
+
+PATCH /api/budgets/:id
+Aktualizacja danych wydatku.
+{amount or description}
+
+DELETE /api/expenses/:id
+Usuwanie wydatku.
+
+GET /api/expenses/:id
+Pobieranie szczegółów konkretnego wydatku.
+
+
+
+
+
+5. Współdzielenie budżetów
+PUT /api/budgets/:id/shares
+Zapraszanie innych użytkowników do współdzielenia budżetu.
+
+GET /api/budgets/:id/shares
+Pobieranie listy użytkowników współdzielących dany budżet.
+
+DELETE /api/budgets/:id/share/:userId
+Usuwanie użytkownika z listy współdzielących budżet.
+
+
+
+
+
+6. Raporty
+GET /api/reports/
+Generowanie raportu wydatków dla danego budżetu w określonym okresie.
+Pobieranie podsumowania wydatków w określonym okresie.
+query = { peroid_start, peroid_end}
+
+
+
+=============================== TODO BOTTOM ============================
+7. Dodatkowe funkcjonalności
+POST /api/categories/
+/expenses
+
+Dodawanie wydatków do konkretnej kategorii.
+GET /api/expenses/summary
+
+Pobieranie ogólnych statystyk wydatków użytkownika (np. wydatki miesięczne, kategorie wydatków).
+GET /api/budgets/
+/visualization
+
+Generowanie wizualizacji danych wydatków (np. wykresy słupkowe, kołowe) dla konkretnego budżetu.
+GET /api/notifications
+
+Pobieranie powiadomień (np. o przekroczeniu budżetu).
+Uwaga końcowa:
+Rozszerzając API o dodatkowe funkcje, możemy znacznie zwiększyć jego funkcjonalność i ułatwić użytkownikom zarządzanie finansami. Warto również pomyśleć o zabezpieczeniach i autoryzacji dostępu do poszczególnych endpointów, aby zapewnić prywatność danych użytkowników.

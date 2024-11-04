@@ -106,11 +106,14 @@
 <script>
 import { computed, ref, watch } from "vue";
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 
 export default {
     props: ["register"],
     setup(props) {
+        const store = useStore();
         const router = useRouter();
+
         const username = ref("");
         const email = ref("");
         const password = ref("");
@@ -125,7 +128,6 @@ export default {
                 {
                     method: "POST",
                     headers: { "Content-Type" : 'application/json',
-                        authorization: undefined
                     },
                     body: JSON.stringify({
                         email: email.value,
@@ -138,6 +140,7 @@ export default {
                 return response.json()
             })
             .then( data => {
+                store.dispatch('setToken', data.token)
                 console.log( data.token)
                 router.push('/dashboard')
             })
@@ -147,8 +150,7 @@ export default {
 
         async function onSubmitRegister(event) {
             event.preventDefault();
-
-             loading.value = true;
+            loading.value = true;
 
             fetch('http://localhost:8081/api/register',
                 {
@@ -163,11 +165,7 @@ export default {
             )
             .then( response => {
                 if (!response.ok) throw new Error(response.status + ' ' + response.statusText);
-                return response.json()
-            })
-            .then( data => {
-                console.log( data.token)
-                router.push('/dashboard')
+                router.push('/auth')
             })
             .catch( err => console.error(err))
             .finally( () => loading.value = false);
