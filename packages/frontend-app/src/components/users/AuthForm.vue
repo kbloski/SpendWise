@@ -142,7 +142,7 @@ export default {
             .then( data => {
                 store.dispatch('auth/setToken', data.token)
                 console.log( data.token)
-                router.push('/dashboard')
+                router.push('/user')
             })
             .catch( err => console.error(err))
             .finally( () => loading.value = false);

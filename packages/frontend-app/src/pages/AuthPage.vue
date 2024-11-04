@@ -36,6 +36,7 @@ export default {
     height: 100vh;
     position: relative;
     overflow: hidden;
+      background: linear-gradient(to right top, #000000, #1d1d1d 60%, #000000);
 }
 
 .second-background {
