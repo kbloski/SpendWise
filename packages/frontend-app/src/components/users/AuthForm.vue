@@ -140,7 +140,7 @@ export default {
                 return response.json()
             })
             .then( data => {
-                store.dispatch('setToken', data.token)
+                store.dispatch('auth/setToken', data.token)
                 console.log( data.token)
                 router.push('/dashboard')
             })

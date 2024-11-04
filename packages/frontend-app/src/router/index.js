@@ -1,17 +1,19 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Register from "../pages/RegisterPage.vue";
+import AuthPage from "../pages/AuthPage.vue";
 import store from '../store/index.js';
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: '/' , redirect : '/auth?register=true'},
-    { path: '/auth', component: Register}
+    { path: '/auth', component: AuthPage }
   ]
 })
 
 router.beforeEach( (to, from, next)=>{
-  console.log( store.getters['auth/isLoggedIn'])
+  store.dispatch("auth/setStateToken");
+  if ( to.path === '/auth' && store.getters['auth/isLoggedIn']) return next('/');
+
   next()
 });
 

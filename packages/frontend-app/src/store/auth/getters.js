@@ -1,11 +1,20 @@
+import { lsTokenKey } from "../../config.js";
+
 export default {
-    getUser( state, getters, rootState, rootGetters ){
-        return state.user;
+    async getUser( state, getters, rootState, rootGetters ){
+        const response = fetch('https://localhost:8081/api/users/me',
+            {
+                method: "GET",
+                headers: {'Authorization' : `Bearer ${getters.getToken}`}
+            }
+        );
+        if (!response.ok) return null;
+        return await response.json();
     },
-    getToken( state){
-        return state.token
+    getToken( state ){
+        return localStorage.getItem(lsTokenKey)
     },
     isLoggedIn( state, getters ){
-        return !!getters.getToken
+        return !!state.token
     }
 }

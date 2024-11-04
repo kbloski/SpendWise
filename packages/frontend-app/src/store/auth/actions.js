@@ -1,10 +1,13 @@
+import { lsTokenKey } from "../../config.js";
+
 export default {
     async setToken(ctx, payload){
-        // const response = await fetch('http://localhost:8081/api/users/me');
-        // if (!response.ok) return;
-
-        // ctx.commit('setUser', await response.json());
+        localStorage.setItem( lsTokenKey, payload)
         ctx.commit("setToken", payload);
     },
 
+    setStateToken(ctx){
+        const token = localStorage.getItem( lsTokenKey );
+        ctx.commit( 'setToken', token ?? null)
+    }
 }
