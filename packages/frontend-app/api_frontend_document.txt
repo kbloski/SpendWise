@@ -1,27 +1,33 @@
 W aplikacji do zarządzania wydatkami z funkcją współdzielenia budżetu, frontend będzie potrzebował kilku kluczowych stron, aby zapewnić użytkownikom intuicyjne i funkcjonalne doświadczenie. Oto lista głównych stron, które powinny być zaimplementowane:
 
+/auth?register=true
 1. Strona Rejestracji
 Formularz rejestracyjny z polami na nazwę użytkownika, e-mail i hasło.
 Przyciski do rejestracji oraz link do logowania.
 
+/auth
 2. Strona Logowania
 Formularz logowania z polami na e-mail i hasło.
 Opcja przypomnienia hasła oraz link do rejestracji.
 
-3. Strona Profilu Użytkownika
-Wyświetlanie danych użytkownika (nazwa, e-mail).
-Opcje do edytowania profilu (zmiana hasła, edycja danych osobowych).
-Możliwość usunięcia konta.
-
+/dashboard
 4. Strona Główna (Dashboard)
 Podsumowanie wszystkich budżetów użytkownika.
 Statystyki wydatków (np. wykresy, podsumowania).
 Linki do zarządzania budżetami oraz dodawania nowych wydatków.
 
+/user
+3. Strona Profilu Użytkownika
+Wyświetlanie danych użytkownika (nazwa, e-mail).
+Opcje do edytowania profilu (zmiana hasła, edycja danych osobowych).
+Możliwość usunięcia konta.
+
+/user/budgets
 5. Strona Budżetów
 Lista budżetów użytkownika z opcjami dodawania, edytowania i usuwania budżetów.
 Możliwość współdzielenia budżetu z innymi użytkownikami.
 
+/user/budgets/:id
 6. Strona Szczegółów Budżetu
 Wyświetlanie szczegółów wybranego budżetu, w tym:
 Lista kategorii wydatków.
@@ -29,29 +35,36 @@ Lista wydatków przypisanych do budżetu.
 Podsumowanie wydatków w danym budżecie.
 Opcje dodawania nowych kategorii oraz wydatków.
 
+/user/budgets/:id/categories
 7. Strona Kategorii
 Lista kategorii dla wybranego budżetu.
 Opcje dodawania, edytowania i usuwania kategorii.
 
+/user/budgets/:id/expenses
 8. Strona Wydatków
 Lista wydatków dla konkretnego budżetu lub kategorii.
 Opcje dodawania, edytowania i usuwania wydatków.
 
+/user/budgets/:id
 9. Strona Współdzielenia Budżetu
 Formularz do zapraszania innych użytkowników do współdzielenia budżetu.
 Lista współdzielących budżet użytkowników oraz ich ról.
 
+/user/budget/:id/reports
 10. Strona Raportów
 Możliwość generowania i przeglądania raportów wydatków dla wybranego budżetu.
 Wizualizacje danych (wykresy, podsumowania).
 
+/user/settings
 11. Strona Ustawień
 Opcje konfiguracyjne dotyczące aplikacji (np. powiadomienia, preferencje dotyczące interfejsu).
 Możliwość zarządzania bezpieczeństwem (np. zmiana hasła, ustawienia prywatności).
 
+/ - brak
 12. Strona Powiadomień
 Wyświetlanie powiadomień o ważnych zdarzeniach (np. przekroczenie budżetu, zaproszenia do współdzielenia budżetu).
 
+/help
 13. Strona Pomocy / FAQ
 Informacje dotyczące użytkowania aplikacji oraz odpowiedzi na często zadawane pytania.
 Dodatkowe Uwagi:

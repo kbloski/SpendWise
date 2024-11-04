@@ -10,11 +10,6 @@ export default {
   components: {
     TheHeader
   },
-  data(){
-    return {
-      isAuthorized : false
-    }
-  },
   computed:{
     isAuthorized(){
       return this.$store.getters['auth/isLoggedIn'];
@@ -24,6 +19,11 @@ export default {
 </script>
 
 <style>
+:root {
+  --background-light: #E8E7EC;
+  --background-dark:#1A1728 ;
+}
+
 * {
   box-sizing: border-box;
 }
