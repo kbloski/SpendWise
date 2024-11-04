@@ -32,14 +32,29 @@ router.post(
     async (req, res) => {
         try {
             const { email, password }: Partial<UserType> = req.body;
-            if (!email || !password) return sendErrorResponse(res, 400, "Please provide email and password.");
+            if (!email || !password)
+                return sendErrorResponse(
+                    res,
+                    400,
+                    "Please provide email and password."
+                );
             const userDb = await userController.getByEmail(email);
-            if (!userDb) return sendErrorResponse(res, 404 );
+            if (!userDb) return sendErrorResponse(res, 404);
             if (!(await userController.validPassword(password, userDb)))
                 return sendErrorResponse(res, 400, "Invalid password.");
-    
-            const token = createWebToken( userDb.dataValues )
-            sendSuccessResponse( res, 200, { token: token} )
+
+            // --> Http-only cookie - Bezpieczniejszy sposób (reszta w authToken)
+            // const token = createWebToken( userDb.dataValues )
+            // res.cookie('authToken', token, {
+            //     httpOnly: true,
+            //     secure: false,
+            //     sameSite: "none" ,
+            //     maxAge: 1000 * 60 * 60 * 24
+            // })
+            // <-- req.cookie.authToken
+
+            const token = createWebToken(userDb.dataValues);
+            sendSuccessResponse(res, 200, { token: token });
         } catch (err){
             return sendErrorResponse( res, 500)
         }
