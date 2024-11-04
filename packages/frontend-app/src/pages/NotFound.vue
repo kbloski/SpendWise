@@ -1,3 +1,3 @@
 <template>
-    <h1>Not Found Page!</h1>
+    <base-card>Not Found Page!</base-card>
 </template>

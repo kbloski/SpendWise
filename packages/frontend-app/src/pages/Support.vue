@@ -1,3 +1,3 @@
 <template>
-    <h1>Support</h1>
+    <base-card>Support</base-card>
 </template>

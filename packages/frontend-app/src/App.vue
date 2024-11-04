@@ -1,14 +1,14 @@
 <template>
-    <the-header v-if="isAuthorized"></the-header>
+    <sidebar v-if="isAuthorized"></sidebar>
     <router-view></router-view>
 </template>
 
 <script>
-import TheHeader from './components/layout/TheHeader.vue';
+import Sidebar from './components/layout/Sidebar.vue'
 
 export default {
   components: {
-    TheHeader
+    Sidebar
   },
   computed:{
     isAuthorized(){
@@ -20,8 +20,8 @@ export default {
 
 <style>
 :root {
-  --background-light: #E8E7EC;
-  --background-dark:#1A1728 ;
+  --background-color-light: #f4f3f7;
+  --background-color-dark:#1A1728 ;
 }
 
 * {
@@ -34,6 +34,11 @@ html, body {
   margin: 0;
   padding: 0;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background-color: var(--background-color-dark);
+  color: white;
+}
 
+#app {
+  display: flex;
 }
 </style>

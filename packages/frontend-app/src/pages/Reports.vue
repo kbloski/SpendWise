@@ -1,3 +1,3 @@
 <template>
-    <h1>Reports</h1>
+    <base-card>Reports</base-card>
 </template>
