@@ -1,6 +1,7 @@
 <template>
     <div class="container">
         <h1>{{ title }}</h1>
+        <h2>Hello {{ username }}!</h2>
         <the-navigation></the-navigation>
         <button @click="logOut">Log out</button>
     </div>
@@ -11,6 +12,8 @@ import { appTitle } from '../../config/config.js';
 import TheNavigation from './TheNavigation.vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
+import { reactive, watch, ref } from 'vue';
+
 export default {
     components: {
         TheNavigation
@@ -19,6 +22,17 @@ export default {
         const router = useRouter()
         const store = useStore();
         const title = appTitle;
+
+        const username = ref('test');
+        // watch( username, () => console.log( username.value) )
+
+        async function getUser(){
+            const u = await store.getters['auth/getUser'];
+            console.log( u )
+            username.value = u.username;
+        }
+        getUser()
+
         function logOut(){
             store.dispatch('auth/logOut')
             router.push('/auth')
@@ -26,7 +40,8 @@ export default {
 
         return {
             title,
-            logOut
+            logOut,
+            username
         }
     }
 }
