@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Register from "../pages/RegisterPage.vue";
+import store from '../store/index.js';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -9,5 +10,9 @@ const router = createRouter({
   ]
 })
 
+router.beforeEach( (to, from, next)=>{
+  console.log( store.getters['auth/isLoggedIn'])
+  next()
+});
 
 export default router;
