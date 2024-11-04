@@ -1,6 +1,10 @@
 <template>
     <sidebar v-if="isAuthorized"></sidebar>
-    <router-view></router-view>
+      <router-view v-slot="slotProps">
+        <transition name="change-side" mode="out-in">
+          <component :is="slotProps.Component"></component>
+        </transition>
+      </router-view>
 </template>
 
 <script>
@@ -40,5 +44,28 @@ html, body {
 
 #app {
   display: flex;
+}
+
+.change-side-enter-from {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+.change-side-enter-active {
+  transition: all 0.5s ease-in;
+}
+.change-side-enter-to {
+  opacity: 1;
+  transform: translateX(0);
+}
+.change-side-leave-from {
+  opacity: 1;
+  transform: translateX(0);
+}
+.change-side-leave-active {
+  transition: all 0.5s ease-out;
+}
+.change-side-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
 }
 </style>
