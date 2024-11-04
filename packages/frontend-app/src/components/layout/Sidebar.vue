@@ -24,7 +24,6 @@ export default {
         const title = appTitle;
 
         const username = ref('test');
-        // watch( username, () => console.log( username.value) )
 
         async function getUser(){
             const u = await store.getters['auth/getUser'];

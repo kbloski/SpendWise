@@ -1,21 +1,20 @@
 <template>
-    <button :class="{
-        'button-danger' : !!(mode === 'danger')
-    }">
+    <button>
         <slot></slot>
     </button>
 </template>
 
 <script>
 export default { 
-    props: ['mode'],
     data(){
-    },
-    computed: {
-        mode(){
-            return this.$props.mode ?? 'normal'
+        return {
         }
-    }
+    },
+    // computed: {
+    //     mode(){
+    //         return this.$props.mode ?? 'normal'
+    //     }
+    // }
 }
 </script>
 
