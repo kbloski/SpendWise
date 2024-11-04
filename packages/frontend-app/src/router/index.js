@@ -41,14 +41,14 @@ const router = createRouter({
               children: [
                 { path: "categories", component: Categories },
                 { path: "expenses", Expenses },
-                { path: "reports", Reports },
               ],
             },
+            { path: "reports", Reports }
           ],
         },
       ],
     },
-    { path: "/help", component: Support, meta: { needsAuth: true } },
+    { path: "/support", component: Support, meta: { needsAuth: true } },
     { path: "/:notFound(.*)", component: NotFound },
   ],
 });

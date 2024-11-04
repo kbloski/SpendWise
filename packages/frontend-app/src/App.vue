@@ -46,26 +46,22 @@ html, body {
   display: flex;
 }
 
-.change-side-enter-from {
-  opacity: 0;
-  transform: translateX(-30px);
+/* .change-side-enter-from {
+  color: white;
 }
 .change-side-enter-active {
-  transition: all 0.5s ease-in;
+  transition: all 0.15s ease-in;
 }
 .change-side-enter-to {
-  opacity: 1;
-  transform: translateX(0);
+  color: black;
 }
 .change-side-leave-from {
-  opacity: 1;
-  transform: translateX(0);
+  color: bla;
 }
 .change-side-leave-active {
-  transition: all 0.5s ease-out;
+  transition: all 0.15s ease-out;
 }
 .change-side-leave-to {
-  opacity: 0;
-  transform: translateX(30px);
-}
+  color: white;
+} */
 </style>
