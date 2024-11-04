@@ -1,0 +1,61 @@
+W aplikacji do zarządzania wydatkami z funkcją współdzielenia budżetu, frontend będzie potrzebował kilku kluczowych stron, aby zapewnić użytkownikom intuicyjne i funkcjonalne doświadczenie. Oto lista głównych stron, które powinny być zaimplementowane:
+
+1. Strona Rejestracji
+Formularz rejestracyjny z polami na nazwę użytkownika, e-mail i hasło.
+Przyciski do rejestracji oraz link do logowania.
+
+2. Strona Logowania
+Formularz logowania z polami na e-mail i hasło.
+Opcja przypomnienia hasła oraz link do rejestracji.
+
+3. Strona Profilu Użytkownika
+Wyświetlanie danych użytkownika (nazwa, e-mail).
+Opcje do edytowania profilu (zmiana hasła, edycja danych osobowych).
+Możliwość usunięcia konta.
+
+4. Strona Główna (Dashboard)
+Podsumowanie wszystkich budżetów użytkownika.
+Statystyki wydatków (np. wykresy, podsumowania).
+Linki do zarządzania budżetami oraz dodawania nowych wydatków.
+
+5. Strona Budżetów
+Lista budżetów użytkownika z opcjami dodawania, edytowania i usuwania budżetów.
+Możliwość współdzielenia budżetu z innymi użytkownikami.
+
+6. Strona Szczegółów Budżetu
+Wyświetlanie szczegółów wybranego budżetu, w tym:
+Lista kategorii wydatków.
+Lista wydatków przypisanych do budżetu.
+Podsumowanie wydatków w danym budżecie.
+Opcje dodawania nowych kategorii oraz wydatków.
+
+7. Strona Kategorii
+Lista kategorii dla wybranego budżetu.
+Opcje dodawania, edytowania i usuwania kategorii.
+
+8. Strona Wydatków
+Lista wydatków dla konkretnego budżetu lub kategorii.
+Opcje dodawania, edytowania i usuwania wydatków.
+
+9. Strona Współdzielenia Budżetu
+Formularz do zapraszania innych użytkowników do współdzielenia budżetu.
+Lista współdzielących budżet użytkowników oraz ich ról.
+
+10. Strona Raportów
+Możliwość generowania i przeglądania raportów wydatków dla wybranego budżetu.
+Wizualizacje danych (wykresy, podsumowania).
+
+11. Strona Ustawień
+Opcje konfiguracyjne dotyczące aplikacji (np. powiadomienia, preferencje dotyczące interfejsu).
+Możliwość zarządzania bezpieczeństwem (np. zmiana hasła, ustawienia prywatności).
+
+12. Strona Powiadomień
+Wyświetlanie powiadomień o ważnych zdarzeniach (np. przekroczenie budżetu, zaproszenia do współdzielenia budżetu).
+
+13. Strona Pomocy / FAQ
+Informacje dotyczące użytkowania aplikacji oraz odpowiedzi na często zadawane pytania.
+Dodatkowe Uwagi:
+Strona błędu 404: Strona, która wyświetla komunikat, gdy użytkownik trafi na nieistniejący adres.
+Modale i Powiadomienia: Użycie modali do potwierdzania działań (np. usuwanie) oraz powiadomień o sukcesie/niepowodzeniu akcji.
+
+Te strony powinny zapewnić użytkownikom pełną funkcjonalność potrzebną do efektywnego zarządzania wydatkami i budżetami, a także umożliwić łatwe nawigowanie po aplikacji.
