@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import AuthForm from '../components/users/AuthForm.vue';
+import AuthForm from '../components/forms/AuthForm.vue';
 import { useRoute } from 'vue-router';
 import { ref, computed } from 'vue';
 

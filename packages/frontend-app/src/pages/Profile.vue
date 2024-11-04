@@ -1,10 +1,13 @@
 <template>
     <base-card>
         <h2>My Profile:</h2>
+        <form>
+            <div></div>
+        </form>
         <p>Username: {{  username }}</p>
         <p>Email: {{  username }}</p>
         <base-button>Update Account</base-button><br>
-        <base-button class="button-danger" >Delete Account</base-button>
+        <base-button mode="danger" >Delete Account</base-button>
     </base-card>
 </template>
 

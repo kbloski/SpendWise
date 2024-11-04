@@ -1,10 +1,25 @@
 <template>
-    <button>
+    <button :class="{
+        'button-danger' : !!(mode === 'danger')
+    }">
         <slot></slot>
     </button>
 </template>
 
-<style>
+<script>
+export default { 
+    props: ['mode'],
+    data(){
+    },
+    computed: {
+        mode(){
+            return this.$props.mode ?? 'normal'
+        }
+    }
+}
+</script>
+
+<style scoped>
 button {
     margin: 0.3rem;
     background-color: #1A1728;
