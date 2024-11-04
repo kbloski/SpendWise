@@ -124,7 +124,9 @@ export default {
             fetch('http://localhost:8081/api/login',
                 {
                     method: "POST",
-                    headers: { "Content-Type" : 'application/json'},
+                    headers: { "Content-Type" : 'application/json',
+                        authorization: undefined
+                    },
                     body: JSON.stringify({
                         email: email.value,
                         password: password.value
