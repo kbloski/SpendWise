@@ -5,7 +5,7 @@ export default function useFetch(
   url = "/",
   headers =  {},
 ) {
-    const fullUrl = computed(() => "http://localhost:8081/api" + url);
+    const fullUrl = computed(() => "http://localhost:8081" + url);
     const default_options = {
         method : "GET",
         headers,

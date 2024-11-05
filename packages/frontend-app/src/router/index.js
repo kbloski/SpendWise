@@ -15,7 +15,7 @@ const NotFound = () => import('../pages/NotFound.vue')
 
 const router = createRouter({
   history: createWebHistory(),
-  scrollBehavior(ro, from, savedLastPosition) {
+  scrollBehavior(to, from, savedLastPosition) {
     if (savedLastPosition) return savedLastPosition;
     return { left: 0, top: 0 };
   },
@@ -37,13 +37,14 @@ const router = createRouter({
           children: [
             {
               path: ":id",
+              name: "budget-details",
               component: BudgetDetails,
               children: [
                 { path: "categories", component: Categories },
-                { path: "expenses", Expenses },
+                { path: "expenses", component: Expenses },
               ],
             },
-            { path: "reports", Reports }
+            { path: "reports", component:  Reports }
           ],
         },
       ],

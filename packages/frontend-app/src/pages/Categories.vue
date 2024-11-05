@@ -1,3 +1,3 @@
 <template>
-    <base-card>Categories</base-card>
+    <div> Categories </div>
 </template>

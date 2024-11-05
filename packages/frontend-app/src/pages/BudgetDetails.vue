@@ -1,3 +1,6 @@
 <template>
-    <base-card>Budget Details</base-card>
+    <div>
+        <h2>Budget with id: details</h2>
+        <router-view></router-view>
+    </div>
 </template>

@@ -22,7 +22,7 @@ export default {
         }
     },
     created(){
-        this.fetchUser = useFetch('/users/me'); 
+        this.fetchUser = useFetch('/api/users/me'); 
     },
     computed: {
         username(){
