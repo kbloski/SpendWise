@@ -1,13 +1,9 @@
 <template>
     <base-card>
-        <h1>My budzes</h1>
+        <h1>My budgets</h1>
         <ul>
             <li v-for="budget in budgets" :key="budget.id">
-                {{ budget.id }}
                 {{ budget.name }}
-                {{ budget.user_id }}
-                {{ budget.createdAt }}
-                {{ budget.updatedAt }}
                 <router-link :to="budgetLink(budget)">Show</router-link>
             </li>
         </ul>
