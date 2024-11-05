@@ -2,8 +2,6 @@
   "compilerOptions": {
     "target": "ES2023",                            
     "module": "commonjs",                                
-    "rootDir": "./packages/backend-services/src",
-    "outDir": "./packages/backend-services/dist",
     "strict": true,
     "esModuleInterop": true,                                      
     "skipLibCheck": true,
@@ -11,6 +9,6 @@
       "./node_modules/@types",
     ]
   },
-  "include": ["./packages/backend-services/src/**/*"],
+  "include": ["./packages/backend-services/**/*"],
   "exclude": ["node_modules", "dist"],
 }
