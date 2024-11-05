@@ -41,7 +41,7 @@ const router = createRouter({
               name: "budget-details",
               component: BudgetDetails,
               children: [
-                { path: "categories", component: Categories },
+                { path: "categories", name: "budget-categories", component: Categories },
                 { path: "expenses", component: Expenses },
               ],
             },

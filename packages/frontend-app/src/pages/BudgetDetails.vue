@@ -8,7 +8,8 @@
             Created: {{  new Date( budget.createdAt) }} <br>
             Last Update: {{  new Date( budget.updatedAt) }}
         </p>
-        <router-link>Show Categories</router-link>
+        <router-link :to="categoryLink">Show Categories</router-link>
+        <!-- <router-link>Show Categories</router-link> -->
         <router-view :id="budget.id"></router-view>
     </div>
 </template>
@@ -24,6 +25,12 @@ export default{
         }
     },
     computed: {
+        categoryLink(){
+            return {
+                name: 'budget-categories',
+                params: { id: id }
+            }
+        },
         loading(){
             return this.fetchBudget.loading;
         },
