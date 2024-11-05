@@ -11,7 +11,8 @@ export default {
     ctx.commit("setToken", token ?? null);
   },
 
-  logOut(){
+  logOut(ctx){
     localStorage.removeItem( lsTokenKey)
+    ctx.commit("deleteToken");
   }
 };

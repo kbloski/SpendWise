@@ -23,12 +23,11 @@ export default {
         const store = useStore();
         const title = appTitle;
 
-        const username = ref('test');
+        const username = ref('');
 
         async function getUser(){
             const u = await store.getters['auth/getUser'];
-            console.log( u )
-            username.value = u.username;
+            username.value = u.username ?? 'unknown';
         }
         getUser()
 

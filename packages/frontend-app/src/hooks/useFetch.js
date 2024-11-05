@@ -3,12 +3,11 @@ import store from '../store/index.js'
 
 export default function useFetch(
   url = "/",
-  method = "GET",
   headers =  {},
 ) {
     const fullUrl = computed(() => "http://localhost:8081/api" + url);
     const default_options = {
-        method,
+        method : "GET",
         headers,
     }
 

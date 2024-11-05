@@ -26,10 +26,10 @@ export default {
     },
     computed: {
         username(){
-            return this.fetchUser.data.user.username
+            return this.fetchUser?.data?.user?.username ?? ""
         },
         email(){
-            return this.fetchUser.data.user.email ?? ''
+            return this.fetchUser?.data?.user?.email ?? ''
         }
     },
 

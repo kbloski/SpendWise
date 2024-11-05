@@ -104,71 +104,50 @@
 </template>
 
 <script>
-import { computed, ref, watch } from "vue";
+import {  computed, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
+import usePost from "../../hooks/usePost";
 
 export default {
     props: ["register"],
     setup(props) {
         const store = useStore();
         const router = useRouter();
+        const postRegister = usePost( '/api/register' );
+        const postLogin = usePost( '/api/login' );
+
+        computed(()=>{
+            console.log(props.register)
+        })
 
         const username = ref("");
         const email = ref("");
         const password = ref("");
         const confirmedPassword = ref("");
-        const loading = ref(false)
+        
 
-        function onSumitLogin(event) {
+        async function onSumitLogin(event) {
             event.preventDefault();
-            loading.value = true;
+            await postLogin.postData( {
+                email: email.value,
+                password: password.value
+            })
 
-            fetch('http://localhost:8081/api/login',
-                {
-                    method: "POST",
-                    headers: { "Content-Type" : 'application/json',
-                    },
-                    body: JSON.stringify({
-                        email: email.value,
-                        password: password.value
-                    })
-                }
-            )
-            .then( response => {
-                if (!response.ok) throw new Error(response.status + ' ' + response.statusText);
-                return response.json()
-            })
-            .then( data => {
-                store.dispatch('auth/setToken', data.token)
-                console.log( data.token)
-                router.push('/dashboard')
-            })
-            .catch( err => console.error(err))
-            .finally( () => loading.value = false);
+            if (!postLogin.response.ok || !postLogin.data?.value?.token) return;
+
+            store.dispatch('auth/setToken', postLogin.data.value.token)
+            router.push('/dashboard')
         }
 
         async function onSubmitRegister(event) {
             event.preventDefault();
-            loading.value = true;
-
-            fetch('http://localhost:8081/api/register',
-                {
-                    method: "POST",
-                    headers: { "Content-Type" : 'application/json'},
-                    body: JSON.stringify({
-                        username: username.value,
-                        email: email.value,
-                        password: password.value
-                    })
-                }
-            )
-            .then( response => {
-                if (!response.ok) throw new Error(response.status + ' ' + response.statusText);
-                router.push('/auth')
+            await postRegister.postData({
+                username: username.value,
+                email: username.email,
+                password: password.value,
             })
-            .catch( err => console.error(err))
-            .finally( () => loading.value = false);
+            // if (!po)
         }
 
         return {
@@ -178,7 +157,7 @@ export default {
             confirmedPassword,
             onSubmitRegister,
             onSumitLogin,
-            loading
+            loading: postLogin.loading
         };
     },
 };

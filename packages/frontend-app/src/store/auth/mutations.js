@@ -5,6 +5,7 @@ export default {
     deleteToken( state ){
         state.token = null;
     },
+    
     setUser( state, payload){
         state.user = payload ?? null;
     },
