@@ -5,7 +5,7 @@ import UserType from "../UserType";
 declare global {
     namespace Express {
         interface Request {
-            user?: UserType; // Rozszerzenie interfejsu Request
+            user?: UserType; 
         }
     }
 }
