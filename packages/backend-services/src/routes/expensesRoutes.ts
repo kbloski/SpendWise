@@ -32,17 +32,17 @@ router.get(
 
             const budgetDb = await budgetController.getById(Number(budgetId));
             if (!budgetDb)
-                return sendErrorResponse( res, 404, "Budget with id: " + budgetId + " not found" );
+                return sendErrorResponse( res, 404, "Budget with id: " + budgetId + " not exist." );
 
             const isAccessToBudget =
                 await budgetSharesController.isAccessUserToBudget( budgetDb, req.user );
             if (!isAccessToBudget) return sendErrorResponse(res, 403);
 
             const categoryDb = await categoryController.getById( Number(categoryId));
-            if (!categoryDb) return sendErrorResponse(res, 404, "Category not found.");
+            if (!categoryDb) return sendErrorResponse(res, 404, "Category with id "+ categoryId + " not exist.");
             const isAccessToCategory = await categoryController.isAccessCategoryToBudget( categoryDb, budgetDb);
 
-            if (!isAccessToCategory) return sendErrorResponse(res, 403, "Category not belong to budget.")
+            if (!isAccessToCategory) return sendErrorResponse(res, 403, `Category (categoryId: ${categoryId}) not belong to budget (budgetId: ${budgetId}).`)
 
             const expensesDb = await expenseController.getCategoryExpenses( categoryDb.id )
 
@@ -100,10 +100,10 @@ router.post(
             ) return sendErrorResponse( res, 400, "Please provide amout. Amout must be type number.")
 
             const budgetDb = await budgetController.getById( Number(budgetId));
-            if (!budgetDb) return sendErrorResponse(res, 404, "Not found budget.")
+            if (!budgetDb) return sendErrorResponse(res, 404, "Budget with id " + budgetId + ' not exist.')
 
             const categoryDb = await categoryController.getById(Number(categoryId));
-            if (!categoryDb) return sendErrorResponse( res,404, "Not found category with id: " + categoryId );
+            if (!categoryDb) return sendErrorResponse( res,404, "Category with id: " + categoryId + " not exist.");
 
             const accessToCategory = await categoryController.isAccessCategoryToBudget(categoryDb, budgetDb);
             if (!accessToCategory) return sendErrorResponse(res, 403);
