@@ -1,50 +1,120 @@
 <template>
-    <button>
-        <slot></slot>
+    <button v-if="!isLink">
+        <div class="inner-slot">
+            <slot></slot>
+        </div>
+        <span class="icon"> > </span>
     </button>
+    <router-link :to="toLink" v-if="isLink">
+        <div class="inner-slot">
+            <slot></slot>
+        </div>
+        <span class="icon"> > </span>
+    </router-link>
 </template>
 
 <script>
-export default { 
-    data(){
-        return {
-        }
+export default {
+    props: ["link", "to"],
+    computed: {
+        isLink() {
+            return this.$props.link;
+        },
+        toLink() {
+            return this.$props.to ?? "/";
+        },
     },
-    // computed: {
-    //     mode(){
-    //         return this.$props.mode ?? 'normal'
-    //     }
-    // }
-}
+};
 </script>
 
 <style scoped>
-button {
-    margin: 0.3rem;
-    background-color: #1A1728;
+* {
+    margin: 0;
+    padding: 0;
+}
+
+button,
+a {
+    align-items: center;
+    border-radius: 1000px;
+    border: 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    padding: 4px;
+    margin: 0;
+    position: relative;
+    text-decoration: none;
+    z-index: 1;
+}
+
+.icon {
     color: white;
-    padding: 1rem;
+    font-weight: bold;
+    padding: 0 10px;
 }
 
-button:hover{
-    background-color: #35297c;
+.inner-slot {
+    background-color: transparent;
+    color: black;
+    position: relative;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: 900;
+    margin: 0;
 }
 
-button:active{
-    background-color: #13065a;
+.inner-slot::after {
+    border-radius: 1000px 0 0 1000px;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    content: "";
+    position: absolute;
 }
 
-.button-danger {
-    background-color: rgb(83, 0, 0);
-    outline: rgb(50, 0, 0);
+/* DEFAULT */
+button,
+a {
+    background: linear-gradient(45deg, #007c91, #33cc4c);
+    
+    
+}
+.inner-slot {
+    background: linear-gradient(45deg, #007c91, #33cc4c);
+
+    color: transparent;
+    -webkit-background-clip: text;
 }
 
-.button-danger:hover {
-    background-color: rgb(129, 28, 28);
+/* HOVER */
+button:hover,
+a:hover {
+    background: linear-gradient(45deg, #006f82, #2ab94b);
+    color: black;
 }
 
-.button-danger:active {
-    background-color: rgb(124, 1, 1);
+a:hover .inner-slot,
+button:hover .inner-slot {
+    background: linear-gradient(45deg, #006f82, #2ab94b);
+    color: transparent;
+    -webkit-background-clip: text;
 }
 
+/* ACTIVE */
+button:active,
+a:active {
+    background: linear-gradient(45deg, #005f6b, #1f9d3b);
+    color: black;
+}
+
+a:active .inner-slot,
+button:active .inner-slot {
+    background: linear-gradient(45deg, #005f6b, #1f9d3b);
+    color: transparent;
+    -webkit-background-clip: text;
+}
 </style>
