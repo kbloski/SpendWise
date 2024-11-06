@@ -5,9 +5,10 @@
             <li v-for="category in categories" :key="category.id">
                 {{ category.id }} 
                 {{ category.name }}
-                <router-link>Expenses</router-link>
+                <router-link :to="createLinkCategory(category.id)">Expenses</router-link>
             </li>
         </ul>
+        <router-view></router-view>
     </div>
 </template>
 
@@ -19,20 +20,22 @@ import useFetch from '../hooks/useFetch.js';
 export default {
     setup(){
         const route = useRoute()
-        const budgetId = computed(() => route.params.id);
+        const budgetId = computed(() => route.params.budgetId);
 
         const categoriesArr = computed(()=>{
             return fetchCategories?.data?.value?.categories ?? []
         })
         const fetchCategories = useFetch(`/api/budgets/${budgetId.value}/categories`)
 
-        setTimeout( () => console.log(fetchCategories?.data?.value?.categories), 300)
-        setTimeout( () => console.log(categoriesArr), 300)
-        
+        function createLinkCategory(categoryId){
+            return `/user/budgets/${budgetId.value}/categories/${categoryId}/expenses`
+        }
+
         return {
             budgetId,
             loading: fetchCategories?.loading ?? [],
-            categories: categoriesArr
+            categories: categoriesArr,
+            createLinkCategory
         }
     }
 }

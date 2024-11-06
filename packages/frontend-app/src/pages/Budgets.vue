@@ -25,7 +25,7 @@ export default {
         function budgetLink(budget){
             return {
                 name: "budget-details",
-                params: { id: budget.id},
+                params: { budgetId: budget.id},
             }
         }
 

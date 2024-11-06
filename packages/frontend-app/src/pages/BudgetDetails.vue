@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>Budget with id: {{ id }} details </h2>
+        <h2>Budget with id: {{ budgetId }} details </h2>
         <p>
             #Id: {{  budget.id }} <br>
             Name: {{  budget.name }} <br>
@@ -17,7 +17,7 @@
 import useFetch from '../hooks/useFetch.js';
 
 export default{
-    props: ['id'],
+    props: ['budgetId'],
     data(){
         return {
             fetchBudget: null,
@@ -27,7 +27,7 @@ export default{
         categoryLink(){
             return {
                 name: 'budget-categories',
-                params: { id: this.id }
+                params: { budgetId: this.budgetId }
             }
         },
         loading(){
@@ -38,7 +38,7 @@ export default{
         }
     },
     created(){
-        this.fetchBudget = useFetch(`/api/budgets/${this.id}`)
+        this.fetchBudget = useFetch(`/api/budgets/${this.budgetId}`)
     }
 }
 </script>
