@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import useFetch from '../hooks/useFetch';
+import useFetch from '../../hooks/useFetch';
 
 export default {
     data(){

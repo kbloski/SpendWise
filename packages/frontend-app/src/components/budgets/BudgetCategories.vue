@@ -15,7 +15,7 @@
 <script>
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
-import useFetch from '../hooks/useFetch.js';
+import useFetch from '../../hooks/useFetch';
 
 export default {
     setup(){
