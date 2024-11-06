@@ -49,6 +49,7 @@ const router = createRouter({
                   children: [
                     {
                       path: ":categoryId/expenses",
+                      name: "category-expenses",
                       component: CategoryExpenses,
                     },
                   ],

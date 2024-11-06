@@ -119,6 +119,12 @@ thead > th {
     border-radius: 1rem;
 }
 
+thead:hover {
+    box-shadow: inset 0 0 8px rgb(0, 255, 0);
+    background-color: white;
+    border-radius: 1rem;
+}
+
 .actions {
     padding: 1rem;
 }
