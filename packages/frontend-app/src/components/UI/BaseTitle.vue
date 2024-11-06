@@ -7,22 +7,11 @@
 </template>
 
 <style scoped>
-.title-container {
-    width: 100%;
-    height: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
 .title {
-    border-radius: 1rem;
-    color: rgb(59, 59, 59);
+    border-bottom: 2px solid black;
     font-weight: bold;
-    margin: 1rem;
-    padding: 1rem 2rem;
-    text-align: center;
-    text-transform: uppercase;
-    text-shadow: 0 0 5px gray;
+    padding-bottom: 2px;
 }
+
 </style>

@@ -6,6 +6,7 @@ const BaseCard = defineAsyncComponent(() => import('./components/UI/BaseCard.vue
 const BaseLink = defineAsyncComponent(() => import('./components/UI/BaseLink.vue'))
 const BaseButton = defineAsyncComponent(() => import('./components/UI/BaseButton.vue'))
 const BaseTitle = defineAsyncComponent( ()=>import("./components/UI/BaseTitle.vue"))
+const SideTitle = defineAsyncComponent( ()=>import("./components/layout/SideTitle.vue"))
 const BaseInfo = defineAsyncComponent( ()=>import("./components/UI/BaseInfo.vue"))
 const BaseError = defineAsyncComponent( ()=>import("./components/UI/BaseError.vue"))
 
@@ -16,6 +17,7 @@ app.component('base-card', BaseCard);
 app.component('base-link', BaseLink);
 app.component('base-button', BaseButton);
 app.component('base-title', BaseTitle);
+app.component('side-title', SideTitle);
 app.component('base-info', BaseInfo);
 app.component('base-error', BaseError);
 

@@ -1,5 +1,5 @@
 <template>
     <base-card>
-        <base-title><h2>Support</h2></base-title>
+        <side-title>Support</side-title>
     </base-card>
 </template>

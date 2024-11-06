@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h4>Moje finanse</h4>
+        <base-title>Moje finanse</base-title>
         <base-error v-if="errorMessage">{{  errorMessage }}</base-error>
         <div v-else-if="loading" >Loading... </div>
         <ul v-else>
@@ -42,9 +42,6 @@ export default {
 </script>
 
 <style scoped>
-h4 {
-    border-bottom: 2px solid black;
-}
 
 ul {
     list-style: circle;

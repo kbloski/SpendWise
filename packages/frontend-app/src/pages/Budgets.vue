@@ -1,6 +1,6 @@
 <template>
     <div>
-        <base-title><h2>My budgets</h2></base-title>
+        <side-title>My budgets</side-title>
         <my-budgets-list></my-budgets-list>
         <router-view></router-view>
     </div>
