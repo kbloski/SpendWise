@@ -1,10 +1,22 @@
 <template>
     <sidebar v-if="isAuthorized"></sidebar>
-      <router-view v-slot="slotProps">
-        <transition name="change-side" mode="out-in">
-          <component :is="slotProps.Component"></component>
-        </transition>
-      </router-view>
+      <!-- Authorized -->
+      <base-card v-if="isAuthorized" >
+        <router-view v-slot="slotProps">
+          <transition name="change-side" mode="out-in">
+            <component :is="slotProps.Component"></component>
+          </transition>
+        </router-view>
+      </base-card>
+      
+      <!-- Unauthorize -->
+      <div v-if="!isAuthorized">
+        <router-view v-slot="slotProps" >
+          <transition name="change-side" mode="out-in">
+            <component :is="slotProps.Component"></component>
+          </transition>
+        </router-view>
+      </div>
 </template>
 
 <script>
@@ -46,22 +58,26 @@ html, body {
   display: flex;
 }
 
-/* .change-side-enter-from {
-  color: white;
+.change-side-enter-from {
+  transform: translateX(-30px);
+  opacity: 0;
 }
 .change-side-enter-active {
-  transition: all 0.15s ease-in;
+  transition: all 0.3s ease-in;
 }
 .change-side-enter-to {
-  color: black;
+  opacity: 1;
+  transform: translateX(0);
 }
 .change-side-leave-from {
-  color: bla;
+  opacity: 1;
+  transform: translateX(0);
 }
 .change-side-leave-active {
-  transition: all 0.15s ease-out;
+  transition: all 0.3s ease-out;
 }
 .change-side-leave-to {
-  color: white;
-} */
+  opacity: 0;
+  transform: translateX(30px);
+}
 </style>

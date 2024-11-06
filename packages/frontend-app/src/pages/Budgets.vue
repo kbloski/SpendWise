@@ -1,5 +1,5 @@
 <template>
-    <base-card>
+    <div>
         <h1>My budgets</h1>
         <ul>
             <li v-for="budget in budgets" :key="budget.id">
@@ -8,7 +8,7 @@
             </li>
         </ul>
         <router-view></router-view>
-    </base-card>
+    </div>
 </template>
 
 <script>

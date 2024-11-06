@@ -6,8 +6,8 @@ const Profile = () => import("../pages/Profile.vue")
 const Dashboard = ()=>import('../pages/Dashboard.vue')
 const Budgets =() => import("../pages/Budgets.vue")
 const BudgetDetails = () => import("../pages/BudgetDetails.vue")
-const Categories =() =>import("../pages/Categories.vue")
-const Expenses = () => import("../pages/Expenses.vue");
+const BudgetCategories =() =>import("../pages/BudgetCategories.vue")
+const CategoryExpenses = () => import("../pages/CategoryExpenses.vue");
 const Reports = () => import("../pages/Reports.vue");
 const Support = () => import("../pages/Support.vue");
 const NotFound = () => import('../pages/NotFound.vue')
@@ -41,9 +41,9 @@ const router = createRouter({
               name: "budget-details",
               component: BudgetDetails,
               children: [
-                { path: "categories", name: "budget-categories", component: Categories, 
+                { path: "categories", name: "budget-categories", component: BudgetCategories, 
                   children: [
-                    { path: ":categoryId/expenses", component: Expenses },
+                    { path: ":categoryId/expenses", component: CategoryExpenses },
                   ]
                 },
               ],

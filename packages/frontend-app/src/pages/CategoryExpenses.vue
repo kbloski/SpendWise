@@ -24,7 +24,6 @@ export default {
     computed:{
         expenses(){
             const expenses = this.fetchExpenses?.data?.expenses ?? []
-            console.log( expenses )
             return expenses
         }
     },
