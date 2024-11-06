@@ -3,7 +3,7 @@
         <span>Id: {{ id }}</span>
         <span>Kwota: {{ amount}}zł</span>
         <span>UserId: {{ user_id }}</span>
-        <span>Data: {{ data }}</span>
+        <span>Date: {{ createdAt }}</span>
     </li>
 </template>
 
@@ -13,7 +13,7 @@ import { formatDate } from '../../utils/dateUtils';
 export default {
     props: ["id", "amount", 'date', 'user_id'],
     computed: {
-        data(){
+        createdAt(){
             const date = new Date(this.$props.date);
             return formatDate( date )
         }

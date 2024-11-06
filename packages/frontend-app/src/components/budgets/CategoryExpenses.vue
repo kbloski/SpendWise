@@ -6,6 +6,7 @@
         <ul v-else-if="expenses.length">
             <list-item 
                 v-for="expense in expenses"
+                :key="expense.id"
                 :id="expense.id"
                 v-bind:amount="expense.amount"
                 :date="expense.date"
@@ -43,7 +44,9 @@ export default {
         }
     },
     created(){
-        this.fetchExpenses = useFetch(`/api/budgets/${this.$route.params.budgetId}/categories/${this.$route.params.categoryId}/expenses`)
+        const budgetId = this.$route.params.budgetId 
+        const categoryId = this.$route.params.categoryId 
+        this.fetchExpenses = useFetch(`/api/budgets/${budgetId}/categories/${categoryId}/expenses`)
     },
 
 }
