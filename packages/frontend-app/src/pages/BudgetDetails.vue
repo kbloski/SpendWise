@@ -1,29 +1,72 @@
 <template>
-    <div>
-        <base-title>Budget with id: {{ budgetId }} details </base-title>
-        <p>
-            #Id: {{  budget.id }} <br>
-            Name: {{  budget.name }} <br>
-            Owner: {{ budget.user_id }} <br>
-            Created: {{  new Date( budget.createdAt) }} <br>
-            Last Update: {{  new Date( budget.updatedAt) }}
-        </p>
-        <router-link :to="categoryLink">Categories</router-link>
+    <base-title>Informacje o budżecie</base-title>
+    <div v-if="errorMessage"><base-error>{{ errorMessage }}</base-error></div>
+    <div v-if="loading">Loading...</div>
+    <div v-else-if="!loading && !errorMessage">
+        <div>
+            <table>
+                <thead>
+                    <th colspan="2">
+                        Budget details
+                    </th>
+                </thead>
+                <tr>
+                    <th>Id</th>
+                    <td>{{  budget.id }}</td>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <td>{{  budget.name }}</td>
+                </tr>
+                <tr>
+                    <th>Owner Id</th>
+                    <td>{{  budget.user_id }}</td>
+                </tr>
+                <tr>
+                    <th>CreatedAt</th>
+                    <td> {{ createDate }}</td>
+                </tr>
+                <tr>
+                    <th>Last update</th>
+                    <td> {{ updateDate }}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="actions">
+            <base-button :link="true" :to="categoryLink">Categories</base-button>
+            <base-button :link="true" :to="categoryLink">All Expenses</base-button>
+            <base-button :link="true" :to="categoryLink">Summary</base-button>
+        </div>
         <router-view :id="budget.id"></router-view>
     </div>
 </template>
 
 <script>
 import useFetch from '../hooks/useFetch.js';
+import { formatDate } from '../utils/dateUtils.js';
 
 export default{
     props: ['budgetId'],
     data(){
         return {
-            fetchBudget: null,
+            fetchBudget: {},
         }
     },
     computed: {
+        errorMessage(){
+            return this.fetchBudget.error
+        },
+        createDate(){
+            const date = new Date(this.budget.createdAt);
+            return formatDate( date);
+        },
+        loading(){
+            return this.fetchBudget.loading
+        },
+        updateDate(){
+            const date = new Date(this.budget.updatedAt);
+            return formatDate( date);
+        },
         categoryLink(){
             return {
                 name: 'budget-categories',
@@ -42,3 +85,43 @@ export default{
     }
 }
 </script>
+
+<style scoped>
+table {
+    margin: 1rem;
+    padding: 0.5rem;
+    /* border: 2px solid black; */
+    box-shadow: 0 0 10px black;
+    border-radius: 1rem;
+}
+
+td {
+    border-bottom: 1px solid black;
+}
+
+td, th {
+    text-align: start;
+    padding: .2rem 1rem;
+}
+
+
+thead > th {
+    padding: .5rem 1rem;
+    box-shadow: inset 0 0 8px green;
+    border-radius: 1rem;
+}
+
+th {
+   /* border-radius: 1rem 0 0 1rem;  */
+}
+
+td {
+   /* border-radius: 0 1rem 1rem 0;  */
+}
+
+
+.actions > *{
+    padding-bottom: .4rem;
+}
+
+</style>

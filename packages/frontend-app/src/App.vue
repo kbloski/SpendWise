@@ -50,7 +50,8 @@ html, body {
   margin: 0;
   padding: 0;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  background-color: var(--background-color-dark);
+  /* background-color: var(--background-color-dark); */
+  background: linear-gradient( to left top, rgb(0, 68, 0), black );
   color: white;
 }
 
