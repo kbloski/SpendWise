@@ -87,9 +87,12 @@ router.post(
             if (
                 !isNumber(budgetId) 
                 || !isNumber(categoryId)
-                || !amount
+            ) return sendErrorResponse(res, 400, "Bad from any id in url /api/budgets/budgetId/categories/categoryId/expenses. Id type must be number.");
+            
+            if (
+                !amount
                 || !isNumber(amount)
-            ) return sendErrorResponse(res, 400);
+            ) return sendErrorResponse( res, 400, "Please provide amout. Amout must be type number.")
 
             const categoryDb = await categoryController.getById(Number(categoryId));
             if (!categoryDb) return sendErrorResponse( res,404, "Not found category with id: " + categoryId );
