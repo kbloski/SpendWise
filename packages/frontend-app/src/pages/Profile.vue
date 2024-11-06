@@ -1,6 +1,6 @@
 <template>
     <base-card>
-        <h2>My Profile:</h2>
+        <base-title><h2>My Profile:</h2></base-title>
         <form>
             <div></div>
         </form>

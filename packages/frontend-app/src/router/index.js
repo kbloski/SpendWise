@@ -61,8 +61,14 @@ const router = createRouter({
 // Guards
 router.beforeEach( (to, from, next)=>{
   store.dispatch("auth/setStateToken");
-  if ( !to.meta.needsAuth && store.getters['auth/isLoggedIn']) return next('/dashboard');
-  if ( to.meta.needsAuth && !store.getters['auth/isLoggedIn']) return next('/auth');
+
+  // Meta data
+  const metaKeys = Object.keys( to.meta)
+  if(metaKeys.length && metaKeys.includes('needsAuth')){
+    if ( !to.meta.needsAuth && store.getters['auth/isLoggedIn']) return next('/dashboard');
+    if ( to.meta.needsAuth && !store.getters['auth/isLoggedIn']) return next('/auth');
+  }
+  
   next()
 });
 

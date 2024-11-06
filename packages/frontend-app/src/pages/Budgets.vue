@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>My budgets</h1>
+        <base-title><h2>My budgets</h2></base-title>
         <ul>
             <li v-for="budget in budgets" :key="budget.id">
                 {{ budget.name }}
