@@ -5,12 +5,14 @@
         </div>
         <span class="icon"> > </span>
     </button>
-    <router-link :to="toLink" v-if="isLink">
-        <div class="inner-slot">
-            <slot></slot>
-        </div>
-        <span class="icon"> > </span>
-    </router-link>
+    <span class="span-container-link">
+        <router-link :to="toLink" v-if="isLink">
+            <div class="inner-slot">
+                <slot></slot>
+            </div>
+            <span class="icon"> > </span>
+        </router-link>
+    </span>
 </template>
 
 <script>
@@ -31,6 +33,10 @@ export default {
 * {
     margin: 0;
     padding: 0;
+}
+
+.span-container-link {
+    display: flex;
 }
 
 button,
