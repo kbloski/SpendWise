@@ -34,6 +34,7 @@ const router = createRouter({
         {
           path: "budgets",
           component: Budgets,
+          props: true,
           children: [
             {
               path: ":id",

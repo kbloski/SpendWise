@@ -29,8 +29,6 @@ export default {
             }
         }
 
-        watch( fetchBudgets.data , ()=> console.log(fetchBudgets.data.value.budgets[0].id))
-
         return {
             loading: fetchBudgets.loading,
             budgets: budgetList,

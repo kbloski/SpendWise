@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "backend:start" : "cd ./packages/backend-services & npm run start",
+    "backend:build" : "cd ./packages/backend-services & npm run build",
+    "backend:dev" : "cd ./packages/backend-services & npm run dev"
   },
   "keywords": [],
   "author": "",
