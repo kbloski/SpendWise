@@ -40,7 +40,7 @@ export default async function authTokenMiddleware(
         req.user = userDb.dataValues;
 
         if (!checkAccess(role, req.path, req.method))
-            return sendErrorResponse(res, 401, "Unauthorized by middleware");
+            return sendErrorResponse(res, 401, "Unauthorized by middleware - (Access control list).");
         return next();
     } catch (err: any) {
         throw new Error("Middleware authorization error: " + err.message);

@@ -13,6 +13,42 @@ import { isNumber } from "../utils/utils";
 const router = Router();
 
 router.get(
+    buildApiPath(
+        "budgets",
+        ":budgetId",
+        "categories",
+        ":categoryId",
+        "expenses"
+    ),
+    async (req, res) => {
+        try {
+            if (!req.user) return sendErrorResponse(res, 401);
+
+            const { budgetId, categoryId } = req.params;
+            if (!isNumber(budgetId) || !isNumber(categoryId))
+                return sendErrorResponse(
+                    res, 400, "Invalid type budgetId or categoryId - Id must be a number" );
+
+            const budgetDb = await budgetController.getById(Number(budgetId));
+            if (!budgetDb)
+                return sendErrorResponse( res, 404, "Budget with id: " + budgetId + " not found" );
+
+            const isAccessToBudget =
+                await budgetSharesController.isAccessUserToBudget( budgetDb, req.user );
+            if (!isAccessToBudget) return sendErrorResponse(res, 403);
+
+            const categoryDb = await categoryController.getById( Number(categoryId));
+            if (!categoryDb) return sendErrorResponse(res, 404, "Category not found.");
+            const expensesDb = await expenseController.getCategoryExpenses( categoryDb.id )
+
+            return sendSuccessResponse(res, 200, { expenses: expensesDb });
+        } catch (err) {
+            return sendErrorResponse(res, 500);
+        }
+    }
+);
+
+router.get(
     buildApiPath("budgets", ":budgetId", "expenses"),
     async (req, res) => {
         try {
