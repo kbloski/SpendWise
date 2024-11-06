@@ -30,6 +30,7 @@ export default class CategoryController extends AbstractCrudController<Category>
         user: UserType | User
     ){
         const availableBudgets = await budgetController.getAccessibleBudgetsForUser( user.id);
+        
         if (!availableBudgets?.length) return false;
         const budgetsIds = availableBudgets.map( v => v.id )
         const finded = await this.model.count(
@@ -40,6 +41,10 @@ export default class CategoryController extends AbstractCrudController<Category>
             }
         })
         return !!( finded )
+    }
+
+    async isAccessCategoryToBudget(category: Category | CategoryType, budget : Budget | BudgetType){
+        return category.budget_id == budget.id
     }
 
     async getAllByBudgetId(budgetId: number) {

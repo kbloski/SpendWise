@@ -9,6 +9,7 @@ import {
     expenseController,
 } from "../controllers/controllers";
 import { isNumber } from "../utils/utils";
+import Category from "../models/CategoryModel";
 
 const router = Router();
 
@@ -39,6 +40,10 @@ router.get(
 
             const categoryDb = await categoryController.getById( Number(categoryId));
             if (!categoryDb) return sendErrorResponse(res, 404, "Category not found.");
+            const isAccessToCategory = await categoryController.isAccessCategoryToBudget( categoryDb, budgetDb);
+
+            if (!isAccessToCategory) return sendErrorResponse(res, 403, "Category not belong to budget.")
+
             const expensesDb = await expenseController.getCategoryExpenses( categoryDb.id )
 
             return sendSuccessResponse(res, 200, { expenses: expensesDb });
@@ -94,10 +99,13 @@ router.post(
                 || !isNumber(amount)
             ) return sendErrorResponse( res, 400, "Please provide amout. Amout must be type number.")
 
+            const budgetDb = await budgetController.getById( Number(budgetId));
+            if (!budgetDb) return sendErrorResponse(res, 404, "Not found budget.")
+
             const categoryDb = await categoryController.getById(Number(categoryId));
             if (!categoryDb) return sendErrorResponse( res,404, "Not found category with id: " + categoryId );
 
-            const accessToCategory = await categoryController.isAccessibleCategoryForUser(categoryDb, req.user);
+            const accessToCategory = await categoryController.isAccessCategoryToBudget(categoryDb, budgetDb);
             if (!accessToCategory) return sendErrorResponse(res, 403);
 
             const newExpense = await expenseController.create({
