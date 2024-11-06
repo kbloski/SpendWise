@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>Budget with id: {{ budgetId }} details </h2>
+        <h4>Budget with id: {{ budgetId }} details </h4>
         <p>
             #Id: {{  budget.id }} <br>
             Name: {{  budget.name }} <br>

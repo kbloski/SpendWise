@@ -36,7 +36,7 @@ export default function useFetch(
           return res.json()
         }
       )
-      .then( dat => data.value = dat )
+      .then( d => data.value = d )
       .catch( err => error.value = err.message )
       .finally( () => loading.value = false)
     }

@@ -37,7 +37,7 @@ export default {
 <style>
 :root {
   --background-color-light: #f4f3f7;
-  --background-color-dark:#1A1728 ;
+  --background-color-dark:#1f1f1f ;
 }
 
 * {

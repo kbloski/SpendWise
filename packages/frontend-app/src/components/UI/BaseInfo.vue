@@ -25,7 +25,7 @@
 }
 
 h4 {
-    border: 2px solid #00C9D9;
+    border: 2px solid #1f9d3b;
     border-top: 0;
     border-radius: 0.5rem;
     border-right: 0;

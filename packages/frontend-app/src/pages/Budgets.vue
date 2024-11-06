@@ -1,21 +1,21 @@
 <template>
     <div>
         <base-title><h2>My budgets</h2></base-title>
-        <ul>
-            <li v-for="budget in budgets" :key="budget.id">
-                {{ budget.name }}
-                <router-link :to="budgetLink(budget)">Show</router-link>
-            </li>
-        </ul>
+        <my-budgets-list></my-budgets-list>
         <router-view></router-view>
     </div>
 </template>
 
 <script>
+import MyBudgetsList from "../components/budgets/MyBudgetsList.vue";
+
 import { watch, computed } from "vue";
 import useFetch from "../hooks/useFetch.js";
 
 export default {
+    components: {
+        MyBudgetsList
+    },  
     setup() {
         const fetchBudgets = useFetch('/api/budgets/me');
         const budgetList = computed(()=>{
