@@ -1,7 +1,17 @@
 <template>
     <div>
-        <p>Username: {{  username }} </p>
-        <p>Email: {{  email }}</p>
+        <div>
+            Username
+            <base-form-control>{{ username }}</base-form-control>
+        </div>
+        <div>
+            Email
+            <base-form-control>{{ email }}</base-form-control>
+        </div>
+        <div>
+            Phone
+            <base-form-control>{{ 777_777_777 }}</base-form-control>
+        </div>
     </div>
 </template>
 
@@ -11,7 +21,6 @@ import useFetch from '../../hooks/useFetch.js'
 
 export default {
     data(){
-        
         return {
             fetchUser : null,
         }
