@@ -35,9 +35,9 @@
             </div>
             <div class="actions">
                 <base-button :link="true" :to="categoryLink">Categories</base-button>
-                <base-button :link="true" :to="categoryLink">All Expenses</base-button>
-                <base-button :link="true" :to="categoryLink">Summary</base-button>
-                <base-button :link="true" :to="categoryLink">Reports</base-button>
+                <base-button :link="true" :to="'#'">All Expenses</base-button>
+                <base-button :link="true" :to="'#'">Summary</base-button>
+                <base-button :link="true" :to="'#'">Reports</base-button>
             </div>
         </div>
         <router-view :id="budget.id"></router-view>
@@ -49,7 +49,10 @@ import useFetch from "../../hooks/useFetch.js";
 import { formatDate } from "../../utils/dateUtils.js";
 
 export default {
-    props: ["budgetId"],
+    props: [
+        "budgetId",
+        "categoryId"
+    ],
     data() {
         return {
             fetchBudget: {},
@@ -98,7 +101,6 @@ export default {
 table {
     margin: 1rem;
     padding: 0.5rem;
-    /* border: 2px solid black; */
     box-shadow: 0 0 10px black;
     border-radius: 1rem;
 }

@@ -1,7 +1,7 @@
 <template>
     <base-error v-if="error">{{ error }}</base-error>
     <div v-else-if="loading">Loading...</div>
-    <div>
+    <div v-else-if="categories.length">
         <base-info>Kliknij w kategorię aby zobaczyć jej koszta.</base-info>
         <ul>
             <category-card-item 
@@ -12,6 +12,7 @@
             ></category-card-item>
         </ul>
     </div>
+    <base-info v-else title="Brak kategori.">Bierzący budżet nie posiada żadnych kategori.</base-info>
 </template>
 
 <script>

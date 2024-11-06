@@ -3,7 +3,7 @@
         <base-title>Moje finanse</base-title>
         <base-error v-if="errorMessage">{{  errorMessage }}</base-error>
         <div v-else-if="loading" >Loading... </div>
-        <ul v-else>
+        <ul v-else-if="budgetList.length">
             <my-budgets-list-item 
                 v-for="budget in budgetList"
                 :key="budget.id"
@@ -12,6 +12,7 @@
             >
             </my-budgets-list-item>
         </ul>
+        <base-info v-else title="Brak budżetów">Aktualnie nie posiadasz żadnych budżetów.</base-info>
     </div>
 </template>
 

@@ -2,7 +2,7 @@ import { Router } from "express";
 import { buildApiPath } from "../utils/apiUtils";
 import { sendErrorResponse, sendSuccessResponse } from "../utils/responseUtils";
 import CategoryType from "../types/CategoryType";
-import { budgetController, budgetSharesController, categoryController } from "../controllers/controllers";
+import { budgetController, categoryController } from "../controllers/controllers";
 import { isNumber } from "../utils/utils";
 
 const router = Router();

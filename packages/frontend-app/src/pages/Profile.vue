@@ -7,7 +7,7 @@
         <p>Username: {{  username }} </p>
         <p>Email: {{  email }}</p>
         <base-button>Update Account</base-button><br>
-        <base-button mode="danger" >Delete Account</base-button>
+        <base-button>Delete Account</base-button>
     </base-card>
 </template>
 
