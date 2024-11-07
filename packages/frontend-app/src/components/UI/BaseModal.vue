@@ -1,17 +1,19 @@
 <template>
-    <teleport to="body" v-if="isVisibleModal">
-        <div class="backdrop" @click="closeModal">
-            <div class="container" @click="none">
-                <header>
-                    <slot name="header"></slot>
-                </header>
-                <div class="container-body">
-                    <slot></slot>
+    <transition name="slide">
+        <teleport to="body" v-if="isVisibleModal">
+                <div class="backdrop" @click="closeModal">
+                    <div class="container" @click="none">
+                        <header>
+                            <slot name="header"></slot>
+                        </header>
+                        <div class="container-body">
+                            <slot></slot>
+                        </div>
+                        <button @click="closeModal" class="close-button">Close</button>
+                    </div>
                 </div>
-                <button @click="closeModal" class="close-button">Close</button>
-            </div>
-        </div>
-    </teleport>
+        </teleport>
+    </transition>
 </template>
 
 <script>
@@ -88,8 +90,28 @@ header {
     margin-bottom: 1rem;
 }
 
-
-
+.slide-enter-from{
+    opacity: 0;
+    scale: 1.2;
+}
+.slide-enter-active{
+    transition: all 0.3s ease;
+}
+.slide-enter-to{
+    opacity: 1;
+    scale: 1;
+}
+.slide-leave-from{
+    opacity: 1;
+    scale: 1;
+}
+.slide-leave-active{
+    transition: all 0.3s ease;
+}
+.slide-leave-to{
+    opacity: 0;
+    scale: 1.2;
+}
 
 
 </style>
