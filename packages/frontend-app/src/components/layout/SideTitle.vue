@@ -8,6 +8,8 @@
 
 <style scoped>
 .title-container {
+    margin: 0;
+    padding: 0;
     width: 100%;
     height: auto;
     display: flex;
@@ -21,11 +23,11 @@
     box-shadow: inset 0 0 10px black;
     color: rgb(59, 59, 59);
     font-weight: bold;
-    margin: 1rem;
     padding: 1rem 2rem;
     text-align: center;
     text-transform: uppercase;
     text-shadow: 0 0 5px gray;
-    font-size: 32px;
+    font-size: 32px; /** bug with mobile */
+    margin: 1rem;
 }
 </style>

@@ -1,5 +1,15 @@
 <template>
     <base-card>
-        <side-title>Support</side-title>
+        <side-title>Potrzebujesz wsparcia?</side-title>
+        <support-form></support-form>
     </base-card>
 </template>
+
+<script>
+import SupportForm from '../components/forms/SupportForm.vue';
+export default { 
+    components: {
+        SupportForm
+    }
+}
+</script>

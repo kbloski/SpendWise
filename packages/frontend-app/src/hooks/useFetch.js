@@ -49,5 +49,6 @@ export default function useFetch(
     loading,
     response,
     error,
+    refetch: fetchData
   };
 }

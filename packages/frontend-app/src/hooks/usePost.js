@@ -30,7 +30,7 @@ export default function usePost(
         default_options.body = null;
        
         
-        token.value = store.dispatch('auth/getToken')
+        token.value = store.getters['auth/getToken']
         if (token.value) default_options.headers.authorization = `Bearer ${token.value}`;
         default_options.body = JSON.stringify( body );
 

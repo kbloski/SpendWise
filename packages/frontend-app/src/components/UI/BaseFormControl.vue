@@ -55,8 +55,8 @@ input {
     border-radius: 1rem;
     border: 0;
     box-shadow: inset 0 0 10px black;
-    background: var(--background-color-light);
-    min-width: 50%;
+    background: white;
+    min-width: 100%;
     height: auto;
     padding: .7rem;
     font-style: italic;

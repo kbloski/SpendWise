@@ -24,7 +24,7 @@ Usuwanie konta użytkownika.
 2. Budżety
 POST /api/budgets/me
 Tworzenie nowego budżetu.
-{ name, user_id }
+{ name }
 
 GET /api/budgets/me
 Pobieranie listy budżetów użytkownika.

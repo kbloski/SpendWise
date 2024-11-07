@@ -10,7 +10,7 @@
       </base-card>
       
       <!-- Unauthorize -->
-      <div v-if="!isAuthorized">
+      <div v-else>
         <router-view v-slot="slotProps" >
           <transition name="change-side" mode="out-in">
             <component :is="slotProps.Component"></component>
@@ -45,7 +45,7 @@ export default {
 }
 
 html, body {
-  min-height: 100vh;
+  /* min-height: 100vh; */
   min-width: 100vw;
   margin: 0;
   padding: 0;

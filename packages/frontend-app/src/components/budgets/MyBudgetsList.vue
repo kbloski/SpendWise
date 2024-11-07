@@ -4,6 +4,7 @@
         <base-error v-if="errorMessage">{{  errorMessage }}</base-error>
         <div v-else-if="loading" >Loading... </div>
         <ul v-else-if="budgetList.length">
+            <create-budget-modal></create-budget-modal>
             <my-budgets-list-item 
                 v-for="budget in budgetList"
                 :key="budget.id"
@@ -17,21 +18,23 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, provide } from 'vue';
 import useFetch from '../../hooks/useFetch';
 import MyBudgetsListItem from './MyBudgetsListItem.vue';
+import CreateBudgetModal from '../modals/CreateBudgetModal.vue';
 
 export default {
     components: {
-        MyBudgetsListItem
+        MyBudgetsListItem,
+        CreateBudgetModal
     },
     setup(){
         const fetchBudgets = useFetch('/api/budgets/me');
         const errorMessage = computed( () => fetchBudgets?.error.value);
         const loading = computed( ()=> fetchBudgets.loading.value );
-
         const budgetList = computed( () => fetchBudgets?.data?.value.budgets ?? []);
-
+        
+        provide('refreshBudgetList', fetchBudgets.refetch)
 
         return {
             errorMessage,
@@ -43,7 +46,6 @@ export default {
 </script>
 
 <style scoped>
-
 ul {
     list-style: circle;
 }

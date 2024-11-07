@@ -3,7 +3,7 @@
         <teleport to="body" v-if="isVisibleModal">
                 <div class="backdrop" @click="closeModal">
                     <div class="container" @click="none">
-                        <header>
+                        <header v-if="$slots.header">
                             <slot name="header"></slot>
                         </header>
                         <div class="container-body">
@@ -18,11 +18,15 @@
 
 <script>
 export default {
-    emits: ['close'],
+    props: ['visible'],
+    emits: ['close', 'open'],
     data(){
         return {
-            isVisibleModal: true
+            isVisibleModal : true
         }
+    },
+    beforeMount(){
+        this.isVisibleModal = this.$props.visible ?? true
     },
     methods: {
         closeModal(){
@@ -63,6 +67,7 @@ export default {
     padding: 1rem;
     position: relative;
     min-width: 30vw;
+    max-width: 90vw;
 }
 
 .close-button {
@@ -85,6 +90,7 @@ export default {
 header {
     border-bottom: 2px solid black;
     box-shadow: inset 0 0 4px black;
+    border-radius: 1rem;
     padding: 1rem;
     
     margin-bottom: 1rem;
