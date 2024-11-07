@@ -36,8 +36,6 @@
             <div class="actions">
                 <base-button :link="true" :to="categoryLink">Categories</base-button>
                 <base-button :link="true" :to="expensesLink">All Expenses</base-button>
-                <base-button :link="true" :to="'#'">Summary</base-button>
-                <base-button :link="true" :to="'#'">Reports</base-button>
             </div>
         </div>
         <router-view :id="budget.id"></router-view>
@@ -90,7 +88,7 @@ export default {
                 name: 'budget-expenses',
                 params: { budgetId: this.budgetId}
             }
-        }
+        },
     },
     created() {
         this.fetchBudget = useFetch(`/api/budgets/${this.budgetId}`);

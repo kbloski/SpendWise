@@ -59,7 +59,7 @@ const router = createRouter({
                   path: "expenses",
                   name: "budget-expenses",
                   component: BudgetExpenses
-                }
+                },
               ],
             },
             { path: "reports", component: Reports },
