@@ -7,31 +7,31 @@
     <div v-else-if="!loading && !errorMessage">
         <div class="container">
             <div>
-                <table>
-                    <thead>
-                        <th colspan="2">Budget details</th>
-                    </thead>
-                    <tr>
-                        <th>Id</th>
-                        <td>{{ budget.id }}</td>
-                    </tr>
-                    <tr>
-                        <th>Name</th>
-                        <td>{{ budget.name }}</td>
-                    </tr>
-                    <tr>
-                        <th>Owner Id</th>
-                        <td>{{ budget.user_id }}</td>
-                    </tr>
-                    <tr>
-                        <th>CreatedAt</th>
-                        <td>{{ createDate }}</td>
-                    </tr>
-                    <tr>
-                        <th>Last update</th>
-                        <td>{{ updateDate }}</td>
-                    </tr>
-                </table>
+                <section class="budget-details">
+                    <header>
+                        <div>Budget details</div>
+                    </header>
+                    <div>
+                        <span>Id</span>
+                        <span>{{ budget.id }}</span>
+                    </div>
+                    <div>
+                        <span>Name</span>
+                        <span>{{ budget.name }}</span>
+                    </div>
+                    <div>
+                        <span>Owner Id</span>
+                        <span>{{ budget.user_id }}</span>
+                    </div>
+                    <div>
+                        <span>CreatedAt</span>
+                        <span>{{ createDate }}</span>
+                    </div>
+                    <div>
+                        <span>Last update</span>
+                        <span>{{ updateDate }}</span>
+                    </div>
+                </section>
             </div>
             <div class="actions">
                 <base-button :link="true" :to="categoryLink">Categories</base-button>
@@ -98,30 +98,34 @@ export default {
     flex-wrap: wrap;
 }
 
-table {
+.budget-details {
     margin: 1rem;
     padding: 0.5rem;
     box-shadow: 0 0 10px black;
     border-radius: 1rem;
 }
 
-td {
+.budget-details > div {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
     border-bottom: 1px solid black;
 }
 
-td,
-th {
+
+span,
+span {
     text-align: start;
     padding: 0.2rem 1rem;
 }
 
-thead > th {
+header {
     padding: 0.5rem 1rem;
     box-shadow: inset 0 0 8px green;
     border-radius: 1rem;
 }
 
-thead:hover {
+header:hover {
     box-shadow: inset 0 0 8px rgb(0, 255, 0);
     background-color: white;
     border-radius: 1rem;
