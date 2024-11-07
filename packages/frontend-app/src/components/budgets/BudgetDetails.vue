@@ -53,8 +53,13 @@ export default {
     ],
     data() {
         return {
-            fetchBudget: {},
+            fetchBudget: useFetch(`/api/budgets/${this.budgetId}`),
         };
+    },
+    watch: {
+        budgetId(){
+            this.fetchBudget.setUrl( '/api/budgets/'+ this.budgetId )
+        }
     },
     computed: {
         errorMessage() {
@@ -90,9 +95,9 @@ export default {
             }
         },
     },
-    created() {
-        this.fetchBudget = useFetch(`/api/budgets/${this.budgetId}`);
-    },
+    // created() {
+    //     this.fetchBudget = useFetch(`/api/budgets/${this.budgetId}`);
+    // },
 };
 </script>
 

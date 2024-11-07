@@ -5,7 +5,7 @@ export default function useFetch(
   url = "/",
   headers =  {},
 ) {
-    const fullUrl = computed(() => "http://localhost:8081" + url);
+    const fullUrl = ref("http://localhost:8081" + url);
     const default_options = {
         method : "GET",
         headers,
@@ -49,6 +49,7 @@ export default function useFetch(
     loading,
     response,
     error,
-    refetch: fetchData
+    refetch: fetchData,
+    setUrl: (url) => (fullUrl.value = "http://localhost:8081" + url),
   };
 }
