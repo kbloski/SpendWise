@@ -35,7 +35,7 @@
             </div>
             <div class="actions">
                 <base-button :link="true" :to="categoryLink">Categories</base-button>
-                <base-button :link="true" :to="'#'">All Expenses</base-button>
+                <base-button :link="true" :to="expensesLink">All Expenses</base-button>
                 <base-button :link="true" :to="'#'">Summary</base-button>
                 <base-button :link="true" :to="'#'">Reports</base-button>
             </div>
@@ -73,18 +73,24 @@ export default {
             const date = new Date(this.budget.updatedAt);
             return formatDate(date);
         },
-        categoryLink() {
-            return {
-                name: "budget-categories",
-                params: { budgetId: this.budgetId },
-            };
-        },
         loading() {
             return this.fetchBudget.loading;
         },
         budget() {
             return this.fetchBudget.data?.budget ?? {};
         },
+        categoryLink() {
+            return {
+                name: "budget-categories",
+                params: { budgetId: this.budgetId },
+            };
+        },
+        expensesLink(){
+            return {
+                name: 'budget-expenses',
+                params: { budgetId: this.budgetId}
+            }
+        }
     },
     created() {
         this.fetchBudget = useFetch(`/api/budgets/${this.budgetId}`);

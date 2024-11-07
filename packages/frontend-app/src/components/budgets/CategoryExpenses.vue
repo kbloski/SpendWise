@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import CategoryExpenseListItem from './CategoryExpenseListItem.vue';
+import CategoryExpenseListItem from './ExpenseListItem.vue';
 import useFetch from '../../hooks/useFetch';
 
 export default {

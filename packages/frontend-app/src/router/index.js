@@ -13,6 +13,7 @@ const CategoryExpenses = () =>
 const Reports = () => import("../pages/Reports.vue");
 const Support = () => import("../pages/Support.vue");
 const NotFound = () => import("../pages/NotFound.vue");
+const BudgetExpenses = () => import('../components/budgets/BudgetExpenses.vue')
 
 const router = createRouter({
   history: createWebHistory(),
@@ -54,6 +55,11 @@ const router = createRouter({
                     },
                   ],
                 },
+                {
+                  path: "expenses",
+                  name: "budget-expenses",
+                  component: BudgetExpenses
+                }
               ],
             },
             { path: "reports", component: Reports },
