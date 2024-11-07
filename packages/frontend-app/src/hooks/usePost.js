@@ -24,16 +24,17 @@ export default function usePost(
     const data = ref(null)
     const token = ref(null)
 
-    async function postData( body , newUrl = fullUrl.value){
+    function postData( body , newUrl = fullUrl.value){
         loading.value = true;
         error.value = null;
+        default_options.body = null;
        
         
         token.value = store.dispatch('auth/getToken')
         if (token.value) default_options.headers.authorization = `Bearer ${token.value}`;
         default_options.body = JSON.stringify( body );
 
-        await fetch(
+        fetch(
             newUrl,
             default_options,
         )

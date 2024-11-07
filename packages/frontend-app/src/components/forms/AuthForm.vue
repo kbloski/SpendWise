@@ -129,7 +129,7 @@ export default {
 
         async function onSumitLogin(event) {
             event.preventDefault();
-            await postLogin.postData( {
+            postLogin.postData( {
                 email: email.value,
                 password: password.value
             })
@@ -142,9 +142,14 @@ export default {
 
         async function onSubmitRegister(event) {
             event.preventDefault();
-            await postRegister.postData({
+
+            if (password.value !== confirmedPassword.value) return;
+            // Error
+
+            postRegister.postData(
+                {
                 username: username.value,
-                email: username.email,
+                email: email.value,
                 password: password.value,
             })
             // if (!po)
