@@ -1,13 +1,13 @@
 import { computed, reactive, ref } from "vue";
 import store from '../store/index';
 
-export default function usePach(
+export default function usePatch(
     url = '/',
     headers = {
         "Content-Type" : 'application/json'
     }
 ){
-    const fullUrl = computed( ()=> 'http://locahost:8081' + url);
+    const fullUrl = computed( ()=> 'http://localhost:8081' + url);
     const default_options = {
         method: "PATCH",
         headers,
@@ -25,7 +25,7 @@ export default function usePach(
     async function patchData( body, newUrl = fullUrl.value){
         loading.value = true,
         error.value = null;
-        token.value = store.dispatch('auth/getToken')
+        token.value = store.getters['auth/getToken']
 
         if(token.value) default_options.headers.authorization = "Bearer "+ token.value;
         default_options.body = JSON.stringify( body );

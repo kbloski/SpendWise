@@ -1,7 +1,7 @@
 <template>
     <div class="form-control">
         <input 
-            type="text"
+            :type="typeInput"
             :id="idVal"
             :name="name"
             placeholder=""
@@ -16,7 +16,7 @@
 
 <script>
 export default {
-    props: ['id', "name", 'modelValue',"disabled"],
+    props: ['id', "name", 'modelValue',"disabled", 'type'],
     emits: ['update:modelValue'],
     data(){
         return {
@@ -24,6 +24,9 @@ export default {
         }
     },
     computed: {
+        typeInput(){
+            return this.$props.type ?? 'text'
+        },
         idVal(){
             return this.$props.id ?? `random-id-${Math.random()}`
         }

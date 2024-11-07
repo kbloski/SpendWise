@@ -24,8 +24,12 @@ router.patch(buildApiPath("users", "me"), async (req, res) => {
         if (!req.user) return sendErrorResponse(res, 401);
 
         const { password, username } = req.body;
-        if (!password && !username) return sendErrorResponse( 
-            res, 400, "Please provide email or password to update." );
+        if (
+            (!password && !username) ||
+            username === '' ||
+            password === ""
+        ) return sendErrorResponse( 
+            res, 400, "Please provide username or password to update." );
 
         const isUpdated = await userController.updateById(
             req.user.id, { password: password, username: username });
