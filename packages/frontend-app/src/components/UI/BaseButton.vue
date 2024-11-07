@@ -5,8 +5,8 @@
         </div>
         <span class="icon"> > </span>
     </button>
-    <span class="span-container-link">
-        <router-link :to="toLink" v-if="isLink">
+    <span class="span-container-link" v-else>
+        <router-link :to="toLink">
             <div class="inner-slot">
                 <slot></slot>
             </div>

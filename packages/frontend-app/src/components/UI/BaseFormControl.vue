@@ -7,6 +7,8 @@
             placeholder=""
             v-on:input="changeValue"
             v-bind:value="value"
+            :disabled="!!disabled"
+            :aria-hidden="!!disabled"
         />
         <label :for="idVal"><slot></slot></label>
     </div>
@@ -14,7 +16,7 @@
 
 <script>
 export default {
-    props: ['id', "name", 'modelValue'],
+    props: ['id', "name", 'modelValue',"disabled"],
     emits: ['update:modelValue'],
     data(){
         return {
@@ -71,5 +73,9 @@ input:focus + label,
 input:not(:placeholder-shown) + label{
     transform: translate(100%, 50%);
     opacity: 0;
+}
+
+input:disabled + label {
+    color: rgb(122, 122, 122)
 }
 </style>
