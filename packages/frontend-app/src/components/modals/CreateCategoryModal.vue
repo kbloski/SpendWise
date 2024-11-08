@@ -43,11 +43,9 @@ export default {
         
         watch(created, () => {
             if (!created.value) return;
-            created.value = null;
             postBudget.clearResponse()
             name.value = ""
-            store.dispatch("categories/refreshFetchGet");
-
+            store.dispatch("refresh/triggerRefreshCategories");
             categoryModal.value.closeModal();
         });
 

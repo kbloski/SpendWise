@@ -31,6 +31,10 @@
                         <span>Last update</span>
                         <span>{{ updateDate }}</span>
                     </div>
+                    <div>
+                        <span>Total</span>
+                        <span>{{ total }} zł</span>
+                    </div>
                 </section>
             </div>
             <div class="actions">
@@ -59,23 +63,33 @@ export default {
     data() {
         return {
             fetchBudget: useFetch(`/api/budgets/${this.budgetId}`),
+            fetchTotal: useFetch('/api/budgets/'+this.budgetId+'/summary')
         };
     },
     watch: {
         budgetId(){
             this.fetchBudget.setNewUrl( '/api/budgets/'+ this.budgetId )
+        },
+        isNeedTotalRefresh(val){
+            if (val) this.fetchTotal.refetch()
         }
     },
     computed: {
+        isNeedTotalRefresh(){
+            return this.$store.getters['refresh/isRefreshExpensesNeeded']
+        },
+        total(){
+            return this.fetchTotal.data?.total
+        },
         errorMessage() {
-            return this.fetchBudget.error;
+            return this.fetchBudget.error ?? this.fetchTotal.error;
         },
         createDate() {
             const date = new Date(this.budget.createdAt);
             return formatDate(date);
         },
         loading() {
-            return this.fetchBudget.loading;
+            return this.fetchBudget.loading || this.fetchTotal.loading 
         },
         updateDate() {
             const date = new Date(this.budget.updatedAt);

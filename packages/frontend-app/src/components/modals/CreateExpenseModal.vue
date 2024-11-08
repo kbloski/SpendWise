@@ -55,7 +55,7 @@ export default {
             description.value = ""
             amount.value = ""
 
-            store.dispatch("refresh/triggeRefreshExpenses");
+            store.dispatch("refresh/triggerRefreshExpenses");
 
             categoryModal.value.closeModal();
         });

@@ -49,7 +49,10 @@ export default {
     },
     computed:{
         needExpenseRefresh (){
-            return this.$store.getters['refresh/isRefreshExpensesNeeded']
+            const isNeeded =  this.$store.getters['refresh/isRefreshExpensesNeeded']
+            if (isNeeded) this.fetchExpenses?.refetch()
+            console.log(isNeeded)
+            return isNeeded
         },
         expenses(){
             const expenses = this.fetchExpenses?.data?.expenses ?? []

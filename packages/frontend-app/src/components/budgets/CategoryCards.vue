@@ -20,6 +20,7 @@ import { computed , watch} from 'vue';
 import { useRoute } from 'vue-router';
 import CategoryCardItem from './CategoryCardItem.vue';
 import { useStore } from 'vuex';
+import useFetch from '../../hooks/useFetch';
 
 export default {
     components: {
@@ -29,19 +30,21 @@ export default {
         const route = useRoute();
         const store = useStore();
         const budgetId = computed( () =>  route.params.budgetId )
+        const fetchCategories = useFetch( `/api/budgets/${budgetId.value}/categories` );
 
-        watch(
-            budgetId,
-            ()=> {
-                store.dispatch('categories/setFetchWithBudgetId', budgetId.value )
-            }, { immediate: true}
-        );
+        const loading = computed(() => fetchCategories.loading.value);
+        const error = computed( ()=> fetchCategories.error.value );
+        const categories = computed( ()=> fetchCategories.data.value?.categories);
 
-        const loading = computed(() => store.getters['categories/getLoading']);
-        const error = computed( ()=> store.getters['categories/getError']);
-        const categories = computed( ()=> store.getters['categories/getCategories']);
-
+        // Vuex -> refresh 
+        const refreshNeeded = computed( 
+            ()=> store.getters['refresh/isRefreshCategoriesNeeded']
+        )
+        watch( refreshNeeded,
+            () => fetchCategories.refetch()
+        )
         
+
         return {
             loading,    
             categories,

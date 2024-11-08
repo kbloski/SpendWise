@@ -114,6 +114,10 @@ Pobieranie podsumowania wydatków w określonym okresie.
 query = { peroid_start, peroid_end}
 
 
+GET /api/reports/all
+Pobieranie wszystkich wygenerowanych raportów
+
+
 
 =============================== TODO BOTTOM ============================
 7. Dodatkowe funkcjonalności
