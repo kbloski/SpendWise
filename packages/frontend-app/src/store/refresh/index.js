@@ -2,7 +2,7 @@ export default {
     namespaced: true,
     state(){
         return {
-            refreshExpensesNeeded: false
+            refreshExpensesNeeded: false,
         }
     },
     mutations: {
@@ -11,11 +11,12 @@ export default {
         }
     },
     actions : {
-        completeRefresh( ctx,_){
-            ctx.commit("SET_REFRESH_NEEDED", false)
-        },
         triggeRefreshExpenses(ctx, _){
             ctx.commit("SET_REFRESH_NEEDED", true)
+
+            setTimeout(
+                () => ctx.commit("SET_REFRESH_NEEDED", false), 1
+            );
         },
     },
     getters: {

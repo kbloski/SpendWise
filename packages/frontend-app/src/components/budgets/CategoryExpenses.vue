@@ -44,7 +44,7 @@ export default {
     },
     watch:{
         needExpenseRefresh( val ){
-            if(val) this.fetchExpenses.refetch()
+            if (val) this.fetchExpenses?.refetch()
         }
     },
     computed:{
