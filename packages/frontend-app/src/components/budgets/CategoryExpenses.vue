@@ -3,35 +3,54 @@
         <base-title>Lista kosztów kategorii</base-title>
         <base-error v-if="error">{{  error }}</base-error>
         <div v-else-if="loading">Loading...</div>
-        <ul v-else-if="expenses.length">
-            <list-item 
-                v-for="expense in expenses"
-                :key="expense.id"
-                :id="expense.id"
-                v-bind:amount="expense.amount"
-                :date="expense.date"
-                :user_id="expense.user_id"
-            >
-            </list-item>
-        </ul>
-        <base-info v-else title="Brak kosztów">Ta kategoria aktualnie nie posiada żadnych kosztów.</base-info>
+        <div v-else>
+            <create-expense-modal
+                :budgetId="budgetId"
+                :categoryId="categoryId"
+            ></create-expense-modal>
+            <ul v-if="expenses.length">
+                <list-item 
+                    v-for="expense in expenses"
+                    :key="expense.id"
+                    :id="expense.id"
+                    v-bind:amount="expense.amount"
+                    :date="expense.date"
+                    :user_id="expense.user_id"
+                >
+                </list-item>
+            </ul>
+            <base-info v-else title="Brak kosztów">Ta kategoria aktualnie nie posiada żadnych kosztów.</base-info>
+        </div>
     </div>
 </template>
 
 <script>
+import CreateExpenseModal from '../modals/CreateExpenseModal.vue';
 import CategoryExpenseListItem from './ExpenseListItem.vue';
 import useFetch from '../../hooks/useFetch';
+import { computed } from 'vue';
 
 export default {
     components:{
-        listItem: CategoryExpenseListItem
+        listItem: CategoryExpenseListItem,
+        CreateExpenseModal
     },
     data(){
         return {
-            fetchExpenses : {}
+            budgetId: null,
+            categoryId: null,
+            fetchExpenses : {},
+        }
+    },
+    watch:{
+        needExpenseRefresh( val ){
+            if(val) this.fetchExpenses.refetch()
         }
     },
     computed:{
+        needExpenseRefresh (){
+            return this.$store.getters['refresh/isRefreshExpensesNeeded']
+        },
         expenses(){
             const expenses = this.fetchExpenses?.data?.expenses ?? []
             return expenses
@@ -44,9 +63,11 @@ export default {
         }
     },
     created(){
-        const budgetId = this.$route.params.budgetId 
-        const categoryId = this.$route.params.categoryId 
-        this.fetchExpenses = useFetch(`/api/budgets/${budgetId}/categories/${categoryId}/expenses`)
+        this.budgetId = this.$route.params.budgetId 
+        this.categoryId = this.$route.params.categoryId
+        this.fetchExpenses = useFetch(
+            `/api/budgets/${this.budgetId}/categories/${this.categoryId}/expenses`
+        )
     },
 
 }

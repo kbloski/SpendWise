@@ -71,7 +71,7 @@ Usuwanie kategorii.
 4. Wydatki
 POST /api/budgets/:budgetId/categories/:categoryId/expenses
 Dodawanie nowego wydatku.
-{ amount, description*, category_id, user_id }
+{ amount, description*}
 
 GET /api/budgets/:budgetId/categories/:categoryId/expenses
 Pobieranie listy wydatków ze względu na kategorie

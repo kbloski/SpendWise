@@ -88,4 +88,9 @@ router.beforeEach((to, from, next) => {
   next();
 });
 
+// Czyszczenie statusu odświeżania
+router.afterEach( (to, from) => {
+  store.dispatch("refresh/completeRefresh");
+})
+
 export default router;
