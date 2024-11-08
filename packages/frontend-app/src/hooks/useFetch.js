@@ -1,9 +1,10 @@
 import { computed, reactive, ref, watch } from "vue";
 // import store from '../store/index.js'
 import { useStore } from "vuex";
+import { getLocalToken } from "../utils/localStore";
 
-export default function useFetch(url = "/", headers = {}) {
-  const fullUrl = ref('');
+export default function useFetch(url = null, headers = {}) {
+  const fullUrl = ref("");
   setNewUrl(url);
 
   const default_options = {
@@ -19,15 +20,25 @@ export default function useFetch(url = "/", headers = {}) {
     status: null,
     statusText: null,
   });
-  const store = useStore();
 
   function setNewUrl(url) {
-    fullUrl.value =  "http://localhost:8081" + url;
+    fullUrl.value = "http://localhost:8081" + url;
+  }
+
+  function clearResponse() {
+    response.ok = null;
+    response.status = null;
+    response.statusText = null;
+    error.value = null;
+    loading.value = false;
+    data.value = null;
   }
 
   async function fetchData() {
     loading.value = true;
-    const token = store?.getters["auth/getToken"];
+
+    const token = getLocalToken();
+
     if (token) default_options.headers.authorization = `Bearer ${token}`;
 
     fetch(fullUrl.value, default_options)
@@ -40,7 +51,7 @@ export default function useFetch(url = "/", headers = {}) {
       .finally(() => (loading.value = false));
   }
 
-  fetchData(); // First fetch
+  if (url) fetchData(); // First fetch
   watch([fullUrl], () => fetchData());
 
   return {
@@ -48,7 +59,7 @@ export default function useFetch(url = "/", headers = {}) {
     loading,
     response,
     error,
-    refetch: fetchData,
-    setNewUrl
+    refetch: () => fetchData(),
+    setNewUrl,
   };
 }

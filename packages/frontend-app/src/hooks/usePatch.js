@@ -24,13 +24,22 @@ export default function usePatch(
   });
   const token = ref(null);
 
+  function clearResponse() {
+    response.ok = null;
+    response.status = null;
+    response.statusText = null;
+    error.value = null;
+    loading.value = false;
+  }
+
   function setNewUrl(url) {
     fullUrl.value = "http://localhost:8081" + url;
   }
 
   async function patchData(body, newUrl = fullUrl.value) {
-    (loading.value = true), (error.value = null);
-    token.value = store.getters["auth/getToken"];
+    loading.value = true;
+    error.value = null;
+    token.value = getLocalToken();
 
     if (token.value)
       default_options.headers.authorization = "Bearer " + token.value;
