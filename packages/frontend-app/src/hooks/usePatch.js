@@ -1,52 +1,55 @@
 import { computed, reactive, ref } from "vue";
-import store from '../store/index';
+import store from "../store/index";
 
 export default function usePatch(
-    url = '/',
-    headers = {
-        "Content-Type" : 'application/json'
-    }
-){
-    const fullUrl = computed( ()=> 'http://localhost:8081' + url);
-    const default_options = {
-        method: "PATCH",
-        headers,
-        body: null
-    }
-    const loading = ref(false);
-    const error = ref(null);
-    const response = reactive({
-        ok: null,
-        status: null,
-        statusText: null
-    })
-    const token = ref(null)
-    
-    async function patchData( body, newUrl = fullUrl.value){
-        loading.value = true,
-        error.value = null;
-        token.value = store.getters['auth/getToken']
+  url = "/",
+  headers = {
+    "Content-Type": "application/json",
+  }
+) {
+  const fullUrl = ref("");
+  setNewUrl(url);
 
-        if(token.value) default_options.headers.authorization = "Bearer "+ token.value;
-        default_options.body = JSON.stringify( body );
+  const default_options = {
+    method: "PATCH",
+    headers,
+    body: null,
+  };
+  const loading = ref(false);
+  const error = ref(null);
+  const response = reactive({
+    ok: null,
+    status: null,
+    statusText: null,
+  });
+  const token = ref(null);
 
-        fetch(
-            newUrl,
-            default_options
-        ).then(res => {
-            response.status = res.status,
-            response.ok = res.ok
-            if(!res.ok) throw new Error( res.statusText);
-            
-        })
-        .catch( err => error.value = err.message)
-        .finally( () => loading.value = false)
-    }
+  function setNewUrl(url) {
+    fullUrl.value = "http://localhost:8081" + url;
+  }
 
-    return {
-        loading,
-        error,
-        response,
-        patchData
-    }
+  async function patchData(body, newUrl = fullUrl.value) {
+    (loading.value = true), (error.value = null);
+    token.value = store.getters["auth/getToken"];
+
+    if (token.value)
+      default_options.headers.authorization = "Bearer " + token.value;
+    default_options.body = JSON.stringify(body);
+
+    fetch(newUrl, default_options)
+      .then((res) => {
+        (response.status = res.status), (response.ok = res.ok);
+        if (!res.ok) throw new Error(res.statusText);
+      })
+      .catch((err) => (error.value = err.message))
+      .finally(() => (loading.value = false));
+  }
+
+  return {
+    loading,
+    error,
+    response,
+    patchData,
+    setNewUrl,
+  };
 }

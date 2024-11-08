@@ -8,7 +8,9 @@ export default function usePost(
         "Content-Type" : 'application/json'
     }
 ){
-    const fullUrl = computed( ()=> 'http://localhost:8081' + url);
+    const fullUrl = ref('')
+    setNewUrl(url)
+
     const default_options = {
         method: "POST",
         headers,
@@ -23,6 +25,11 @@ export default function usePost(
     });
     const data = ref(null)
     const token = ref(null)
+
+    
+  function setNewUrl(url) {
+    fullUrl.value = "http://localhost:8081" + url;
+  }
 
     function postData( body , newUrl = fullUrl.value){
         loading.value = true;
@@ -55,5 +62,6 @@ export default function usePost(
       error,
       response,
       postData,
+      setNewUrl
     };
 }
