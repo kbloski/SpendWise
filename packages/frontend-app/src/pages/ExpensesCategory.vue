@@ -24,11 +24,12 @@
     </div>
 </template>
 
+
+
 <script>
-import CreateExpenseModal from '../modals/CreateExpenseModal.vue';
+import CreateExpenseModal from '../modals/AddExpenseModal.vue';
 import CategoryExpenseListItem from './ExpenseListItem.vue';
-import useFetch from '../../hooks/useFetch';
-import { computed } from 'vue';
+import useFetch from '../hooks/useFetch';
 
 export default {
     components:{
@@ -51,7 +52,6 @@ export default {
         needExpenseRefresh (){
             const isNeeded =  this.$store.getters['refresh/isRefreshExpensesNeeded']
             if (isNeeded) this.fetchExpenses?.refetch()
-            console.log(isNeeded)
             return isNeeded
         },
         expenses(){
@@ -76,12 +76,12 @@ export default {
 }
 </script>
 
-<style>
 
+
+<style>
 ul {
     list-style: none;
     margin: 1rem;
     padding: 0;
 }
-
 </style>

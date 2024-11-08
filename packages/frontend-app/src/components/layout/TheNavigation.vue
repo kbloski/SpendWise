@@ -4,7 +4,6 @@
             <base-link to="/dashboard"><li>Dashboard</li></base-link>
             <base-link to="/user/profile"><li>My profile</li></base-link>
             <base-link to="/user/budgets"><li>Budgets</li></base-link>
-            <!-- <base-link to="/"><li>Summary</li></base-link> -->
             <base-link to="/support"><li>Support</li></base-link>
         </ul>
     </nav>

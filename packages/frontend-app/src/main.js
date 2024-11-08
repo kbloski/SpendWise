@@ -1,6 +1,6 @@
 import { createApp, defineAsyncComponent } from "vue";
 import App from "./App.vue";
-import router from "./router/index.js";
+import router from "./routes";
 import store from "./store/index.js";
 const BaseCard = defineAsyncComponent(() =>
   import("./components/UI/BaseCard.vue")

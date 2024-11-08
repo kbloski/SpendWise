@@ -7,33 +7,14 @@
 </template>
 
 <script>
-import MyBudgetsList from "../components/budgets/MyBudgetsList.vue";
+import MyBudgetsList from "../components/pages/MyBudgetsList.vue";
 
-import { watch, computed } from "vue";
+import { computed , provide } from "vue";
 import useFetch from "../hooks/useFetch.js";
 
 export default {
     components: {
         MyBudgetsList
     },  
-    setup() {
-        const fetchBudgets = useFetch('/api/budgets/me');
-        const budgetList = computed(()=>{
-            return fetchBudgets.data?.value?.budgets ?? [] 
-        })
-
-        function budgetLink(budget){
-            return {
-                name: "budget-details",
-                params: { budgetId: budget.id},
-            }
-        }
-
-        return {
-            loading: fetchBudgets.loading,
-            budgets: budgetList,
-            budgetLink
-        }
-    },
 };
 </script>

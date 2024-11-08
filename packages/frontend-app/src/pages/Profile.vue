@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import UserDetails from '../components/users/UserDetails.vue';
+import UserDetails from '../components/pages/UserDetails.vue';
 export default {
     components: {
         UserDetails

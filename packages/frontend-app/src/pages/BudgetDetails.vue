@@ -48,13 +48,13 @@
 </template>
 
 <script>
-import useFetch from "../../hooks/useFetch.js";
-import { formatDate } from "../../utils/dateUtils.js";
-import CreateCategoryModal from "../modals/CreateCategoryModal.vue";
+import useFetch from "../hooks/useFetch.js";
+import { formatDate } from "../utils/dateUtils.js";
+import AddBudgetModal from "../components/modals/AddBudgetModal.vue";
 
 export default {
     components: {
-        createCategory: CreateCategoryModal
+        createCategory: AddBudgetModal
     },
     props: [
         "budgetId",

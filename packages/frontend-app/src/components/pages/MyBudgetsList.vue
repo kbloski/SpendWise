@@ -21,7 +21,7 @@
 import { computed, provide } from 'vue';
 import useFetch from '../../hooks/useFetch';
 import MyBudgetsListItem from './MyBudgetsListItem.vue';
-import CreateBudgetModal from '../modals/CreateBudgetModal.vue';
+import CreateBudgetModal from '../modals/AddBudgetModal.vue';
 
 export default {
     components: {

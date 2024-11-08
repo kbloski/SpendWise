@@ -7,12 +7,12 @@
 </template>
 
 <script>
-import CategoryCards from './CategoryCards.vue';
-import CreateCategoryModal from '../modals/CreateCategoryModal.vue';
+import CategoryCards from '../components/pages/CategoriesCards.vue'
+import AddCategoryModal from '../components/modals/AddCategoryModal.vue';
 
 export default {
     components: {
-        createCategory: CreateCategoryModal,
+        createCategory: AddCategoryModal,
         CategoryCards
     }
 }

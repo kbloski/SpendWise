@@ -18,7 +18,7 @@
 <script>
 import { computed , watch} from 'vue';
 import { useRoute } from 'vue-router';
-import CategoryCardItem from './CategoryCardItem.vue';
+import CategoryCardItem from './CategoriesCardItem.vue';
 import { useStore } from 'vuex';
 import useFetch from '../../hooks/useFetch';
 

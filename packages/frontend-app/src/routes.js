@@ -1,19 +1,20 @@
 import { createRouter, createWebHistory } from "vue-router";
-import store from "../store/index.js";
+import store from "./store/index.js";
 
-const AuthPage = () => import("../pages/AuthPage.vue");
-const Profile = () => import("../pages/Profile.vue");
-const Dashboard = () => import("../pages/Dashboard.vue");
-const Budgets = () => import("../pages/Budgets.vue");
-const BudgetDetails = () => import("../components/budgets/BudgetDetails.vue");
-const BudgetCategories = () =>
-  import("../components/budgets/BudgetCategories.vue");
-const CategoryExpenses = () =>
-  import("../components/budgets/CategoryExpenses.vue");
-const Reports = () => import("../pages/Reports.vue");
-const Support = () => import("../pages/Support.vue");
-const NotFound = () => import("../pages/NotFound.vue");
-const BudgetExpenses = () => import('../components/budgets/BudgetExpenses.vue')
+const AuthPage = () => import("./pages/AuthPage.vue");
+const Profile = () => import("./pages/Profile.vue");
+const Dashboard = () => import("./pages/Dashboard.vue");
+const Budgets = () => import("./pages/Budgets.vue");
+const BudgetDetails = () => import("./pages/BudgetDetails.vue");
+const Categories = () =>
+  import("./pages/Categories.vue");
+const ExpensesCategory = () =>
+  import("./pages/ExpensesCategory.vue");
+const ExpensesAll = () => import('./pages/AllExpenses.vue')
+const Reports = () => import("./pages/Reports.vue");
+const Support = () => import("./pages/Support.vue");
+const NotFound = () => import("./pages/NotFound.vue");
+
 
 const router = createRouter({
   history: createWebHistory(),
@@ -46,19 +47,19 @@ const router = createRouter({
                 {
                   path: "categories",
                   name: "budget-categories",
-                  component: BudgetCategories,
+                  component: Categories,
                   children: [
                     {
                       path: ":categoryId/expenses",
                       name: "category-expenses",
-                      component: CategoryExpenses,
+                      component: ExpensesCategory,
                     },
                   ],
                 },
                 {
                   path: "expenses",
                   name: "budget-expenses",
-                  component: BudgetExpenses
+                  component: ExpensesAll
                 },
               ],
             },

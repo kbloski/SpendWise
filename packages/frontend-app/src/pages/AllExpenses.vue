@@ -18,7 +18,7 @@
 
 <script>
 import { computed } from 'vue';
-import useFetch from '../../hooks/useFetch';
+import useFetch from '../hooks/useFetch';
 import { useRoute } from 'vue-router';
 import ExpenseListItem from './ExpenseListItem.vue';
 
