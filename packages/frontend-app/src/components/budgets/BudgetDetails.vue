@@ -34,6 +34,7 @@
                 </section>
             </div>
             <div class="actions">
+                <create-category :budgetId="budgetId"></create-category>
                 <base-button :link="true" :to="categoryLink">Categories</base-button>
                 <base-button :link="true" :to="expensesLink">All Expenses</base-button>
             </div>
@@ -45,8 +46,12 @@
 <script>
 import useFetch from "../../hooks/useFetch.js";
 import { formatDate } from "../../utils/dateUtils.js";
+import CreateCategoryModal from "../modals/CreateCategoryModal.vue";
 
 export default {
+    components: {
+        createCategory: CreateCategoryModal
+    },
     props: [
         "budgetId",
         "categoryId"
@@ -58,7 +63,7 @@ export default {
     },
     watch: {
         budgetId(){
-            this.fetchBudget.setUrl( '/api/budgets/'+ this.budgetId )
+            this.fetchBudget.setNewUrl( '/api/budgets/'+ this.budgetId )
         }
     },
     computed: {
@@ -95,9 +100,6 @@ export default {
             }
         },
     },
-    // created() {
-    //     this.fetchBudget = useFetch(`/api/budgets/${this.budgetId}`);
-    // },
 };
 </script>
 

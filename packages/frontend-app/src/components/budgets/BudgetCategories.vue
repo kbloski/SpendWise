@@ -8,9 +8,11 @@
 
 <script>
 import CategoryCards from './CategoryCards.vue';
+import CreateCategoryModal from '../modals/CreateCategoryModal.vue';
 
 export default {
     components: {
+        createCategory: CreateCategoryModal,
         CategoryCards
     }
 }

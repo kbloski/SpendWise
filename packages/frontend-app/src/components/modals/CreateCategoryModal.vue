@@ -1,13 +1,11 @@
 <template>
     <div class="container">
-        <base-button @click="openModal">Create budget</base-button>
-        <base-modal :visible="false" ref="budgetModal">
-            <template v-slot:header>
-                Budget create
-            </template>
+        <base-button @click="openModal">Create category</base-button>
+        <base-modal :visible="false" ref="categoryModal">
+            <template v-slot:header> Category create </template>
             <template v-slot:default>
-                <base-form-control v-model="name">Name</base-form-control>
-                <br>
+                <base-form-control v-model="name">Category name</base-form-control>
+                <br />
                 <base-button @click="createBudget">Create</base-button>
             </template>
         </base-modal>
@@ -15,45 +13,53 @@
 </template>
 
 <script>
-import {computed, ref, watch, inject} from 'vue';
-import usePost from '../../hooks/usePost.js'
+import { computed, ref, watch, inject } from "vue";
+import usePost from "../../hooks/usePost.js";
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 
 export default {
-    setup(){
-        const budgetModal = ref(null)
-        const postBudget = usePost('/api/budgets/me');
-        const name = ref('')
-        const created = computed(()=> postBudget.response?.ok) 
-        const refreshBudgetList = inject('refreshBudgetList')
+    props: {
+        budgetId: {
+            required: true,
+        },
+    },
+    setup(props) {
+        const router = useRouter();
+        const store = useStore();
 
-        watch(
-            created,
-            () => {
-                if (!created.value) return;
-                 name.value = '',
-                refreshBudgetList()
-                budgetModal.value.closeModal()
-            }
-        )
-        
-        function openModal(){
-            budgetModal.value.openModal()
+        const categoryModal = ref(null);
+        let postBudget = usePost("/api/budgets/" + props.budgetId + "/categories");
+        const name = ref("");
+        const created = computed(() => postBudget.response?.ok);
+
+        function openModal() {
+            categoryModal.value.openModal();
         }
-
-        async function createBudget(){
+        
+        async function createBudget() {
             postBudget.postData({ name: name.value });
         }
+        
+        watch(created, () => {
+            if (!created.value) return;
+            created.value = null;
+            postBudget.clearResponse()
+            name.value = ""
+            store.dispatch("categories/refreshFetchGet");
 
+            categoryModal.value.closeModal();
+        });
 
         return {
             name,
-            budgetModal,
+            categoryModal,
             openModal,
             createBudget,
-            created
-        }
-    }
-}
+            created,
+        };
+    },
+};
 </script>
 
 <style>

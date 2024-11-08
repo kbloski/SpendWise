@@ -49,7 +49,7 @@ Pobieranie podsumowania wydatków w danym budżecie.
 3. Kategorie
 POST /api/budgets/:id/categories
 Tworzenie nowej kategorii wydatków w danym budżecie.
-{ name , budget_id }
+{ name }
 
 GET /api/budgets/:budgetId/categories
 Pobieranie listy kategorii dla konkretnego budżetu.

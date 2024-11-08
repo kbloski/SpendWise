@@ -16,10 +16,10 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed , watch} from 'vue';
 import { useRoute } from 'vue-router';
-import useFetch from '../../hooks/useFetch';
 import CategoryCardItem from './CategoryCardItem.vue';
+import { useStore } from 'vuex';
 
 export default {
     components: {
@@ -27,11 +27,21 @@ export default {
     },
     setup(){
         const route = useRoute();
-        const budgetId = computed(()=> route.params.budgetId);
-        const fetchCategories = useFetch(`/api/budgets/${budgetId.value}/categories`);
-        const loading = computed(() => fetchCategories.loading.value);
-        const error = computed(()=> fetchCategories.error.value)
-        const categories = computed(()=> fetchCategories.data.value?.categories)
+        const store = useStore();
+        const budgetId = computed( () =>  route.params.budgetId )
+
+        watch(
+            budgetId,
+            ()=> {
+                store.dispatch('categories/setFetchWithBudgetId', budgetId.value )
+            }, { immediate: true}
+        );
+
+        const loading = computed(() => store.getters['categories/getLoading']);
+        const error = computed( ()=> store.getters['categories/getError']);
+        const categories = computed( ()=> store.getters['categories/getCategories']);
+
+        
         return {
             loading,    
             categories,
