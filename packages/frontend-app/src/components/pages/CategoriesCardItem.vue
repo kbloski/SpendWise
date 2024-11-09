@@ -2,13 +2,20 @@
     <router-link :to="expensesLink">
         <li>
             <div>Category {{ name }}</div>
+            <modify-category-modal :categoryId="id"></modify-category-modal>
         </li>
     </router-link>
 </template>
 
 <script>
+import ModifyCategoryModal from '../modals/ModifyCategoryModal.vue';
+
+
 export default {
     props: ['id', 'name'],
+    components: {
+        ModifyCategoryModal
+    },
     computed: {
         expensesLink(){
             return {

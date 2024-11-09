@@ -1,7 +1,7 @@
 <template>
     <div class="container">
-        <base-button @click="openModal">Modify Category</base-button>
-        <base-modal :visible="false" ref="modalModifyCategory">
+        <base-button @click="openModal" v-on:open="openInit">Modify Category</base-button>
+        <base-modal :visible="false" ref="modalModifyCategory" @open="openInit">
             <template v-slot:header>Modify category</template>
             <template v-slot:default>
                 <base-form-control v-model="name">Name</base-form-control>
@@ -15,20 +15,21 @@
 <script>
 import { computed, ref, watch, inject } from "vue";
 import usePatch from '../../hooks/usePatch.js'
-import useFetch from '../../hooks/useFetch.js'
+import useFetch from "../../hooks/useFetch.js";
 
 export default {
     props: ['categoryId'],
     setup( props ) {
+        const categoryId = props.categoryId
         const modalModifyCategory = ref(null);
-        const patchCategory = usePatch("/api/categories/"+ props.categoryId);
-        const updated = computed(() => patchCategory.response?.ok);
+        const patchCategory = usePatch("/api/categories/"+ categoryId);
+        const name = ref(null);
 
-        const name = ref("");
+        function openInit(){}
+        const updated = computed(() => patchCategory.response?.ok);
 
         watch(updated, () => {
             if (!updated.value) return;
-
             name.value = "";
             patchCategory.clearResponse()
             modalModifyCategory.value.closeModal();
@@ -40,18 +41,15 @@ export default {
 
         async function updateBudget() {
             patchCategory.patchData(
-                { 
-                    name: name.value ,
-                }
-            );
+                {  name: name.value } );
         }
 
         return {
             name,
-            newOwnerEmail,
             modalModifyCategory,
             openModal,
             updateBudget,
+            openInit
         };
     },
 };

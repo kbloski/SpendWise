@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { computed, provide } from 'vue';
+import { computed, provide, watch } from 'vue';
 import { useStore } from 'vuex';
 import useFetch from '../../hooks/useFetch';
 import MyBudgetsListItem from './MyBudgetsListItem.vue';

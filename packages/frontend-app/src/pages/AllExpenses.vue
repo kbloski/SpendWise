@@ -20,7 +20,7 @@
 import { computed } from 'vue';
 import useFetch from '../hooks/useFetch';
 import { useRoute } from 'vue-router';
-import ExpenseListItem from './ExpenseListItem.vue';
+import ExpenseListItem from '../components/pages/ExpenseListItem.vue';
 
 export default {
     components: {

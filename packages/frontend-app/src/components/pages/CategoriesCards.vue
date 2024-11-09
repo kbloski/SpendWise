@@ -24,7 +24,7 @@ import useFetch from '../../hooks/useFetch';
 
 export default {
     components: {
-        CategoryCardItem
+        CategoryCardItem,
     },
     setup(){
         const route = useRoute();

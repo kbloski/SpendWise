@@ -93,6 +93,9 @@ router.patch(
 
                 const budgetDb = await budgetController.getById( Number(budget_id));
                 if (!budgetDb) return sendErrorResponse(res, 404, "Budget with id " + budget_id + ' not exist.')
+
+                const accessToBudget = budgetSharesController.isAccessUserToBudget( budgetDb, req.user)
+                if (!accessToBudget) return sendErrorResponse(res, 403, "Forbidden to budget with id " + budgetDb.id)
             }
 
             const categoryDb = await categoryController.getById( Number(id));

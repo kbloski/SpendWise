@@ -6,9 +6,9 @@
             :name="name"
             placeholder=""
             v-on:input="changeValue"
-            v-bind:value="value"
             :disabled="!!disabled"
             :aria-hidden="!!disabled"
+            v-model="value"
         />
         <label :for="idVal"><slot></slot></label>
     </div>
@@ -20,7 +20,7 @@ export default {
     emits: ['update:modelValue'],
     data(){
         return {
-            value: ''
+            value: this.modelValue
         }
     },
     computed: {

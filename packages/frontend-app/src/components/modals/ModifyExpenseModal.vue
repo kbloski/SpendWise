@@ -1,8 +1,8 @@
 <template>
     <div class="container">
-        <base-button @click="openModal">Modify Category</base-button>
+        <base-button @click="openModal">Modify Expense</base-button>
         <base-modal :visible="false" ref="modalModifyCategory">
-            <template v-slot:header>Modify category</template>
+            <template v-slot:header>Modify Expense</template>
             <template v-slot:default>
                 <base-form-control v-model="description">Description</base-form-control>
                 <base-form-control v-model="amount">Amount</base-form-control>
@@ -16,13 +16,14 @@
 <script>
 import { computed, ref, watch, inject } from "vue";
 import usePatch from '../../hooks/usePatch.js'
-import useFetch from '../../hooks/useFetch.js'
+import { useStore } from "vuex";
 
 export default {
-    props: ['categoryId'],
+    props: ['expenseId'],
     setup( props ) {
+        const store = useStore();
         const modalModifyCategory = ref(null);
-        const patchCategory = usePatch("/api/expenses/"+ props.categoryId);
+        const patchCategory = usePatch("/api/expenses/"+ props.expenseId);
         const updated = computed(() => patchCategory.response?.ok);
 
         const description = ref("");
@@ -34,6 +35,7 @@ export default {
             description.value = "";
             amount.value = '0'
             patchCategory.clearResponse()
+            store.dispatch('refresh/triggerRefreshExpenses')
             modalModifyCategory.value.closeModal();
         });
 
@@ -45,13 +47,14 @@ export default {
             patchCategory.patchData(
                 { 
                     description: description.value ,
+                    amount: amount.value,
                 }
             );
         }
 
         return {
             description,
-            newOwnerEmail,
+            amount,
             modalModifyCategory,
             openModal,
             updateBudget,
