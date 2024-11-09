@@ -5,6 +5,7 @@ import { isNumber } from '../utils/utils';
 import { budgetController, budgetSharesController, userController } from '../controllers/controllers';
 import BudgetShareType, { UserRoles } from '../types/BudgetShareType';
 import { sequelize } from '../utils/db';
+import UserType from '../types/UserType';
 
 const router = Router();
 
@@ -23,8 +24,12 @@ router.get(
             if (!accessToBudget) return sendErrorResponse(res, 403);
 
             const users = await budgetSharesController.getAllUsersforBudget( budgetDb);
-
-            return sendSuccessResponse(res, 200, { users })
+            const usersToSend = users.map( u => {
+                const user : Partial<UserType> = u;
+                delete user.password;
+                return user;
+            })
+            return sendSuccessResponse(res, 200, { users : usersToSend })
         } catch (err){
             return sendErrorResponse(res, 500)
         }

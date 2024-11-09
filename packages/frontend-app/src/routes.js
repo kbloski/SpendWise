@@ -12,6 +12,7 @@ const ExpensesCategory = () =>
   import("./pages/ExpensesCategory.vue");
 const ExpensesAll = () => import('./pages/AllExpenses.vue')
 const Reports = () => import("./pages/Reports.vue");
+const Shares = () => import('./pages/Shares.vue')
 const Support = () => import("./pages/Support.vue");
 const NotFound = () => import("./pages/NotFound.vue");
 
@@ -61,6 +62,11 @@ const router = createRouter({
               name: "budget-expenses",
               component: ExpensesAll,
             },
+            {
+              path: 'shares',
+              name: 'budget-shares',
+              component: Shares
+            }
           ],
         },
       ],

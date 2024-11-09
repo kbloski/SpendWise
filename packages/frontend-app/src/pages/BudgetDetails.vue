@@ -42,6 +42,7 @@
                 <create-category :budgetId="budgetId"></create-category>
                 <base-button :link="true" :to="categoryLink">Categories</base-button>
                 <base-button :link="true" :to="expensesLink">All Expenses</base-button>
+                <base-button :link="true" :to="sharesLink">Shares</base-button>
                 <add-report-modal :budgetId="budgetId"></add-report-modal>
 
             </div>
@@ -120,6 +121,12 @@ export default {
                 params: { budgetId: this.budgetId}
             }
         },
+        sharesLink(){
+            return {
+                name: 'budget-shares',
+                params: { budgetId: this.budgetId}
+            }
+        }
     },
 };
 </script>
