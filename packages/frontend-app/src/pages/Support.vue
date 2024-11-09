@@ -1,4 +1,4 @@
-<template>
++<template>
     <base-card>
         <side-title>Potrzebujesz wsparcia?</side-title>
         <support-form></support-form>

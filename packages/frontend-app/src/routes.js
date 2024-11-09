@@ -26,6 +26,7 @@ const router = createRouter({
     { path: "/", redirect: "/auth?register=true" },
     { path: "/auth", component: AuthPage, meta: { needsAuth: false } },
     { path: "/dashboard", component: Dashboard, meta: { needsAuth: true } },
+    { path: "/reports", component: Reports },
     {
       meta: {
         needsAuth: true,
@@ -59,11 +60,10 @@ const router = createRouter({
                 {
                   path: "expenses",
                   name: "budget-expenses",
-                  component: ExpensesAll
+                  component: ExpensesAll,
                 },
               ],
             },
-            { path: "reports", component: Reports },
           ],
         },
       ],

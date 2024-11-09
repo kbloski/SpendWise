@@ -27,8 +27,8 @@
 
 
 <script>
-import CreateExpenseModal from '../modals/AddExpenseModal.vue';
-import CategoryExpenseListItem from './ExpenseListItem.vue';
+import CreateExpenseModal from '../components/modals/AddExpenseModal.vue';
+import CategoryExpenseListItem from '../components/pages/ExpenseListItem.vue';
 import useFetch from '../hooks/useFetch';
 
 export default {
