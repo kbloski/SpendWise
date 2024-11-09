@@ -43,8 +43,8 @@
                 <base-button :link="true" :to="categoryLink">Categories</base-button>
                 <base-button :link="true" :to="expensesLink">All Expenses</base-button>
                 <base-button :link="true" :to="sharesLink">Shares</base-button>
+                <base-button @click="onDelete">Delete</base-button>                
                 <add-report-modal :budgetId="budgetId"></add-report-modal>
-
             </div>
         </div>
         <router-view :id="budget.id"></router-view>
@@ -53,6 +53,7 @@
 
 <script>
 import useFetch from "../hooks/useFetch.js";
+import useDelete from '../hooks/useDelete.js'
 import { formatDate } from "../utils/dateUtils.js";
 import AddCategoryModal from '../components/modals/AddCategoryModal.vue'
 import AddReportModal from "../components/modals/AddReportModal.vue";
@@ -71,7 +72,8 @@ export default {
     data() {
         return {
             fetchBudget: useFetch(`/api/budgets/${this.budgetId}`),
-            fetchTotal: useFetch('/api/budgets/'+this.budgetId+'/summary')
+            fetchTotal: useFetch('/api/budgets/'+this.budgetId+'/summary'),
+            deleteBudget: useDelete()
         };
     },
     watch: {
@@ -80,9 +82,18 @@ export default {
         },
         isNeedTotalRefresh(val){
             if (val) this.fetchTotal.refetch()
+        },
+        isDeleted( val ){
+            if (val) {
+                this.$store.dispatch('refresh/triggerRefreshBudgets')
+                this.$router.replace('/budgets')
+            }
         }
     },
     computed: {
+        isDeleted(){
+            return this.deleteBudget.response?.ok
+        },  
         isNeedTotalRefresh(){
             return this.$store.getters['refresh/isRefreshExpensesNeeded']
         },
@@ -128,6 +139,11 @@ export default {
             }
         }
     },
+    methods: {
+        onDelete(){
+            this.deleteBudget.setNewUrl('/api/budgets/'+ this.budgetId);
+        }
+    }
 };
 </script>
 
