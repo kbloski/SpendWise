@@ -15,11 +15,12 @@
 <script>
 import { computed, ref, watch, inject } from "vue";
 import usePatch from '../../hooks/usePatch.js'
-import useFetch from "../../hooks/useFetch.js";
+import { useStore } from "vuex";
 
 export default {
     props: ['categoryId'],
     setup( props ) {
+        const store = useStore()
         const categoryId = props.categoryId
         const modalModifyCategory = ref(null);
         const patchCategory = usePatch("/api/categories/"+ categoryId);
@@ -32,6 +33,7 @@ export default {
             if (!updated.value) return;
             name.value = "";
             patchCategory.clearResponse()
+            store.dispatch('refresh/triggerRefreshCategories')
             modalModifyCategory.value.closeModal();
         });
 
