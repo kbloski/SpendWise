@@ -72,7 +72,7 @@ router.get(
 
             const ids = budgetsDb.map( b => b.id );
 
-            const reports = await reportController.getAll("DESC", "id", { id: {
+            const reports = await reportController.getAll("DESC", "id", { budget_id: {
                 [Op.in] : ids
             } });;
 
