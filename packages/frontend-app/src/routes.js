@@ -26,48 +26,46 @@ const router = createRouter({
     { path: "/", redirect: "/auth?register=true" },
     { path: "/auth", component: AuthPage, meta: { needsAuth: false } },
     { path: "/dashboard", component: Dashboard, meta: { needsAuth: true } },
-    { path: "/reports", component: Reports },
     {
       meta: {
         needsAuth: true,
       },
       path: "/user",
       props: true,
+      children: [{ path: "profile", component: Profile }],
+    },
+    {
+      path: "/budgets",
+      component: Budgets,
       children: [
-        { path: "profile", component: Profile },
         {
-          path: "budgets",
-          component: Budgets,
+          path: ":budgetId",
+          props: true,
+          name: "budget-details",
+          component: BudgetDetails,
           children: [
             {
-              path: ":budgetId",
-              props: true,
-              name: "budget-details",
-              component: BudgetDetails,
+              path: "categories",
+              name: "budget-categories",
+              component: Categories,
               children: [
                 {
-                  path: "categories",
-                  name: "budget-categories",
-                  component: Categories,
-                  children: [
-                    {
-                      path: ":categoryId/expenses",
-                      name: "category-expenses",
-                      component: ExpensesCategory,
-                    },
-                  ],
-                },
-                {
-                  path: "expenses",
-                  name: "budget-expenses",
-                  component: ExpensesAll,
+                  path: ":categoryId/expenses",
+                  name: "category-expenses",
+                  component: ExpensesCategory,
                 },
               ],
+            },
+            {
+              path: "expenses",
+              name: "budget-expenses",
+              component: ExpensesAll,
             },
           ],
         },
       ],
     },
+    { path: "/reports", component: Reports },
     { path: "/support", component: Support, meta: { needsAuth: true } },
     { path: "/:notFound(.*)", component: NotFound },
   ],

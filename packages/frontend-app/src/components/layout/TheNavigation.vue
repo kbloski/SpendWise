@@ -3,7 +3,7 @@
         <ul>
             <base-link to="/dashboard"><li>Dashboard</li></base-link>
             <base-link to="/user/profile"><li>My profile</li></base-link>
-            <base-link to="/user/budgets"><li>Budgets</li></base-link>
+            <base-link to="/budgets"><li>Budgets</li></base-link>
             <base-link to="/reports"><li>Reports</li></base-link>
             <base-link to="/support"><li>Support</li></base-link>
         </ul>
