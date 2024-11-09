@@ -3,11 +3,13 @@
         <li>
             <div>Category {{ name }}</div>
             <modify-category-modal :categoryId="id"></modify-category-modal>
+            <button @click="onDelete">Delete</button>
         </li>
     </router-link>
 </template>
 
 <script>
+import useDelete from '../../hooks/useDelete';
 import ModifyCategoryModal from '../modals/ModifyCategoryModal.vue';
 
 
@@ -16,7 +18,26 @@ export default {
     components: {
         ModifyCategoryModal
     },
+    data(){
+        return {
+            deleteBudget: useDelete()
+        }
+    },
+    methods: {
+        onDelete(){
+            this.deleteBudget.setNewUrl('/api/categories/'+this.id)
+        }
+    },
+    watch: {
+        isDelted( val ){
+            if (!val) return;
+            this.$store.dispatch('refresh/triggerRefreshCategories');
+        }
+    },
     computed: {
+        isDelted(){
+            return this.deleteBudget.response.ok;
+        },
         expensesLink(){
             return {
                 name: 'category-expenses',
