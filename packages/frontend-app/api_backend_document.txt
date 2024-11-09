@@ -97,6 +97,7 @@ Pobieranie szczegółów konkretnego wydatku.
 5. Współdzielenie budżetów
 PUT /api/budgets/:id/shares
 Zapraszanie innych użytkowników do współdzielenia budżetu.
+{ role, email}
 
 GET /api/budgets/:id/shares
 Pobieranie listy użytkowników współdzielących dany budżet.

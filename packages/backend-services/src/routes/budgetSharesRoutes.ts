@@ -40,8 +40,9 @@ router.put(
             if (!req.user) return sendErrorResponse(res, 401);
             const {id} = req.params;
             if(!isNumber(id)) return sendErrorResponse(res, 400, "Invalid type id, id must be a number.");
-            const { user_id, role } : BudgetShareType = req.body;
-            if (!user_id) return sendErrorResponse(res, 400, "Please provide user_id.");
+
+            const { email, role } : any = req.body;
+            if (!email) return sendErrorResponse(res, 400, "Please provide user_id.");
 
             if (
                 role && !isNumber(role) ||
@@ -58,8 +59,8 @@ router.put(
             const budgetDb = await budgetController.getById( Number(id));
             if (!budgetDb) return sendErrorResponse(res, 404, "Budget not found");
 
-            const userDb = await userController.getById( Number(user_id));
-            if (!userDb) return sendErrorResponse(res, 404, "User not found")
+            const userDb = await userController.getByEmail( email )
+            if (!userDb) return sendErrorResponse(res, 404, "User with email "+email+ ' not exist')
 
             const accessToBudget = await budgetSharesController.isAccessUserToBudget(budgetDb, req.user);
             if (!accessToBudget) return sendErrorResponse(res, 403);
@@ -71,7 +72,7 @@ router.put(
             } else {
                 await budgetSharesController.findOrCreate({
                     budget_id: budgetDb.id,
-                    user_id: Number(user_id)
+                    user_id: userDb.id
                 })
             }
             transaction.commit()

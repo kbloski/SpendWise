@@ -3,12 +3,18 @@
         <div>
             <span>{{ name }}</span>
             <router-link :to="budgetLink">View</router-link>
+            <share-budget-modal :budgetId="id"></share-budget-modal>
         </div>
     </li>
 </template>
 
 <script>
+import ShareBudgetModal from '../modals/ShareBudgetModal.vue';
+
 export default {
+    components: {
+        ShareBudgetModal,
+    },
     props: ['name', 'id'],
     computed: {
         budgetLink(){
