@@ -108,7 +108,7 @@ Usuwanie użytkownika z listy współdzielących budżet.
 
 
 6. Raporty
-GET /api/reports/
+GET /api/budgets/:id/reports
 Generowanie raportu wydatków dla danego budżetu w określonym okresie.
 Pobieranie podsumowania wydatków w określonym okresie.
 query = { peroid_start, peroid_end}

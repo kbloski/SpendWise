@@ -43,6 +43,9 @@ export default function useFetch(url = null, headers = {}) {
 
     fetch(fullUrl.value, default_options)
       .then((res) => {
+        response.ok = res.ok;
+        response.status = res.status;
+        response.statusText = res.statusText;
         if (!res.ok) throw new Error(res.statusText);
         return res.json();
       })
@@ -61,5 +64,6 @@ export default function useFetch(url = null, headers = {}) {
     error,
     refetch: () => fetchData(),
     setNewUrl,
+    clearResponse,
   };
 }

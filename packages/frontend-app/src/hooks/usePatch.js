@@ -47,7 +47,10 @@ export default function usePatch(
 
     fetch(newUrl, default_options)
       .then((res) => {
-        (response.status = res.status), (response.ok = res.ok);
+        response.ok = res.ok;
+        response.status = res.status;
+        (response.statusText = res.statusText((response.status = res.status))),
+          (response.ok = res.ok);
         if (!res.ok) throw new Error(res.statusText);
       })
       .catch((err) => (error.value = err.message))
@@ -60,5 +63,6 @@ export default function usePatch(
     response,
     patchData,
     setNewUrl,
+    clearResponse,
   };
 }

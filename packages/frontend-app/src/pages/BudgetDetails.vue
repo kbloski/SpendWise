@@ -41,6 +41,8 @@
                 <create-category :budgetId="budgetId"></create-category>
                 <base-button :link="true" :to="categoryLink">Categories</base-button>
                 <base-button :link="true" :to="expensesLink">All Expenses</base-button>
+                <add-report-modal :budgetId="budgetId"></add-report-modal>
+                
             </div>
         </div>
         <router-view :id="budget.id"></router-view>
@@ -51,10 +53,12 @@
 import useFetch from "../hooks/useFetch.js";
 import { formatDate } from "../utils/dateUtils.js";
 import AddBudgetModal from "../components/modals/AddBudgetModal.vue";
+import AddReportModal from "../components/modals/AddReportModal.vue";
 
 export default {
     components: {
-        createCategory: AddBudgetModal
+        createCategory: AddBudgetModal,
+        AddReportModal
     },
     props: [
         "budgetId",
