@@ -28,7 +28,6 @@ export default function useDelete(url = null, headers = {}) {
     response.statusText = null;
     error.value = null;
     loading.value = false;
-    data.value = null;
   }
 
   async function deleteData() {
@@ -44,9 +43,7 @@ export default function useDelete(url = null, headers = {}) {
         response.status = res.status;
         response.statusText = res.statusText;
         if (!res.ok) throw new Error(res.statusText);
-        return res.json();
       })
-      .then((d) => (data.value = d))
       .catch((err) => (error.value = err.message))
       .finally(() => (loading.value = false));
   }
