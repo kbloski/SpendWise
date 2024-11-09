@@ -32,6 +32,14 @@ export default {
         isDelted( val ){
             if (!val) return;
             this.$store.dispatch('refresh/triggerRefreshCategories');
+            
+            
+            this.$router.push({
+                name: 'budget-categories',
+                params: {
+                    budgetId: this.$route.params.budgetId
+                }
+            })
         }
     },
     computed: {
