@@ -16,10 +16,12 @@
 <script>
 import { computed, ref, watch, inject } from "vue";
 import usePatch from '../../hooks/usePatch.js'
+import { useStore } from "vuex";
 
 export default {
     props: ['budgetId'],
     setup( props ) {
+        const store = useStore()
         const budgetModal = ref(null);
         const patchBudget = usePatch("/api/budgets/"+ props.budgetId);
         const updated = computed(() => patchBudget.response?.ok);

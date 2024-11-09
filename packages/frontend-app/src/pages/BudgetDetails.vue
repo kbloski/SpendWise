@@ -83,8 +83,11 @@ export default {
         budgetId(){
             this.fetchBudget.setNewUrl( '/api/budgets/'+ this.budgetId )
         },
-        isNeedTotalRefresh(val){
-            if (val) this.fetchTotal.refetch()
+        isNeededRefresh(val){
+            if (val) {
+                this.fetchTotal.refetch()
+                this.fetchBudget.refetch()
+            }
         },
         isDeleted( val ){
             if (val) {
@@ -97,8 +100,10 @@ export default {
         isDeleted(){
             return this.deleteBudget.response?.ok
         },  
-        isNeedTotalRefresh(){
-            return this.$store.getters['refresh/isRefreshExpensesNeeded']
+        isNeededRefresh(){
+            const result = this.$store.getters['refresh/isRefreshExpensesNeeded'] || this.$store.getters['refresh/isRefreshBudgetsNeeded']
+
+            return result
         },
         total(){
             return this.fetchTotal.data?.total
