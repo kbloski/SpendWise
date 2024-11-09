@@ -8,4 +8,7 @@ export default {
   isRefreshExpensesNeeded(state) {
     return !!state.refreshExpensesNeeded;
   },
+  isRefreshSharesNeeded(state) {
+    return !!state.refreshSharesNeeded;
+  },
 };

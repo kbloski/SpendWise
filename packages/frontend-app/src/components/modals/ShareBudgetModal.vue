@@ -2,7 +2,7 @@
     <div class="container">
         <button @click="openModal">Share</button>
         <base-modal :visible="false" ref="shareModal">
-            <template v-slot:header> Budget create </template>
+            <template v-slot:header> Share </template>
             <template v-slot:default>
                 <base-form-control v-model="email">Provide user email</base-form-control>
                 <br />
@@ -13,8 +13,9 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { getLocalToken } from '../../utils/localStore';
+import { useStore } from 'vuex';
 
 export default {
     props: {
@@ -23,12 +24,18 @@ export default {
         }
     },
     setup( props ){
+        const store = useStore()
         const shareModal = ref();
         const userEmail = ref('');
         const loading = ref(false);
         const error = ref(null);
         const ok = ref(null)
         const email = ref('')
+
+        watch( ok , () => {
+            if (!ok.value) return;
+            store.dispatch('refresh/triggerRefreshShares')
+        })
 
         function openModal(){
             shareModal.value.openModal()

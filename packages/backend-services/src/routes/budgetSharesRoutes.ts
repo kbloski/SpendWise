@@ -98,6 +98,8 @@ router.delete(buildApiPath("budgets", ":id", "shares", ":userId"), async (req, r
             return sendErrorResponse(
                 res, 400, "Invalid type id, id must be a number" );
 
+        if (Number(userId) === req.user.id) return sendErrorResponse(res, 403, "You can't delete your access.") 
+
         const budgetDb = await budgetController.getById(Number(id));
         if (!budgetDb) return sendErrorResponse(res, 404, "Budget not found");
         

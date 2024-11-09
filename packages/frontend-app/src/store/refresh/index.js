@@ -9,6 +9,7 @@ export default {
             refreshBudgetsNeeded: false,
             refreshCategoriesNeeded: false,
             refreshExpensesNeeded: false,
+            refreshSharesNeeded: false,
         }
     },
     mutations,

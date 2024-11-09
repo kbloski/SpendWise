@@ -13,4 +13,8 @@ export default {
     ctx.commit("SET_REFRESH__EXPENSES_NEEDED", true);
     setTimeout(() => ctx.commit("SET_REFRESH__EXPENSES_NEEDED", false), 0);
   },
+  triggerRefreshShares(ctx, _) {
+    ctx.commit("SET_REFRESH__SHARES_NEEDED", true);
+    setTimeout(() => ctx.commit("SET_REFRESH__SHARES_NEEDED", false), 0);
+  },
 };

@@ -8,4 +8,7 @@ export default {
   SET_REFRESH__EXPENSES_NEEDED(state, payload) {
     state.refreshExpensesNeeded = payload;
   },
+  SET_REFRESH__SHARES_NEEDED(state, payload) {
+    state.refreshSharesNeeded = payload;
+  },
 };
