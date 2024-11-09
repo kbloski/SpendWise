@@ -117,8 +117,10 @@ export default {
         const postRegister = usePost( '/api/register' );
         const postLogin = usePost( '/api/login' );
 
-        computed(()=>{
-            console.log(props.register)
+        watch( [postLogin.response, postLogin.data] , ()=>{
+            if (!postLogin.response?.ok || !postLogin.data?.value?.token) return;
+            store.dispatch('auth/setToken', postLogin.data.value.token)
+            router.push('/dashboard')
         })
 
         const username = ref("");
@@ -129,15 +131,13 @@ export default {
 
         async function onSumitLogin(event) {
             event.preventDefault();
+            postLogin.clearResponse()
             postLogin.postData( {
                 email: email.value,
                 password: password.value
             })
 
-            if (!postLogin.response.ok || !postLogin.data?.value?.token) return;
-
-            store.dispatch('auth/setToken', postLogin.data.value.token)
-            router.push('/dashboard')
+            
         }
 
         async function onSubmitRegister(event) {
