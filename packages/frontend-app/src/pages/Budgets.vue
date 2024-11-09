@@ -9,9 +9,6 @@
 <script>
 import MyBudgetsList from "../components/pages/MyBudgetsList.vue";
 
-import { computed , provide } from "vue";
-import useFetch from "../hooks/useFetch.js";
-
 export default {
     components: {
         MyBudgetsList

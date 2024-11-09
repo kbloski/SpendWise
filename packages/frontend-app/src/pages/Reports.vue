@@ -3,30 +3,21 @@
         <side-title>All Reports</side-title>
         <base-error v-if="error">{{ error }}</base-error>
         <div v-else-if="loading">Loading... </div>
-        <ul v-else-if="reports.length">
-            <li
-                v-for="report in reports"
-                :key="report.id"
-            >
-                <div>
-                    Budget: {{  report.budget_id }}
-                </div>
-                <div>
-               Total Expenses: {{  report.total_expenses }}
-                </div>
-                <div>
-               Start: {{  report.period_start }}
-                </div>
-                <div>
-               End:  {{  report.period_end }}
-                </div>
-                <div>
-               Created:  {{  report.createdAt }}
-                </div>
-                <button @click="onDelete(report.id)">
-                    Delete
-                </button>
-            </li>
+
+        <ul v-if="reports?.length">
+            <transition-group tag="ul" name="report-list">
+                <report-list-item
+                    v-for="report in reports"
+                    :key="report.id"
+                    :id="report.id"
+                    :budgetId="report.budget_id"
+                    :totalExpenses="report.total_expenses"
+                    :periodStart="report.period_start"
+                    :periodEnd="report.period_end"
+                    :created="report.createdAt"
+                    @delete="onDelete"
+                ></report-list-item>
+            </transition-group>
         </ul>
         <base-info v-else title="Brak raportów">Brak raportów dla posiadanych budżetów.</base-info>
     </div>
@@ -37,8 +28,12 @@ import { computed, watch } from 'vue';
 import useFetch from '../hooks/useFetch';
 import useDelete from '../hooks/useDelete';
 import { useRouter } from 'vue-router';
+import ReportListItem from '../components/pages/ReportListItem.vue';
 
 export default {
+    components: {
+        ReportListItem
+    },
     setup(){
         const router = useRouter()
         const fetchReports = useFetch('/api/reports/all');
@@ -67,3 +62,36 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+ul > li {
+    padding-bottom: 1rem;
+}
+
+.report-list-enter-from {
+    opacity: 0;
+    transform: translateX(-30px)
+}
+.report-list-enter-active {
+    transition: all 0.3s ease-in;
+}
+.report-list-enter-to {
+    opacity: 1;
+    transform: translateX(0px);
+}
+.report-list-leave-from {
+    opacity: 1;
+    transform: translateX(0)
+}
+.report-list-leave-active {
+    transition: all 0.3s ease-out;
+}
+.report-list-leave-to {
+    opacity: 0;
+    transform: translateX(-30px);
+}
+
+.report-list-move {
+    transition: transform 2s ease;
+}
+</style>

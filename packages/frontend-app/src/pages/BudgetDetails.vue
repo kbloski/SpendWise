@@ -58,7 +58,7 @@ import useFetch from "../hooks/useFetch.js";
 import useDelete from '../hooks/useDelete.js'
 import { formatDate } from "../utils/dateUtils.js";
 import AddCategoryModal from '../components/modals/AddCategoryModal.vue'
-import AddReportModal from "../components/modals/AddReportModal.vue";
+import AddReportModal from "../components/modals/GenerateReportModal.vue";
 import ModifyBudgetModal from "../components/modals/ModifyBudgetModal.vue";
 import ShareBudgetModal from '../components/modals/ShareBudgetModal.vue';
 

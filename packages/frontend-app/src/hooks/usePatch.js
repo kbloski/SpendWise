@@ -49,8 +49,8 @@ export default function usePatch(
       .then((res) => {
         response.ok = res.ok;
         response.status = res.status;
-        (response.statusText = res.statusText((response.status = res.status))),
-          (response.ok = res.ok);
+        response.statusText = res.statusText
+        response.ok = res.ok;
         if (!res.ok) throw new Error(res.statusText);
       })
       .catch((err) => (error.value = err.message))

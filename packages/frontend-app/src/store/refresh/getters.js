@@ -1,4 +1,7 @@
 export default {
+  isRefreshUserNeeded(state) {
+    return !!state.refreshUserNeeded;
+  },
   isRefreshBudgetsNeeded(state) {
     return !!state.refreshBudgetsNeeded;
   },

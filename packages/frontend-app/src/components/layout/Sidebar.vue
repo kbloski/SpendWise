@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <h1>{{ title }}</h1>
-        <h2>Hello {{ username }}!</h2>
+        <h2>Hello {{ user.username }}!</h2>
         <the-navigation></the-navigation>
         <button @click="logOut">Log out</button>
     </div>
@@ -12,7 +12,8 @@ import { appTitle } from '../../config/config.js';
 import TheNavigation from './TheNavigation.vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import { reactive, watch, ref } from 'vue';
+import { watch,  computed } from 'vue';
+import useFetch from '../../hooks/useFetch.js';
 
 export default {
     components: {
@@ -22,14 +23,14 @@ export default {
         const router = useRouter()
         const store = useStore();
         const title = appTitle;
+        const fetchUser = useFetch("/api/users/me")
+        const user = computed( () => fetchUser?.data?.value?.user ?? 'unknown' )
 
-        const username = ref('');
-
-        async function getUser(){
-            const u = await store.getters['auth/getUser'];
-            username.value = u.username ?? 'unknown';
-        }
-        getUser()
+        const refreshUserNeeded = computed( () => store.getters['refresh/isRefreshUserNeeded']);
+        watch( refreshUserNeeded, ()=>{
+            if (!refreshUserNeeded.value) return;
+            fetchUser.refetch()
+        })
 
         function logOut(){
             store.dispatch('auth/logOut')
@@ -39,7 +40,7 @@ export default {
         return {
             title,
             logOut,
-            username
+            user
         }
     }
 }

@@ -1,4 +1,7 @@
 export default {
+  SET_REFRESH__USER_NEEDED(state, payload) {
+    state.refreshUserNeeded = payload;
+  },
   SET_REFRESH__BUDGETS_NEEDED(state, payload) {
     state.refreshBudgetsNeeded = payload;
   },

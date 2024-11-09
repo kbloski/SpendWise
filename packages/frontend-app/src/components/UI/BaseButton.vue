@@ -42,7 +42,6 @@ export default {
 button,
 a {
     align-items: center;
-    border-radius: 1000px;
     border: 0;
     cursor: pointer;
     display: flex;
@@ -71,7 +70,6 @@ a {
 }
 
 .inner-slot::after {
-    border-radius: 1000px 0 0 1000px;
     z-index: -1;
     top: 0;
     left: 0;
@@ -85,13 +83,12 @@ a {
 /* DEFAULT */
 button,
 a {
-    background: linear-gradient(45deg, #007c91, #33cc4c);
+    background: linear-gradient(45deg, #3b3b3b, #bdbdbd);
     
     
 }
 .inner-slot {
-    background: linear-gradient(45deg, #007c91, #33cc4c);
-
+     background: linear-gradient(45deg, #3b3b3b, #bdbdbd);
     color: transparent;
     -webkit-background-clip: text;
 }
@@ -99,13 +96,13 @@ a {
 /* HOVER */
 button:hover,
 a:hover {
-    background: linear-gradient(45deg, #006f82, #2ab94b);
+    background: linear-gradient(45deg, #8f8f8f, #9c9c9c);
     color: black;
 }
 
 a:hover .inner-slot,
 button:hover .inner-slot {
-    background: linear-gradient(45deg, #006f82, #2ab94b);
+    background: linear-gradient(45deg, #757575, #9c9c9c);
     color: transparent;
     -webkit-background-clip: text;
 }
@@ -113,13 +110,13 @@ button:hover .inner-slot {
 /* ACTIVE */
 button:active,
 a:active {
-    background: linear-gradient(45deg, #005f6b, #1f9d3b);
+    background: linear-gradient(45deg, #5f5f5f, #979797);
     color: black;
 }
 
 a:active .inner-slot,
 button:active .inner-slot {
-    background: linear-gradient(45deg, #005f6b, #1f9d3b);
+    background: linear-gradient(45deg, #5f5f5f, #979797);
     color: transparent;
     -webkit-background-clip: text;
 }
