@@ -3,6 +3,7 @@ import { buildApiPath } from '../utils/apiUtils';
 import { sendErrorResponse, sendSuccessResponse } from '../utils/responseUtils';
 import { isNumber, isValidDate } from '../utils/utils';
 import { budgetController, budgetSharesController, categoryController, expenseController, reportController } from '../controllers/controllers';
+import { Op } from 'sequelize';
 
 const router = Router();
 
@@ -55,6 +56,28 @@ router.get(
                     categories: categoriesToSend
                 }})
         } catch (err){
+            return sendErrorResponse(res, 500)
+        }
+    }
+)
+
+router.get(
+    buildApiPath('reports', 'all'),
+    async (req, res) => {
+        try {
+            if (!req.user) return sendErrorResponse(res, 401);
+            
+            const budgetsDb = await budgetController.getAccessibleBudgetsForUser( req.user.id );
+            if (!budgetsDb) return sendErrorResponse( res, 404, "You don't have any budgets.")
+
+            const ids = budgetsDb.map( b => b.id );
+
+            const reports = await reportController.getAll("DESC", "id", { id: {
+                [Op.in] : ids
+            } });;
+
+            return sendSuccessResponse(res, 200, { reports })
+        } catch(err){
             return sendErrorResponse(res, 500)
         }
     }
