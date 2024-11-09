@@ -4,6 +4,7 @@ import BudgetType from "../types/BudgetType";
 import {
     budgetController,
     budgetSharesController,
+    userController,
 } from "../controllers/controllers";
 import { sendErrorResponse, sendSuccessResponse } from "../utils/responseUtils";
 import { isNumber } from "../utils/utils";
@@ -62,17 +63,19 @@ router.patch(buildApiPath("budgets", ":id"), async (req, res) => {
         const { id } = req.params;
 
         if (!isNumber(id)) return sendErrorResponse(res, 400, "Invalid type Id - Id must be number.");
-        const { name, user_id }: Partial<Omit<BudgetType, "id">> = req.body;
+        const { name, owner_email } = req.body;
 
         if (!name) return sendErrorResponse(res, 400, "Please provide name.");
         const budgetDb = await budgetController.getById(Number(id));
         if (!budgetDb) return sendErrorResponse(res, 404);
 
-        const access = await budgetSharesController.isAccessUserToBudget( budgetDb,req.user)
+        const access = await budgetSharesController.isAccessUserToBudget( budgetDb, req.user)
         if ( !access ) return sendErrorResponse(res, 403);
 
+        const newOwner = await userController.getByEmail( owner_email );
+        if (!newOwner) return sendErrorResponse(res, 404, "Not found user with email: " + owner_email)
         const updated = await budgetController.updateById(
-            budgetDb.id, { name, user_id });
+            budgetDb.id, { name, user_id: newOwner.id });
         
         if (!updated) throw new Error("Cannot update source");
         sendSuccessResponse(res, 204);

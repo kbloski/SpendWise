@@ -34,7 +34,7 @@ Pobieranie szczegółów konkretnego budżetu.
 
 PATCH /api/budgets/:id
 Aktualizacja danych budżetu.
-{ name, user_id}
+{ name, owner_email}
 
 DELETE /api/budgets/:id
 Usuwanie budżetu.

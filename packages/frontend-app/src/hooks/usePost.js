@@ -44,9 +44,10 @@ export default function usePost(
     error.value = null;
     default_options.body = null;
 
-    token.value = store.getters["auth/getToken"];
+    token.value = getLocalToken()
     if (token.value)
       default_options.headers.authorization = `Bearer ${token.value}`;
+    console.log( default_options )
     default_options.body = JSON.stringify(body);
 
     fetch(newUrl, default_options)
