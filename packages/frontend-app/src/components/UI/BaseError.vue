@@ -1,10 +1,6 @@
 <template>
-    <div class="container">
-        <div>
-            <p>
-                <u>ERROR</u>: <slot></slot>
-            </p>
-        </div>
+    <div class="error-container">
+        <slot></slot>
     </div>
 </template>
 
@@ -15,19 +11,12 @@
 </script>
 
 <style scoped>
-.container {
-    display: flex;
-    margin: 1rem 0;
-    padding: 0;
-}
 
-p {
+.error-container {
     margin: 0;
-    padding: 0;
-    padding-left: 1rem;
-    text-transform: uppercase;
-    color: rgb(131, 0, 0);
-    font-weight: bold;
+    padding-left: .2rem 0;
+    font-size: small;
+    color: rgb(180, 0, 0);
     font-style: italic;
 }
 

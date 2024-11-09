@@ -4,6 +4,7 @@
             <div class="left">
                 <section v-if="!!register" class="register">
                     <h1>Register</h1>
+                    <base-error v-if="errors.others">{{ errors.others}}</base-error>
                     <div class="form-control">
                         <div>
                             <input
@@ -15,6 +16,9 @@
                             />
                             <label for="username">Username</label>
                             <span class="icon">🖋</span>
+                            <base-error v-if="errors.username">{{
+                                errors.username
+                            }}</base-error>
                         </div>
                     </div>
                     <div class="form-control">
@@ -28,6 +32,9 @@
                             />
                             <label for="email">Email</label>
                             <span class="icon">✉</span>
+                            <base-error v-if="errors.email">{{
+                                errors.email
+                            }}</base-error>
                         </div>
                     </div>
                     <div class="form-control">
@@ -40,6 +47,9 @@
                             />
                             <label for="password">Password</label>
                             <span class="icon">🔒︎</span>
+                            <base-error v-if="errors.password">{{
+                                errors.password
+                            }}</base-error>
                         </div>
                     </div>
                     <div class="form-control">
@@ -54,7 +64,9 @@
                             <span class="icon">🔒︎</span>
                         </div>
                     </div>
-                    <button type="submit" v-if="!loading" @click="onSubmitRegister">Register</button>
+                    <button type="submit" v-if="!loading" @click="onSubmitRegister">
+                        Register
+                    </button>
                     <p>
                         You have account?
                         <router-link to="/auth">Login</router-link>
@@ -63,6 +75,7 @@
 
                 <section v-if="!register" class="login">
                     <h1>Login</h1>
+                    <base-error v-if="errors.others">{{ errors.others}}</base-error>
                     <div class="form-control">
                         <div>
                             <input
@@ -74,6 +87,9 @@
                             />
                             <label for="email">Email</label>
                             <span class="icon">✉</span>
+                            <base-error v-if="errors.email">{{
+                                errors.email
+                            }}</base-error>
                         </div>
                     </div>
                     <div class="form-control">
@@ -86,9 +102,14 @@
                             />
                             <label for="password">Password</label>
                             <span class="icon">🔒︎</span>
+                            <base-error v-if="errors.password">{{
+                                errors.password
+                            }}</base-error>
                         </div>
                     </div>
-                    <button @click="onSumitLogin" v-if="!loading" type="submit">Login</button>
+                    <button @click="onSumitLogin" v-if="!loading" type="submit">
+                        Login
+                    </button>
                     <p>
                         Don't have an account?
                         <router-link to="/auth?register=true">Sign Up</router-link>
@@ -104,9 +125,10 @@
 </template>
 
 <script>
-import {  computed, ref, watch } from "vue";
+import { computed, reactive, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
+import { validUsername, validEmail, validPassword } from "../../utils/validation";
 import usePost from "../../hooks/usePost";
 
 export default {
@@ -114,45 +136,87 @@ export default {
     setup(props) {
         const store = useStore();
         const router = useRouter();
-        const postRegister = usePost( '/api/register' );
-        const postLogin = usePost( '/api/login' );
+        const postRegister = usePost("/api/register");
+        const postLogin = usePost("/api/login");
+        const loading = computed( () => postLogin.loading.value || postRegister.loading.value)
 
-        watch( [postLogin.response, postLogin.data] , ()=>{
+        watch([postLogin.response, postLogin.data], () => {
             if (!postLogin.response?.ok || !postLogin.data?.value?.token) return;
-            store.dispatch('auth/setToken', postLogin.data.value.token)
-            router.push('/dashboard')
+            store.dispatch("auth/setToken", postLogin.data.value.token);
+            router.push("/dashboard");
+        });
+        watch(postRegister.response, () => {
+            if (!postRegister.response.ok) return;
+            alert("Utworzno nowego użytkownika.");
+            postRegister.clearResponse();
+            router.replace("/auth");
+        });
+
+        // Other errors
+        watch( [postLogin.error, postRegister.error], ()=>{
+            if (props.register) {
+                errors.ok = postRegister.response.ok
+                errors.others = postRegister.response.statusText
+            } else {
+                errors.ok = postLogin.response.ok
+                errors.others = postLogin.response.statusText
+            }
         })
 
         const username = ref("");
         const email = ref("");
         const password = ref("");
         const confirmedPassword = ref("");
-        
+        const errors = reactive({
+            ok: true,
+            username: null,
+            email: null,
+            password: null,
+            others: null
+        });
+
+        function clearErrors(){
+            errors.ok = true
+            errors.email = null
+            errors.password = null
+            errors.username = null
+            errors.others = null
+        }
 
         async function onSumitLogin(event) {
             event.preventDefault();
-            postLogin.clearResponse()
-            postLogin.postData( {
-                email: email.value,
-                password: password.value
-            })
+            console.log( errors.others)
+            clearErrors()
 
-            
+            errors.email = validEmail(email.value);
+            errors.password = validPassword(password.value);
+            if (errors.email || errors.password) errors.ok = false;
+            if (!errors.ok) return;
+            postLogin.clearResponse();
+            postLogin.postData({
+                email: email.value,
+                password: password.value,
+            });
         }
 
         async function onSubmitRegister(event) {
             event.preventDefault();
+            clearErrors()
+            errors.username = validUsername( username.value )
+            errors.email = validEmail(email.value);
+            errors.password = validPassword(password.value);
+            if (password.value !== confirmedPassword.value) {
+                errors.password = "The password and confirm password must be the same."
+                errors.ok = false;
+            }
+            if (errors.email || errors.password) errors.ok = false;
 
-            if (password.value !== confirmedPassword.value) return;
-            // Error
-
-            postRegister.postData(
-                {
+            if (!errors.ok) return;
+            postRegister.postData({
                 username: username.value,
                 email: email.value,
                 password: password.value,
-            })
-            // if (!po)
+            });
         }
 
         return {
@@ -162,7 +226,8 @@ export default {
             confirmedPassword,
             onSubmitRegister,
             onSumitLogin,
-            loading: postLogin.loading
+            loading,
+            errors,
         };
     },
 };
@@ -213,7 +278,8 @@ form {
     background: rgba(0, 0, 0, 0);
     position: relative;
     margin: 0;
-    padding-bottom: 2rem;
+    /* padding-bottom: 2rem; */
+    padding-bottom: 1rem;
     transition: all 0.3s ease;
 }
 
