@@ -51,6 +51,7 @@ POST /api/budgets/:id/categories
 Tworzenie nowej kategorii wydatków w danym budżecie.
 { name }
 
+
 GET /api/budgets/:budgetId/categories
 Pobieranie listy kategorii dla konkretnego budżetu.
 
@@ -79,7 +80,7 @@ Pobieranie listy wydatków ze względu na kategorie
 GET /api/budgets/:budgetId/expenses
 Pobieranie listy wydatków dla konkretnego budżetu.
 
-PATCH /api/budgets/:id
+PATCH /api/expenses/:id
 Aktualizacja danych wydatku.
 {amount or description}
 
