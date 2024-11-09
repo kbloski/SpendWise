@@ -49,6 +49,7 @@
             </div>
         </div>
         <router-view :id="budget.id"></router-view>
+            
     </div>
 </template>
 

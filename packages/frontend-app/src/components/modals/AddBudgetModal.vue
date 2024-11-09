@@ -25,13 +25,10 @@ export default {
         const postBudget = usePost("/api/budgets/me");
 
         const name = ref("");
-        const created = computed(() => postBudget.response?.ok);
-        // const refreshBudgetList = inject("refreshBudgetList");
 
-        watch(created, () => {
-            if (!created.value) return;
+        watch( postBudget.response, () => {
+            if (!postBudget.response.ok) return;
             name.value = ""; 
-            // refreshBudgetList();
             store.dispatch('refresh/triggerRefreshBudgets')
             budgetModal.value.closeModal();
         });
@@ -49,7 +46,6 @@ export default {
             budgetModal,
             openModal,
             createBudget,
-            created,
         };
     },
 };

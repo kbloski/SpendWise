@@ -42,12 +42,11 @@ export default {
         const loading = computed( ()=> fetchBudgets.loading.value );
         const budgetList = computed( () => fetchBudgets?.data?.value.budgets ?? []);
         
-        // provide('refreshBudgetList', fetchBudgets.refetch)
 
         return {
             errorMessage,
             loading: loading,
-            budgetList
+            budgetList,
         }
     }
 }
