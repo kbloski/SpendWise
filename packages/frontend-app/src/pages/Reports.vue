@@ -1,7 +1,9 @@
 <template>
     <div>
         <side-title>All Reports</side-title>
-        <ul>
+        <base-error v-if="error">{{ error }}</base-error>
+        <div v-else-if="loading">Loading... </div>
+        <ul v-else-if="reports.length">
             <li
                 v-for="report in reports"
                 :key="report.id"
@@ -23,6 +25,7 @@
                 </div>
             </li>
         </ul>
+        <base-info v-else title="Brak raportów">Brak raportów dla posiadanych budżetów.</base-info>
     </div>
 </template>
 
@@ -34,9 +37,12 @@ export default {
     setup(){
         const fetchReports = useFetch('/api/reports/all');
         const reports = computed( () => fetchReports.data.value?.reports)
-
+        const loading = computed( ()=> fetchReports.loading.value )
+        const error = computed( ()=> fetchReports.error.value )
         return {
-            reports
+            reports,
+            loading,
+            error 
         }
     }
 }
