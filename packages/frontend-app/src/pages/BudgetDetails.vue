@@ -45,6 +45,7 @@
                 <base-button :link="true" :to="sharesLink">Shares</base-button>
                 <base-button @click="onDelete">Delete</base-button>                
                 <add-report-modal :budgetId="budgetId"></add-report-modal>
+                <share-budget-modal :budgetId="budgetId"></share-budget-modal>
             </div>
         </div>
         <router-view :id="budget.id"></router-view>
@@ -58,12 +59,14 @@ import { formatDate } from "../utils/dateUtils.js";
 import AddCategoryModal from '../components/modals/AddCategoryModal.vue'
 import AddReportModal from "../components/modals/AddReportModal.vue";
 import ModifyBudgetModal from "../components/modals/ModifyBudgetModal.vue";
+import ShareBudgetModal from '../components/modals/ShareBudgetModal.vue';
 
 export default {
     components: {
         createCategory: AddCategoryModal,
         modifyBudget: ModifyBudgetModal,
         AddReportModal,
+        ShareBudgetModal,
     },
     props: [
         "budgetId",
