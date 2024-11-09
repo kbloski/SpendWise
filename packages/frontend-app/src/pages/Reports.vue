@@ -23,6 +23,9 @@
                 <div>
                Created:  {{  report.createdAt }}
                 </div>
+                <button @click="onDelete(report.id)">
+                    Delete
+                </button>
             </li>
         </ul>
         <base-info v-else title="Brak raportów">Brak raportów dla posiadanych budżetów.</base-info>
@@ -30,19 +33,36 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import useFetch from '../hooks/useFetch';
+import useDelete from '../hooks/useDelete';
+import { useRouter } from 'vue-router';
 
 export default {
     setup(){
+        const router = useRouter()
         const fetchReports = useFetch('/api/reports/all');
+        const fetchDelete = useDelete()
         const reports = computed( () => fetchReports.data.value?.reports)
         const loading = computed( ()=> fetchReports.loading.value )
         const error = computed( ()=> fetchReports.error.value )
+
+        watch( fetchDelete.response , ()=>{
+            if (!fetchDelete.response.ok) return;
+            fetchReports.refetch();
+            fetchDelete.clearResponse()
+            router.replace('/reports')
+        })
+
+        function onDelete( reportId ){
+            fetchDelete.setNewUrl('/api/reports/'+ reportId);
+        }
+
         return {
             reports,
             loading,
-            error 
+            error,
+            onDelete
         }
     }
 }
