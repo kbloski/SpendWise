@@ -32,6 +32,7 @@ export default {
 
             name.value = "";
             patchBudget.clearResponse()
+            store.dispatch('refresh/triggerRefreshBudgets')
             budgetModal.value.closeModal();
         });
 

@@ -14,21 +14,25 @@
 
 <script>
 import { computed, ref, watch, inject } from "vue";
+import { useStore } from 'vuex'
 import usePost from "../../hooks/usePost.js";
 
 export default {
     props: ['update'],
     setup( props ) {
+        const store = useStore()
         const budgetModal = ref(null);
         const postBudget = usePost("/api/budgets/me");
 
         const name = ref("");
         const created = computed(() => postBudget.response?.ok);
-        const refreshBudgetList = inject("refreshBudgetList");
+        // const refreshBudgetList = inject("refreshBudgetList");
 
         watch(created, () => {
             if (!created.value) return;
-            (name.value = ""), refreshBudgetList();
+            name.value = ""; 
+            // refreshBudgetList();
+            store.dispatch('refresh/triggerRefreshBudgets')
             budgetModal.value.closeModal();
         });
 

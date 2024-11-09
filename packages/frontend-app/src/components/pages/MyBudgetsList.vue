@@ -19,6 +19,7 @@
 
 <script>
 import { computed, provide } from 'vue';
+import { useStore } from 'vuex';
 import useFetch from '../../hooks/useFetch';
 import MyBudgetsListItem from './MyBudgetsListItem.vue';
 import CreateBudgetModal from '../modals/AddBudgetModal.vue';
@@ -29,12 +30,19 @@ export default {
         CreateBudgetModal
     },
     setup(){
+        const store = useStore()
+        const isNeededRefresh = computed(() => store.getters['refresh/isRefreshBudgetsNeeded'] );
+        watch( isNeededRefresh, () => {
+            if (!isNeededRefresh.value) return;
+            fetchBudgets.refetch()
+        })
+
         const fetchBudgets = useFetch('/api/budgets/me');
         const errorMessage = computed( () => fetchBudgets?.error.value);
         const loading = computed( ()=> fetchBudgets.loading.value );
         const budgetList = computed( () => fetchBudgets?.data?.value.budgets ?? []);
         
-        provide('refreshBudgetList', fetchBudgets.refetch)
+        // provide('refreshBudgetList', fetchBudgets.refetch)
 
         return {
             errorMessage,

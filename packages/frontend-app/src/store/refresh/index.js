@@ -6,7 +6,7 @@ export default {
     namespaced: true,
     state(){
         return {
-            // refreshBudgetsNeeded: false,
+            refreshBudgetsNeeded: false,
             refreshCategoriesNeeded: false,
             refreshExpensesNeeded: false,
         }
