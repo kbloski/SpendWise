@@ -2,8 +2,9 @@ import { Router } from "express";
 import { buildApiPath } from "../utils/apiUtils";
 import { sendErrorResponse, sendSuccessResponse } from "../utils/responseUtils";
 import CategoryType from "../types/CategoryType";
-import { budgetController, categoryController } from "../controllers/controllers";
+import { budgetController, budgetSharesController, categoryController } from "../controllers/controllers";
 import { isNumber } from "../utils/utils";
+import BudgetType from "../types/BudgetType";
 
 const router = Router();
 
@@ -83,9 +84,16 @@ router.patch(
 
             const { id } = req.params;
             const { name, budget_id} : CategoryType = req.body;
-            if (!name || !budget_id) return sendErrorResponse(res, 400, "Please provide name and budget_id");
+            if (!name && !budget_id) return sendErrorResponse(res, 400, "Please provide name or budget_id");
 
             if (!isNumber(id)) return sendErrorResponse(res, 400, "Invalid type Id - Id must be number.");
+
+            if ( budget_id ){
+                if (!isNumber(budget_id)) return sendErrorResponse(res, 400, "Invalid budget_id. Id must be a number.");
+
+                const budgetDb = await budgetController.getById( Number(budget_id));
+                if (!budgetDb) return sendErrorResponse(res, 404, "Budget with id " + budget_id + ' not exist.')
+            }
 
             const categoryDb = await categoryController.getById( Number(id));
             if (!categoryDb) return sendErrorResponse(res, 404);
@@ -93,10 +101,15 @@ router.patch(
             const access = await categoryController.isAccessibleCategoryForUser( categoryDb, req.user);
             if (!access) return sendErrorResponse(res, 403);
 
-            const isUpdated = await categoryController.updateById( categoryDb.id, { name, budget_id: Number(budget_id)});
+            const dataToUpdate : Partial<CategoryType> = {}
+            if (name) dataToUpdate.name = name;
+            if (budget_id) dataToUpdate.budget_id = Number( budget_id );
+            const isUpdated = await categoryController.updateById( categoryDb.id, dataToUpdate);
+
             if (!isUpdated) throw new Error("Cannot update the category resource.");
             return sendSuccessResponse(res, 204)
         } catch(err){
+            console.error(err)
             return sendErrorResponse(res, 500)
         }
     }
