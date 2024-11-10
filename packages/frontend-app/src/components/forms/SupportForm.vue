@@ -15,7 +15,8 @@
         </template>
         <template v-slot:default>
             <base-info title="Aktualnie trwają prace nad aplikacją...">
-            Na ten moment wysłanie formularza nie jest obsługiwane. Przepraszamy za wszelkie niedogodności. Postaramy się w najbliższe przyszłości naprawić ten problem.
+                To wersja demonstracyjna aplikacji, dlatego serwer 
+                poczty nie jest obecnie aktywny, a wysyłanie wiadomości jest tymczasowo niedostępne
             </base-info>
             <base-button :link="true" to="/">Przejdź na stronę główną</base-button>
         </template>
@@ -30,7 +31,7 @@ export default {
             message: '',
             submited: false
         }
-    },
+    }, 
     methods: {
         changeVisibleModal(){
             this.submited = false
