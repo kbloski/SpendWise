@@ -16,7 +16,7 @@ router.get(buildApiPath("budgets", "me"), async (req, res) => {
     try {
         if (!req.user) return;
         const budgets =
-            await budgetSharesController.getAccessibleWithBudgetForUser(
+            await budgetSharesController.getAccessibleWithBudgetsForUser(
                 req.user.id
         );
 

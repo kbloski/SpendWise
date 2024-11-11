@@ -53,7 +53,20 @@ export default class BudgetSharesController extends AbstractCrudController<Budge
         }
     }
 
-    async getAccessibleWithBudgetForUser(userId: number) {
+    async getAccessibleWithUsersForBudget( budgetId: number ){
+        const allUsers = await this.model.findAll({
+            include: {
+                model: User,
+                required: true
+            },
+            where: {
+                budget_id: budgetId
+            }
+        })
+        return allUsers
+    }
+
+    async getAccessibleWithBudgetsForUser(userId: number) {
         const allRelations = await this.model.findAll({
             include: {
                 model: Budget,

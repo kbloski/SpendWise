@@ -23,13 +23,23 @@ router.get(
             const accessToBudget = await budgetSharesController.isAccessUserToBudget(budgetDb, req.user);
             if (!accessToBudget) return sendErrorResponse(res, 403);
 
-            const users = await budgetSharesController.getAllUsersforBudget( budgetDb);
-            const usersToSend = users.map( u => {
-                const user : Partial<UserType> = u;
-                delete user.password;
-                return user;
+            const bsRelations = await budgetSharesController.getAccessibleWithUsersForBudget( budgetDb.id);
+
+            const usersToSend : any =  bsRelations.map( r => {
+                // @ts-ignore
+                const user : Partial<UserType> = r.User.dataValues
+                delete user.password
+                console.log( user )
+                return {
+                    user,
+                    role: r.role,
+                    id: r.id,
+                    user_id: r.user_id,
+                    budget_id: r.budget_id
+                }
             })
-            return sendSuccessResponse(res, 200, { users : usersToSend })
+
+            return sendSuccessResponse(res, 200, { users : {...usersToSend} })
         } catch (err){
             return sendErrorResponse(res, 500)
         }
