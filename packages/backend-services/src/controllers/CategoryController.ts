@@ -6,7 +6,7 @@ import BudgetType from "../types/BudgetType";
 import CategoryType from "../types/CategoryType";
 import UserType from "../types/UserType";
 import AbstractCrudController from "./AbstractCrudController";
-import { budgetController, expenseController } from "./controllers";
+import { budgetController, budgetSharesController, expenseController } from "./controllers";
 import { sequelize } from "../utils/db";
 
 export default class CategoryController extends AbstractCrudController<Category> {
@@ -29,18 +29,27 @@ export default class CategoryController extends AbstractCrudController<Category>
         category: CategoryType | Category,
         user: UserType | User
     ){
-        const availableBudgets = await budgetController.getAccessibleBudgetsForUser( user.id);
-        
-        if (!availableBudgets?.length) return false;
-        const budgetsIds = availableBudgets.map( v => v.id )
-        const finded = await this.model.count(
-            {
-                where: {
-                    id: category.id,
-                    budget_id: { [Op.in] : [...budgetsIds]}
-            }
-        })
-        return !!( finded )
+        const budgetDb = await budgetController.getById( category.budget_id );
+        if (!budgetDb ) throw new Error('Budget with id: ' + category.budget_id + ' not exist.');
+
+        const accessToBudget = await budgetSharesController.isAccessUserToBudget( budgetDb, user);
+
+        return !!( accessToBudget )
+    }
+
+    async isAccessibleCategoryForUserToModify(
+        category: CategoryType | Category,
+        user: UserType | User
+    ){
+          const budgetDb = await budgetController.getById(category.budget_id);
+          if (!budgetDb) throw new Error("Category budget not exist");
+
+          const isAccessToModifyBudget = await 
+          budgetSharesController.isAccessUserToBudgetToModify
+          (budgetDb,user);
+          if (!isAccessToModifyBudget) return false;
+
+        return !!isAccessToModifyBudget
     }
 
     async isAccessCategoryToBudget(category: Category | CategoryType, budget : Budget | BudgetType){

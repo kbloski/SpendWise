@@ -9,7 +9,6 @@ import {
     expenseController,
 } from "../controllers/controllers";
 import { isNumber } from "../utils/utils";
-import Category from "../models/CategoryModel";
 
 const router = Router();
 
@@ -153,15 +152,26 @@ router.patch(
             const {id} = req.params;
             const { amount, description, user_id, category_id  } : Partial<ExpenseType> = req.body;
             if ( !isNumber(id) ) return sendErrorResponse(res, 400, "Invalid type id, id must be a number");
+
+            console.log(amount && !isNumber(amount));
             if (
-                !amount && !description && !user_id && !category_id ||
+                !amount && !description && !user_id && !category_id 
+            ) return sendErrorResponse(res, 400, "Please provide amount, user_id or category_id");
+
+            if ( 
                 amount && !isNumber(amount) ||
                 user_id && !isNumber(user_id) ||
                 category_id && !isNumber(category_id)
-            ) return sendErrorResponse(res, 400, "Please provide amount, user_id or category_id");
-
+            ) return sendErrorResponse(res, 400, 'Provided amount, user_id or category_id must be a number.')
+            
             const expenseDb = await expenseController.getById(Number(id));
             if (!expenseDb) return sendErrorResponse(res, 404);
+
+            const categoryDb = await categoryController.getById( expenseDb.category_id );
+            if (!categoryDb) throw new Error( "Not found expense cateogory. ")
+            const accessToCategoryToModify = await categoryController
+                .isAccessibleCategoryForUserToModify(categoryDb, req.user );
+            if (!accessToCategoryToModify) return sendErrorResponse(res, 403, "You cannot modify this resource by role.") 
 
             const accessToExpense = await expenseController.isAccessForUser(expenseDb,  req.user);
             if (!accessToExpense) return sendErrorResponse(res, 403);

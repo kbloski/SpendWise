@@ -94,15 +94,17 @@ router.patch(
                 const budgetDb = await budgetController.getById( Number(budget_id));
                 if (!budgetDb) return sendErrorResponse(res, 404, "Budget with id " + budget_id + ' not exist.')
 
-                const accessToBudget = budgetSharesController.isAccessUserToBudget( budgetDb, req.user)
-                if (!accessToBudget) return sendErrorResponse(res, 403, "Forbidden to budget with id " + budgetDb.id)
+                const accessToBudget = budgetSharesController
+                .isAccessUserToBudgetToModify( budgetDb, req.user);
+
+                if (!accessToBudget) return sendErrorResponse(res, 403, "Forbidden to modify budget resources.");
             }
 
             const categoryDb = await categoryController.getById( Number(id));
             if (!categoryDb) return sendErrorResponse(res, 404);
 
-            const access = await categoryController.isAccessibleCategoryForUser( categoryDb, req.user);
-            if (!access) return sendErrorResponse(res, 403);
+            const access = await categoryController.isAccessibleCategoryForUserToModify( categoryDb, req.user);
+            if (!access) return sendErrorResponse(res, 403, "Forbidden: You can't modify by role.");
 
             const dataToUpdate : Partial<CategoryType> = {}
             if (name) dataToUpdate.name = name;

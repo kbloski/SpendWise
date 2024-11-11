@@ -25,8 +25,7 @@ import usePost from "../../hooks/usePost.js";
 import { validName} from '../../utils/validation.js'
 
 export default {
-    props: ['update'],
-    setup( props ) {
+    setup() {
         const store = useStore()
         const budgetModal = ref(null);
         const postBudget = usePost("/api/budgets/me");

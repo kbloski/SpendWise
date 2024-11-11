@@ -3,7 +3,7 @@ import { buildApiPath } from '../utils/apiUtils';
 import { sendErrorResponse, sendSuccessResponse } from '../utils/responseUtils';
 import { isNumber } from '../utils/utils';
 import { budgetController, budgetSharesController, userController } from '../controllers/controllers';
-import BudgetShareType, { UserRoles } from '../types/BudgetShareType';
+import  { UserRoles } from '../types/BudgetShareType';
 import { sequelize } from '../utils/db';
 import UserType from '../types/UserType';
 
@@ -67,10 +67,10 @@ router.put(
             const userDb = await userController.getByEmail( email )
             if (!userDb) return sendErrorResponse(res, 404, "User with email "+email+ ' not exist')
 
-            const accessToBudget = await budgetSharesController.isAccessUserToBudget(budgetDb, req.user);
-            if (!accessToBudget) return sendErrorResponse(res, 403);
+            const accessToBudget = await budgetSharesController.isAccessUserToBudgetToModify(budgetDb, req.user);
+            if (!accessToBudget) return sendErrorResponse(res, 403, "You can't modify by role.");
 
-            const relationExist = await budgetSharesController.getIdUserBudgetRelation(budgetDb, userDb);
+            const relationExist = await budgetSharesController.getIdUserBudgetRelation(budgetDb.id, userDb.id);
             if ( relationExist){
                 console.log('exist', relationExist)
                 await budgetSharesController.updateById( relationExist, { role})
@@ -109,7 +109,7 @@ router.delete(buildApiPath("budgets", ":id", "shares", ":userId"), async (req, r
         if (!accessToBudget) return sendErrorResponse(res, 403);
 
         const relationId = await budgetSharesController.getIdUserBudgetRelation( 
-            budgetDb, {id: userId} as any);
+            budgetDb.id, Number(userId));
         if (!relationId) return sendErrorResponse(res, 404);
 
         const isDeleted = await budgetSharesController.deleteById( relationId );

@@ -12,6 +12,7 @@ import {
     userController,
 } from "./controllers";
 import { sequelize } from "../utils/db";
+import { UserRoles } from "../types/BudgetShareType";
 
 export default class BudgetController extends AbstractCrudController<Budget> {
     constructor() 
@@ -80,29 +81,31 @@ export default class BudgetController extends AbstractCrudController<Budget> {
         try {
             const budgetDb = await this.getById(budget.id);
             if (!budgetDb) throw new Error("Budget don't exits");
-
             const userDb = await userController.getById(user.id);
             if (!userDb) throw new Error("User dont exis't in db");
             
+            const relatedId = await budgetSharesController.
+            getIdUserBudgetRelation(budgetDb.id, budget.user_id )
+                
             let result = null;
-            if (budget.user_id) {
-                const oldOwner = await userController.getById( budget.user_id)
-                if (!oldOwner) throw new Error("Cannot find oldOwner in database")
-
-                const relatedId = await budgetSharesController
-                    .getIdUserBudgetRelation( budget, oldOwner) as number;
-                if (!relatedId) throw new Error("Not find relation with user_id: " + budget.user_id + ' and budget_id ' + budget.id  )
-
+            if (relatedId){ // update relation exist
                 const isUpdateBudgetShare = 
-                    await budgetSharesController.updateById(relatedId, {user_id: userDb.id });
-                const isUpdateBudget = await this.model.update({ user_id: userDb.id}, {
+                    await budgetSharesController.updateById(relatedId, {
+                        user_id: userDb.id,
+                        role: UserRoles.ADMIN
+                    });
+                const isUpdateBudget = await this.model.update(
+                    { user_id: userDb.id}, {
                     where: { id: budget.id}
                 })
-
                 result = isUpdateBudgetShare && isUpdateBudget;
-            } else {
+            } else { // create new relaction
                 const isCratedBudgetShare = await budgetSharesController.findOrCreate(
-                    {user_id: userDb.id,budget_id: budgetDb.id });
+                    {
+                        user_id: userDb.id,
+                        budget_id: budgetDb.id,
+                        role: UserRoles.ADMIN
+                    });
                 const isUpdateBudget = await this.model.update(
                     { user_id: userDb.id}, {where: { id: budget.id}})
                 result = isCratedBudgetShare && isUpdateBudget

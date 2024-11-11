@@ -33,7 +33,7 @@ export default class BudgetSharesController extends AbstractCrudController<Budge
             const budgetExist =  await budgetController.getById( budget_id )
             if (!budgetExist) throw new Error("Budget with id: " + budget_id + ' not exist');
 
-            const idExist = await this.getIdUserBudgetRelation( budgetExist, userExist);
+            const idExist = await this.getIdUserBudgetRelation( budgetExist.id, userExist.id);
             if (idExist) return await this.getById(idExist);
                 
             return await super.create({
@@ -45,6 +45,25 @@ export default class BudgetSharesController extends AbstractCrudController<Budge
             console.error(err)
             throw new Error("Failed create BudgetShareType.create()")
         }     
+    }
+
+        async getAccessibleWithBudgetForUser( userId: number) {
+        const allRelations = await this.model.findAll({
+            include: {
+               model: Budget,
+               required: true
+            },
+            where: {
+                user_id: userId
+            }
+        })
+
+        const dataToSend = allRelations.map( r => {
+            const data : any = r.dataValues;
+            delete data.budget_id;
+            delete data.user_id;
+        })
+        return allRelations
     }
 
     async getAllUsersforBudget(
@@ -71,11 +90,11 @@ export default class BudgetSharesController extends AbstractCrudController<Budge
     }
 
     async getIdUserBudgetRelation( 
-        budget: BudgetType | Budget,
-        user: UserType | User,
+        budgetId: number,
+        userId: number,
     ){
         const relation = await this.model.findOne(
-            {where: { user_id: user.id , budget_id: budget.id}})
+            {where: { user_id: userId , budget_id: budgetId}})
         if (!relation) return null;
         return relation.id
     }
@@ -84,7 +103,21 @@ export default class BudgetSharesController extends AbstractCrudController<Budge
         budget: BudgetType | Budget,
         user: UserType | User,
     ){
-        const result = await this.getIdUserBudgetRelation( budget, user )
+        const result = await this.getIdUserBudgetRelation( budget.id, user.id )
+        return !!result
+    }
+    
+    async isAccessUserToBudgetToModify(
+        budget: BudgetType | Budget,
+        user: UserType | User,
+    ){
+        const id  = await this.getIdUserBudgetRelation( budget.id, user.id );
+        if (!id) return false;
+
+        const relation = await this.getById( id );
+        if (!relation) return false;
+
+        const result = relation.role === UserRoles.ADMIN || relation.role === UserRoles.EDITOR;
         return !!result
     }
 
