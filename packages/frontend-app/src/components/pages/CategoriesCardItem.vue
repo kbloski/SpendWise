@@ -2,9 +2,13 @@
         <li>
             <span class="category-name">Kategoria: {{ name }}</span>
             <div class="actions">
-                <modify-category-modal :categoryId="id"></modify-category-modal>
+                
                 <base-button :link="true" :to="expensesLink">View Expenses</base-button>
-                <base-button @click="onDelete" class="button-delete">Delete</base-button>
+
+                <div v-if="rolePriority < 2">
+                    <modify-category-modal :categoryId="id"></modify-category-modal>
+                    <base-button @click="onDelete" class="button-delete">Delete</base-button>
+                </div>
             </div>
         </li>
 </template>
@@ -15,7 +19,7 @@ import ModifyCategoryModal from '../modals/ModifyCategoryModal.vue';
 
 
 export default {
-    props: ['id', 'name'],
+    props: ['id', 'name', 'rolePriority'],
     components: {
         ModifyCategoryModal
     },

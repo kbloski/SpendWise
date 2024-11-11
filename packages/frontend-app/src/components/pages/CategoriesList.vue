@@ -8,8 +8,10 @@
                 :key="category.id"
                 :id="category.id"
                 :name="category.name"
+                :rolePriority="rolePriority"
             ></category-card-item>
         </base-ul>
+            {{ rolePermission }}
     </div>
     <base-info v-else title="Brak kategori.">Bierzący budżet nie posiada żadnych kategori.</base-info>
 </template>
@@ -34,8 +36,8 @@ export default {
         const loading = computed(() => fetchCategories.loading.value);
         const error = computed( ()=> fetchCategories.error.value );
         const categories = computed( ()=> fetchCategories.data.value?.categories);
+        const rolePriority = computed(()=> fetchCategories.data.value.rolePriority ?? 100 )
 
-        // Vuex -> refresh 
         const refreshNeeded = computed( 
             ()=> store.getters['refresh/isRefreshCategoriesNeeded']
         )
@@ -47,7 +49,8 @@ export default {
         return {
             loading,    
             categories,
-            error
+            error,
+            rolePriority
         }
     }
 }
