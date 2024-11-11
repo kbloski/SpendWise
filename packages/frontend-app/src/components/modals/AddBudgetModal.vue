@@ -22,6 +22,7 @@
 import { ref, watch } from "vue";
 import { useStore } from 'vuex'
 import usePost from "../../hooks/usePost.js";
+import { validName} from '../../utils/validation.js'
 
 export default {
     props: ['update'],
@@ -30,7 +31,10 @@ export default {
         const budgetModal = ref(null);
         const postBudget = usePost("/api/budgets/me");
 
+        const error = ref(null)
+        watch( postBudget.error , () => error.value = postBudget.error.value ?? null)
         const name = ref("");
+
         function openInit(){
             postBudget.clearResponse()
         }
@@ -45,15 +49,17 @@ export default {
         function openModal() {
             budgetModal.value.openModal();
         }
-
+        
         async function createBudget() {
+            error.value = validName( name.value )
+            if (error.value) return;
             postBudget.postData({ name: name.value });
         }
 
         return {
             name,
             budgetModal,
-            error: postBudget.error,
+            error,
             loading: postBudget.loading,
             openModal,
             createBudget,
@@ -65,7 +71,8 @@ export default {
 
 <style>
 .container {
-    padding-bottom: 1rem;
+    padding: 0;
+    margin: .5rem 0;
 }
 
 .body-modal > *{

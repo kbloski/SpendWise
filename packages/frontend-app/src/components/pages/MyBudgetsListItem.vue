@@ -26,6 +26,10 @@ export default {
 </script>
 
 <style scoped>
+li {
+    padding: 0;
+}
+
 div {
     display: flex;
 }

@@ -2,17 +2,20 @@
     <div>
         <base-title>Moje finanse</base-title>
         <base-error v-if="errorMessage">{{  errorMessage }}</base-error>
-        <div v-else-if="loading" >Loading... </div>
-        <ul v-else-if="budgetList.length">
+        <div v-if="loading" >Loading... </div>
+
+        <div v-if="budgetList.length">
             <create-budget-modal></create-budget-modal>
-            <my-budgets-list-item 
-                v-for="budget in budgetList"
-                :key="budget.id"
-                :id="budget.id"
-                :name="budget.name"
-            >
-            </my-budgets-list-item>
-        </ul>
+            <ul >
+                <my-budgets-list-item 
+                    v-for="budget in budgetList"
+                    :key="budget.id"
+                    :id="budget.id"
+                    :name="budget.name"
+                >
+                </my-budgets-list-item>
+            </ul>
+        </div>
         <base-info v-else title="Brak budżetów">Aktualnie nie posiadasz żadnych budżetów.</base-info>
     </div>
 </template>
@@ -40,7 +43,7 @@ export default {
         const fetchBudgets = useFetch('/api/budgets/me');
         const errorMessage = computed( () => fetchBudgets?.error.value);
         const loading = computed( ()=> fetchBudgets.loading.value );
-        const budgetList = computed( () => fetchBudgets?.data?.value.budgets ?? []);
+        const budgetList = computed( () => fetchBudgets?.data?.value?.budgets ?? []);
         
 
         return {
@@ -54,6 +57,12 @@ export default {
 
 <style scoped>
 ul {
-    list-style: circle;
+    background-color: white;
+    box-shadow: inset 0 0 4px black;
+    list-style: none;
+    padding: 1rem;
+    margin: 0;
+    max-height: 150px;
+    overflow-y: auto;
 }
 </style>

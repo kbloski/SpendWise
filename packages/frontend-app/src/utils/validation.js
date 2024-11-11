@@ -1,3 +1,11 @@
+export function validName( name ) {
+    let  error = null
+    if (name < 3) {
+        error = "Min name length is 3 characters.";
+    }
+    return error
+}
+
 export function validUsername(username) {
     let  error = null
 
