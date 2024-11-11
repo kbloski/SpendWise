@@ -2,13 +2,11 @@
         <li>
             <span class="category-name">Kategoria: {{ name }}</span>
             <div class="actions">
-                
                 <base-button :link="true" :to="expensesLink">View Expenses</base-button>
-
-                <div v-if="rolePriority < 2">
+                <!-- <div v-if="rolePriority < 2"> -->
                     <modify-category-modal :categoryId="id"></modify-category-modal>
                     <base-button @click="onDelete" class="button-delete">Delete</base-button>
-                </div>
+                <!-- </div> -->
             </div>
         </li>
 </template>
@@ -37,6 +35,7 @@ export default {
         isDelted( val ){
             if (!val) return;
             this.$store.dispatch('refresh/triggerRefreshCategories');
+            this.$store.dispatch('refresh/triggerRefreshBudgets');
             
             
             this.$router.push({
@@ -80,8 +79,11 @@ li {
     color: white;
 }
 
-.actions > * {
+.actions  {
+    display: flex;
+    justify-content: space-between;
     margin: 0;
+    width: 50%;
 }
 
 

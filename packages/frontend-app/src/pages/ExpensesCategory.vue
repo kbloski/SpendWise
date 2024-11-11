@@ -8,7 +8,7 @@
                 :budgetId="budgetId"
                 :categoryId="categoryId"
             ></create-expense-modal>
-            <ul v-if="expenses.length">
+            <base-ul v-if="expenses.length">
                 <list-item 
                     v-for="expense in expenses"
                     :key="expense.id"
@@ -18,7 +18,7 @@
                     :user_id="expense.user_id"
                 >
                 </list-item>
-            </ul>
+            </base-ul>
             <base-info v-else title="Brak kosztów">Ta kategoria aktualnie nie posiada żadnych kosztów.</base-info>
         </div>
     </div>

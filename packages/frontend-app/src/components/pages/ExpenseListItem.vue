@@ -4,10 +4,8 @@
         <span>Kwota: {{ amount}}zł</span>
         <span>UserId: {{ user_id }}</span>
         <span>Date: {{ createdAt }}</span>
-        <span>
-            <modify-expense-modal :expenseId="id"></modify-expense-modal>
-        </span>
-        <span><button @click="onDelete">Delete</button></span>
+        <modify-expense-modal :expenseId="id"></modify-expense-modal>
+        <span><base-button @click="onDelete">Delete</base-button></span>
     </li>
 </template>
 
@@ -51,15 +49,11 @@ export default {
 
 <style scoped>
 li{
-    background: rgb(217, 255, 233);
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
+    align-items: center;
 }
-li:nth-child(2n){
-    background: rgb(192, 255, 220);
-}
-span {
-    margin: .3rem;
-    padding: .1rem;
-}
+
+
 </style>
