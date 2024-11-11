@@ -7,6 +7,7 @@ import BudgetType from "../types/BudgetType";
 import UserType from "../types/UserType";
 import AbstractCrudController from "./AbstractCrudController";
 import { budgetController, userController } from "./controllers";
+import { sequelize } from "../utils/db";
 
 export default class BudgetSharesController extends AbstractCrudController<BudgetShare> {
     // I need more information, and i cannot use through relation in schema
@@ -92,7 +93,31 @@ export default class BudgetSharesController extends AbstractCrudController<Budge
         id: number,
         data: Partial<Omit<BudgetShare, "id">>
     ): Promise<Boolean> {
-        return await super.updateById(id, data);
+        if (data.role === 0){
+            const transaction = await sequelize.transaction()
+            try {
+                const updated = await super.updateById(id, data);
+
+                const relation = await this.getById( id );
+                if (!relation) throw new Error('Relation not exits')
+                    
+                const budgetDb = await budgetController.getById( relation.budget_id );
+                if (!budgetDb) throw new Error("Budget not exist in database")
+                const userDb = await userController.getById( relation.user_id);
+                if (!userDb) throw new Error("User not exist in database")
+
+                budgetController.setOwner(budgetDb, userDb )
+                    
+                transaction.commit()
+                return updated
+            } catch (err){
+                transaction.rollback()
+                console.error(err)
+                throw new Error("Failed update budget share in BudgetShraresController.updateById()");
+            }
+        } else {
+            return await super.updateById(id, data);
+        }
     }
 
     async getIdUserBudgetRelation(budgetId: number, userId: number) {

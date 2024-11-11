@@ -4,7 +4,13 @@
         <base-modal :visible="false" ref="shareModal">
             <template v-slot:header> Share </template>
             <template v-slot:default>
-                <base-form-control v-model="email">Provide user email</base-form-control>
+                <base-error v-if="error.server"> {{ error.server }} </base-error>
+                Role: 
+                <select v-model="enteredRole">
+                    <option v-for="role in roles" :value="role.priority">{{ role.name }}</option>
+                </select>
+                <base-error v-if="error.email">{{ error.email }}</base-error>
+                <base-form-control v-model="enteredEmail">Provide user email</base-form-control>
                 <br />
                 <base-button @click="onSubmit">Share</base-button>
             </template>
@@ -13,9 +19,11 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue';
-import { getLocalToken } from '../../utils/localStore';
+import { computed, reactive, ref, watch } from 'vue';
 import { useStore } from 'vuex';
+import useFetch from '../../hooks/useFetch.js'
+import usePut from '../../hooks/usePut';
+import { validEmail } from '../../utils/validation.js'
 
 export default {
     props: {
@@ -26,49 +34,63 @@ export default {
     setup( props ){
         const store = useStore()
         const shareModal = ref();
-        const userEmail = ref('');
-        const loading = ref(false);
-        const error = ref(null);
-        const ok = ref(null)
-        const email = ref('')
 
-        watch( ok , () => {
-            if (!ok.value) return;
-            store.dispatch('refresh/triggerRefreshShares')
+        const fetchRoles = useFetch('/api/roles')
+        const putShare = usePut('/api/budgets/' + props.budgetId + '/shares');
+        const roles = computed( ()  => fetchRoles.data?.value?.roles ?? [] )
+        const enteredEmail = ref('')
+        const enteredRole = ref(null)
+
+
+        const loading = computed( () => fetchRoles.loading || putShare.loading )
+        const error = reactive({
+            email: null,
+            server: null
+        });
+
+        watch([ fetchRoles.error, putShare.error], () => {
+            error.server = fetchRoles.error.value || putShare.error.value
         })
+
+        function clearErrors(){
+            error.email = null;
+            error.server = null
+        }
 
         function openModal(){
             shareModal.value.openModal()
         }
+        
+        watch( putShare.response, () => {
+            if (!putShare.response.ok) return;
+            store.dispatch('refresh/triggerRefreshShares')
+            putShare.clearResponse()
+            clearErrors()
+            shareModal.value.closeModal();
+        })
 
         function onSubmit(){
-            loading.value = true
-            const url = 'http://localhost:8081/api/budgets/'+ props.budgetId + '/shares';
-            const token = getLocalToken()
+            clearErrors()
+            const updatedData = {
+                email: enteredEmail.value,
+                role : 0
+            };
+            // updatedData.role = enteredRole.value;
+            // error.email = validEmail( enteredEmail.value );
 
-            fetch( url , {
-                method: "PUT",
-                headers: {
-                    authorization: "Bearer "+token,
-                    "Content-Type" : "application/json"
-                },
-                body: JSON.stringify(
-                    {
-                        email: email.value 
-                    }
-                )
-            }).then( res => {
-                ok.value = res.ok
-                error.value = res.statusText
-            })
-            .finally( () => loading.value = false)
+            if (error.email) return;
+            putShare.putData(updatedData)
         }
 
         return {
-            onSubmit,
+            loading,
+            error,
             shareModal,
+            onSubmit,
             openModal,
-            email
+            enteredEmail,
+            enteredRole,
+            roles
         }
     }
 }
