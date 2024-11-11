@@ -3,15 +3,16 @@
         <base-title>Wszystkie koszta budżetu</base-title>
         <base-error v-if="error">{{ error }}</base-error>
         <div v-else-if="loading">Loading...</div>
-        <ul v-else-if="expenses.length">
+        <base-ul v-else-if="expenses.length">
             <expense-list-item
                 v-for="expense in expenses"
                 :key="expense.id"
                 :amount="expense.amount"
                 :user_id="expense.user_id"
                 :date="expense.date"
+                :rolePriority="rolePriority"
             ></expense-list-item>
-        </ul>
+        </base-ul>
         <base-info v-else title="Brak kosztów">Budżet aktualnie nie posiada żadnych kosztów.</base-info>
     </div>
 </template>
@@ -32,12 +33,14 @@ export default {
         const fetchExpenses = useFetch('/api/budgets/'+budgetId+'/expenses');
         const loading = computed(()=> fetchExpenses.loading.value);
         const expenses = computed(()=> fetchExpenses.data.value?.expenses ?? []);
+        const rolePriority = computed(()=> fetchExpenses.data.value?.rolePriority ?? 100);
         const error = computed( ()=> fetchExpenses.error.value)
         
         return {
             loading,
             expenses,
-            error
+            error,
+            rolePriority
         }
     }
 }

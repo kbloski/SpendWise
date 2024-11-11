@@ -4,8 +4,8 @@
         <span>Kwota: {{ amount}}zł</span>
         <span>UserId: {{ user_id }}</span>
         <span>Date: {{ createdAt }}</span>
-        <modify-expense-modal :expenseId="id"></modify-expense-modal>
-        <span><base-button @click="onDelete">Delete</base-button></span>
+        <modify-expense-modal v-if="rolePriority < 2":expenseId="id"></modify-expense-modal>
+        <span><base-button v-if="rolePriority < 2" @click="onDelete">Delete</base-button></span>
     </li>
 </template>
 
@@ -15,7 +15,7 @@ import { formatDate } from '../../utils/dateUtils';
 import ModifyExpenseModal from '../modals/ModifyExpenseModal.vue';
 
 export default {
-    props: ["id", "amount", 'date', 'user_id'],
+    props: ["id", "amount", 'date', 'user_id','rolePriority'],
     components: {
         ModifyExpenseModal
     },

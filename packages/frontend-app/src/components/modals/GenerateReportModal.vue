@@ -33,6 +33,7 @@ export default {
         const created = computed(() => !!fetchGenerate.response.ok);
 
         function openModal() {
+            fetchGenerate.clearResponse()
             reportModal.value.openModal();
         }
         
@@ -42,6 +43,7 @@ export default {
             if (period_start.value) params.push( `period_start=` + period_start.value)
             if (period_end.value) params.push( `period_end=` + period_end.value)
             newUrl+=params.join('&');
+            
             fetchGenerate.setNewUrl( newUrl );
         }
         
