@@ -71,26 +71,29 @@ export default {
 }
 
 .close-button {
+    position: absolute;
+    width: auto;
+    right: 1rem;
+    bottom: 5px;
     box-shadow: 0 0 4px black;
     background: transparent;
     border: 0;
     border-radius: 1rem;
     cursor: pointer;
     margin: 0;
-    margin-left: 100%;
     margin-bottom: 1rem;
-    transform: translateX(-100%);
     padding: 0.3rem;
+    z-index: 100;
+
 
 }
 .close-button:hover {
-    background-color:rgb(255, 178, 194);
+    background-color:rgba(255, 0, 0, 0.719);
 }
 
 header {
-    border-bottom: 2px solid black;
-    box-shadow: inset 0 0 4px black;
-    border-radius: 1rem;
+    box-shadow: inset 0 0 4px rgb(0, 0, 0);
+    border-radius: 1rem 1rem 0 0;
     padding: 1rem;
     
     margin-bottom: 1rem;

@@ -52,7 +52,7 @@ export default {
 }
 
 input {
-    border-radius: 1rem;
+    /* border-radius: 1rem; */
     border: 0;
     box-shadow: inset 0 0 10px black;
     background: white;
