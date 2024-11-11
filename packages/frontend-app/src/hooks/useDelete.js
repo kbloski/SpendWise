@@ -1,5 +1,6 @@
 import { reactive, ref, watch } from "vue";
 import { getLocalToken } from "../utils/localStore";
+import { backendUrl } from "../config/config";
 
 export default function useDelete(url = null, headers = {}) {
   const fullUrl = ref("");
@@ -19,7 +20,7 @@ export default function useDelete(url = null, headers = {}) {
   });
 
   function setNewUrl(url) {
-    fullUrl.value = "http://localhost:8081" + url;
+    fullUrl.value = backendUrl + url;
   }
 
   function clearResponse() {

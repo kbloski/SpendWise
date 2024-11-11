@@ -1,5 +1,6 @@
 import { reactive, ref } from "vue";
 import { getLocalToken } from "../utils/localStore";
+import { backendUrl } from "../config/config";
 
 export default function usePut(
   url = "/",
@@ -33,7 +34,7 @@ export default function usePut(
   }
 
   function setNewUrl(url) {
-    fullUrl.value = "http://localhost:8081" + url;
+    fullUrl.value = backendUrl + url;
   }
 
   function putData(body, newUrl = fullUrl.value) {

@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'; // musi być ładowany przed wszystkimi importami 
-dotenv.config({path: '../../.env'})
+dotenv.config({path: '.env'})
 
 import app from './app';
 

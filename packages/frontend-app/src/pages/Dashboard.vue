@@ -10,6 +10,7 @@ export default {
         openModal(){
             this.$refs['modal-test'].openModal()
         }
-    }
+    },
+
 }
 </script>

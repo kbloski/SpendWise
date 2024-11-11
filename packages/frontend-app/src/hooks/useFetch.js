@@ -2,6 +2,7 @@ import { computed, reactive, ref, watch } from "vue";
 // import store from '../store/index.js'
 import { useStore } from "vuex";
 import { getLocalToken } from "../utils/localStore";
+import { backendUrl } from "../config/config";
 
 export default function useFetch(url = null, headers = {}) {
   const fullUrl = ref("");
@@ -22,7 +23,7 @@ export default function useFetch(url = null, headers = {}) {
   });
 
   function setNewUrl(url) {
-    fullUrl.value = "http://localhost:8081" + url;
+    fullUrl.value = backendUrl + url;
   }
 
   function clearResponse() {

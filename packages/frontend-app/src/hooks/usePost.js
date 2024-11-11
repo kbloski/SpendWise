@@ -1,6 +1,7 @@
 import { computed, reactive, ref, watch } from "vue";
 import { getLocalToken } from "../utils/localStore.js";
 import store from "../store/index.js";
+import { backendUrl } from "../config/config.js";
 
 export default function usePost(
   url = "/",
@@ -36,7 +37,7 @@ export default function usePost(
   }
 
   function setNewUrl(url) {
-    fullUrl.value = "http://localhost:8081" + url;
+    fullUrl.value = backendUrl + url;
   }
 
   function postData(body, newUrl = fullUrl.value) {
