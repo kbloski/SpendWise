@@ -8,10 +8,11 @@
             <create-budget-modal></create-budget-modal>
             <ul >
                 <my-budgets-list-item 
-                    v-for="budget in budgetList"
-                    :key="budget.id"
-                    :id="budget.id"
-                    :name="budget.name"
+                    v-for="relation in budgetList"
+                    :key="relation.Budget.id"
+                    :id="relation.Budget.id"
+                    :name="relation.Budget.name"
+                    :role="relation.role"
                 >
                 </my-budgets-list-item>
             </ul>
