@@ -29,7 +29,6 @@ router.get(
                 // @ts-ignore
                 const user : Partial<UserType> = r.User.dataValues
                 delete user.password
-                console.log( user )
                 return {
                     user,
                     role: r.role,
@@ -39,7 +38,7 @@ router.get(
                 }
             })
 
-            return sendSuccessResponse(res, 200, { users : {...usersToSend} })
+            return sendSuccessResponse(res, 200, { shares : {...usersToSend} })
         } catch (err){
             return sendErrorResponse(res, 500)
         }
