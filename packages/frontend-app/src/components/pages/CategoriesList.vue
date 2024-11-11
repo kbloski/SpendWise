@@ -11,7 +11,6 @@
                 :rolePriority="rolePriority"
             ></category-card-item>
         </base-ul>
-            {{ rolePermission }}
     </div>
     <base-info v-else title="Brak kategori.">Bierzący budżet nie posiada żadnych kategori.</base-info>
 </template>

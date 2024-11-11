@@ -38,17 +38,25 @@ export default {
     },
     data(){
         return {
-            budgetId: null,
-            categoryId: null,
-            fetchExpenses : {},
+            fetchExpenses : {}
         }
     },
     watch:{
         needExpenseRefresh( val ){
             if (val) this.fetchExpenses?.refetch()
+        },
+        categoryId( val ){
+            console.log()
+            this.fetchExpenses.setNewUrl(`/api/budgets/${this.budgetId}/categories/${ val }/expenses`)
         }
     },
     computed:{
+        budgetId(){
+            return  this.$route.params.budgetId 
+        },
+        categoryId(){
+            return this.$route.params.categoryId
+        },
         needExpenseRefresh (){
             const isNeeded =  this.$store.getters['refresh/isRefreshExpensesNeeded']
             if (isNeeded) this.fetchExpenses?.refetch()
@@ -66,10 +74,10 @@ export default {
         }
     },
     created(){
-        this.budgetId = this.$route.params.budgetId 
-        this.categoryId = this.$route.params.categoryId
+        const budgetId = this.$route.params.budgetId 
+        const categoryId = this.$route.params.categoryId
         this.fetchExpenses = useFetch(
-            `/api/budgets/${this.budgetId}/categories/${this.categoryId}/expenses`
+            `/api/budgets/${budgetId}/categories/${categoryId}/expenses`
         )
     },
 
