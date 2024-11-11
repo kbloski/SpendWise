@@ -6,6 +6,7 @@ import budgetSharesRoutes from "./budgetSharesRoutes";
 import categoriesRoutes from "./categoriesRoutes";
 import expensesRoutes from "./expensesRoutes";
 import reportsRoutes from './reportsRoutes'
+import rolesRoutes from './rolesRoutes'
 
 const routes: any[] = [
     authRoutes,
@@ -14,7 +15,8 @@ const routes: any[] = [
     categoriesRoutes,
     expensesRoutes,
     budgetSharesRoutes,
-    reportsRoutes
+    reportsRoutes,
+    rolesRoutes
 ];
 
 function registerRoutes(app: Express) {
