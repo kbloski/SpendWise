@@ -43,11 +43,13 @@
                 <base-button :link="true" :to="sharesLink">Shares</base-button>
 
                 <div v-if="rolePriority < 2">
-                    <modify-budget :budgetId="budgetId"></modify-budget>
-                    <create-category :budgetId="budgetId"></create-category>
-                    <base-button @click="onDelete">Delete</base-button>                
                     <add-report-modal :budgetId="budgetId"></add-report-modal>
+                    <create-category :budgetId="budgetId"></create-category>
+                    <modify-budget :budgetId="budgetId"></modify-budget>
                     <share-budget-modal :budgetId="budgetId"></share-budget-modal>
+                </div>
+                <div v-if="rolePriority < 1">
+                    <base-button @click="onDelete">Delete</base-button>                
                 </div>
             </div>
         </div>

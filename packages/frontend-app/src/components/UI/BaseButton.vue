@@ -37,6 +37,8 @@ export default {
 
 .span-container-link {
     display: flex;
+    margin: .2rem 0;
+    padding: 0;
 }
 
 button,
