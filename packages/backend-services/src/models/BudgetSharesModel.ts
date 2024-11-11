@@ -27,6 +27,7 @@ BudgetShare.init({
     },
     role: {
         type: DataTypes.INTEGER,
+        allowNull: false,
         defaultValue: UserRoles.VIEWER,
         comment: `admin(${UserRoles.ADMIN}),editor(${UserRoles.EDITOR}),viewer(${UserRoles.VIEWER})`
     }

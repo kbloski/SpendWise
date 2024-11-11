@@ -47,7 +47,7 @@ router.put(
             if(!isNumber(id)) return sendErrorResponse(res, 400, "Invalid type id, id must be a number.");
 
             const { email, role } : any = req.body;
-            if (!email) return sendErrorResponse(res, 400, "Please provide user_id.");
+            if (!email) return sendErrorResponse(res, 400, "Please provide email.");
 
             if (
                 role && !isNumber(role) ||
@@ -72,8 +72,9 @@ router.put(
 
             const relationExist = await budgetSharesController.getIdUserBudgetRelation(budgetDb.id, userDb.id);
             if ( relationExist){
-                // console.log('exist', relationExist)
-                await budgetSharesController.updateById( relationExist, { role})
+                if (role) await budgetSharesController.updateById(relationExist, {
+                    role,
+                });
             } else {
                 await budgetSharesController.findOrCreate({
                     budget_id: budgetDb.id,
