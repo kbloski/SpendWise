@@ -14,8 +14,6 @@
 
 <script>
 import { computed, ref, watch } from "vue";
-import { useRouter } from "vue-router";
-import { useStore } from "vuex";
 import useFetch from "../../hooks/useFetch.js";
 
 export default {
@@ -28,12 +26,12 @@ export default {
         const period_start = ref(undefined);
         const period_end = ref(undefined);
         
+        const oldUrl = ref(null)
         const fetchGenerate = useFetch()
         const reportModal = ref(null);
         const created = computed(() => !!fetchGenerate.response.ok);
 
         function openModal() {
-            fetchGenerate.clearResponse()
             reportModal.value.openModal();
         }
         
@@ -43,8 +41,13 @@ export default {
             if (period_start.value) params.push( `period_start=` + period_start.value)
             if (period_end.value) params.push( `period_end=` + period_end.value)
             newUrl+=params.join('&');
-            
-            fetchGenerate.setNewUrl( newUrl );
+        
+            if ( oldUrl.value !== newUrl){
+                oldUrl.value = newUrl;
+                fetchGenerate.setNewUrl( newUrl );
+            } else {
+                fetchGenerate.refetch()
+            }
         }
         
         watch(created, () => {
