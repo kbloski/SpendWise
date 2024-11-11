@@ -1,11 +1,9 @@
 <template>
     <div>
-        <base-title>Moje finanse</base-title>
         <base-error v-if="errorMessage">{{  errorMessage }}</base-error>
         <div v-if="loading" >Loading... </div>
 
         <div v-if="budgetList.length">
-            <create-budget-modal></create-budget-modal>
             <base-ul>
                 <my-budgets-list-item 
                     v-for="relation in budgetList"
@@ -26,12 +24,10 @@ import { computed, provide, watch } from 'vue';
 import { useStore } from 'vuex';
 import useFetch from '../../hooks/useFetch';
 import MyBudgetsListItem from './MyBudgetsListItem.vue';
-import CreateBudgetModal from '../modals/AddBudgetModal.vue';
 
 export default {
     components: {
         MyBudgetsListItem,
-        CreateBudgetModal
     },
     setup(){
         const store = useStore()

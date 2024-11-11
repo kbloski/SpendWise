@@ -68,6 +68,7 @@ li {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 
@@ -81,6 +82,7 @@ li {
 
 .actions  {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     margin: 0;
     width: 50%;

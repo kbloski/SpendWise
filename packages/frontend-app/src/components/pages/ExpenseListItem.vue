@@ -1,6 +1,6 @@
 <template>
     <li>
-        <span>Id: {{ id }}</span>
+        <!-- <span>Id: {{ id }}</span> -->
         <span>Kwota: {{ amount}}zł</span>
         <span>UserId: {{ user_id }}</span>
         <span>Date: {{ createdAt }}</span>

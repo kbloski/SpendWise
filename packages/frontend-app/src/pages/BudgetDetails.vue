@@ -12,10 +12,6 @@
                         <div>Budget details</div>
                     </header>
                     <div>
-                        <span>Id</span>
-                        <span>{{ budget.id }}</span>
-                    </div>
-                    <div>
                         <span>Name</span>
                         <span>{{ budget.name }}</span>
                     </div>

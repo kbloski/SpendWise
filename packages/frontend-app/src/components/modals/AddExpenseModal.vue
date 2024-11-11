@@ -5,7 +5,7 @@
             <template v-slot:header> Expense create </template>
             <template v-slot:default>
                 <base-form-control v-model="description">Description</base-form-control>
-                <base-form-control v-model="amount">Amount (Provide number)</base-form-control>
+                <base-form-control v-model="amount">Amount (number)</base-form-control>
                 <br />
                 <base-button @click="createExpense">Create</base-button>
             </template>
