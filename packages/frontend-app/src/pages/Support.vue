@@ -1,8 +1,8 @@
 +<template>
-    <base-card>
+    <div>
         <side-title>Potrzebujesz wsparcia?</side-title>
         <support-form></support-form>
-    </base-card>
+    </div>
 </template>
 
 <script>

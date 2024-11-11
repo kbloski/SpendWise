@@ -1,7 +1,7 @@
 <template>
-    <base-card>
+    <div>
         <side-title>Dashboard</side-title>
-    </base-card>
+    </div>
 </template>
 
 <script>

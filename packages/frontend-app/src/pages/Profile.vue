@@ -1,8 +1,8 @@
 <template>
-    <base-card>
+    <div>
         <side-title>My Profile</side-title>
         <user-details></user-details>
-    </base-card>
+    </div>
 </template>
 
 <script>

@@ -27,7 +27,7 @@
     text-align: center;
     text-transform: uppercase;
     text-shadow: 0 0 5px gray;
-    font-size: 32px; /** bug with mobile */
+    font-size: 24px; /** bug with mobile */
     margin: 1rem;
 }
 </style>

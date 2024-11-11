@@ -8,7 +8,7 @@
 
 div {
     background-color: var(--background-color-light);
-    width: 100%;
+    width: 80vw;
     margin: 2rem 0 0 0;
     padding: 0 2rem ;
     border-radius: 1rem  0 0 0;

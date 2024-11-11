@@ -53,6 +53,7 @@ export default {
     padding: 0rem 0 0 2rem;
     padding-top: 2rem;
     position: relative;
+    margin: 0;
 }
 
 h1 {

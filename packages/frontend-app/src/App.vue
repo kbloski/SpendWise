@@ -81,4 +81,28 @@ html, body {
   opacity: 0;
   transform: translateX(30px);
 }
+
+
+/* .card-route-enter-from {
+  transform: translateX(-30px);
+  opacity: 0;
+}
+.card-route-enter-active {
+  transition: all 0.3s ease-in;
+}
+.card-route-enter-to {
+  opacity: 1;
+  transform: translateX(0);
+}
+.card-route-leave-from {
+  opacity: 1;
+  transform: translateX(0);
+}
+.card-route-leave-active {
+  transition: all 0.3s ease-out;
+}
+.card-route-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+} */
 </style>
