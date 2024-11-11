@@ -8,8 +8,6 @@
 </template>
 
 <script>
-
-
 export default {
     props: ['name', 'id'],
     computed: {
@@ -26,18 +24,24 @@ export default {
 </script>
 
 <style scoped>
-li {
+li > div {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin: 0;
     padding: 0;
-    justify-content: end;
 }
 
-div {
-    display: flex;
-    direction: ltr;
-}
 a {
-    padding-left: 10px;
+    background-color: rgba(128, 128, 128, 0.3);
+    padding: .3rem;
+    border: 2px solid gray;
+    color: black; 
+    text-decoration: none;
+    text-transform: uppercase;
 }
+
 </style>
 

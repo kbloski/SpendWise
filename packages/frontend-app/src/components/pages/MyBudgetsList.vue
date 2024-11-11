@@ -6,7 +6,7 @@
 
         <div v-if="budgetList.length">
             <create-budget-modal></create-budget-modal>
-            <ul >
+            <base-ul>
                 <my-budgets-list-item 
                     v-for="relation in budgetList"
                     :key="relation.Budget.id"
@@ -15,7 +15,7 @@
                     :rolePriority="relation.role"
                 >
                 </my-budgets-list-item>
-            </ul>
+            </base-ul>
         </div>
         <base-info v-else title="Brak budżetów">Aktualnie nie posiadasz żadnych budżetów.</base-info>
     </div>
@@ -56,15 +56,3 @@ export default {
 }
 </script>
 
-<style scoped>
-ul {
-    background-color: white;
-    box-shadow: inset 0 0 4px black;
-    list-style: none;
-    padding: 1rem;
-    margin: 1rem 0;
-    max-height: 150px;
-    overflow-y: auto;
-    direction: rtl;
-}
-</style>

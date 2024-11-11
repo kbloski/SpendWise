@@ -27,6 +27,7 @@ const BaseFormControl = defineAsyncComponent(() =>
   import("./components/UI/BaseFormControl.vue")
 );
 const BaseModal = defineAsyncComponent( ()=> import("./components/UI/BaseModal.vue"))
+const BaseUl = defineAsyncComponent( ()=> import("./components/UI/BaseUl.vue"))
 
 const app = createApp(App);
 
@@ -39,6 +40,7 @@ app.component("base-info", BaseInfo);
 app.component("base-error", BaseError);
 app.component("base-form-control", BaseFormControl);
 app.component("base-modal", BaseModal);
+app.component("base-ul", BaseUl);
 
 app.use(store);
 app.use(router);

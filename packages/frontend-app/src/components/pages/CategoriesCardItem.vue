@@ -1,11 +1,12 @@
 <template>
-    <router-link :to="expensesLink">
         <li>
-            <div>Category {{ name }}</div>
-            <modify-category-modal :categoryId="id"></modify-category-modal>
-            <button @click="onDelete">Delete</button>
+            <span class="category-name">Kategoria: {{ name }}</span>
+            <div class="actions">
+                <modify-category-modal :categoryId="id"></modify-category-modal>
+                <base-button :link="true" :to="expensesLink">View Expenses</base-button>
+                <base-button @click="onDelete" class="button-delete">Delete</base-button>
+            </div>
         </li>
-    </router-link>
 </template>
 
 <script>
@@ -24,7 +25,7 @@ export default {
         }
     },
     methods: {
-        onDelete(){
+        onDelete( event ){
             this.deleteBudget.setNewUrl('/api/categories/'+this.id)
         }
     },
@@ -43,7 +44,7 @@ export default {
         }
     },
     computed: {
-        isDelted(){
+        isDelted(event){
             return this.deleteBudget.response.ok;
         },
         expensesLink(){
@@ -60,30 +61,24 @@ export default {
 </script>
 
 <style scoped>
-
-a {
-    text-decoration: none;
-    border-radius: 1rem;
-    padding: 0rem;
-    background: greenyellow;
-    font-weight: bold;
-    margin: 0.2rem;
+li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-a:hover {
-    background: rgb(101, 150, 28);
+
+.category-name {
+    padding:1rem;
+    margin: 1rem;
+    box-shadow: inset 0 0 10px black;
+    background-color: rgb(82, 82, 82);
     color: white;
 }
 
-a:active {
-    background: rgb(70, 104, 20);
-    color: rgb(254, 255, 181);
+.actions > * {
+    margin: 0;
 }
 
-li {
-    box-shadow: inset 0 0 8px black;
-    border-radius: 1rem;
-    padding: 1rem;
-}
 
 </style>

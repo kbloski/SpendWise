@@ -57,8 +57,9 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .container {
-    padding-bottom: 1rem;
+    padding: 0;
+    margin: 0;
 }
 </style>
