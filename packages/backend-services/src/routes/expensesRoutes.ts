@@ -37,6 +37,14 @@ router.get(
                 await budgetSharesController.isAccessUserToBudget( budgetDb, req.user );
             if (!isAccessToBudget) return sendErrorResponse(res, 403);
 
+            const bsRelation =
+                await budgetSharesController.getRelationByUserAndBudget(
+                    Number(budgetId),
+                    req.user.id
+                );
+            if (!bsRelation)
+                throw new Error("Problem with role relation.");
+
             const categoryDb = await categoryController.getById( Number(categoryId));
             if (!categoryDb) return sendErrorResponse(res, 404, "Category with id "+ categoryId + " not exist.");
             const isAccessToCategory = await categoryController.isAccessCategoryToBudget( categoryDb, budgetDb);
@@ -45,7 +53,10 @@ router.get(
 
             const expensesDb = await expenseController.getCategoryExpenses( categoryDb.id )
 
-            return sendSuccessResponse(res, 200, { expenses: expensesDb });
+            return sendSuccessResponse(res, 200, {
+                expenses: expensesDb,
+                rolePriority: bsRelation.role,
+            });
         } catch (err) {
             return sendErrorResponse(res, 500);
         }
@@ -67,8 +78,19 @@ router.get(
             const isAccessToBudget = await budgetSharesController.isAccessUserToBudget( budgetDb, req.user);
             if (!isAccessToBudget) return sendErrorResponse(res, 403);
 
+            // Get role priority for expenes
+            const bsRelation =
+                await budgetSharesController.getRelationByUserAndBudget(
+                    Number(budgetId),
+                    req.user.id
+                );
+            if (!bsRelation) throw new Error("Problem with role relation.");
+
             const expensesDb = await expenseController.getAllforBudget( budgetDb);
-            return sendSuccessResponse( res, 200, { expenses: expensesDb})
+            return sendSuccessResponse(res, 200, {
+                expenses: expensesDb,
+                rolePriority: bsRelation.role,
+            });
         } catch (err){
             return sendErrorResponse(res, 500)
         }
@@ -136,7 +158,21 @@ router.get(
             const accessToExpense = await expenseController.isAccessForUser(expenseDb,  req.user);
             if (!accessToExpense) return sendErrorResponse(res, 403);
 
-            return sendSuccessResponse(res, 200, { expense: expenseDb})
+            // Get role priority
+            const categoryDb = await categoryController.getById( expenseDb.category_id );
+            if (!categoryDb ) throw new Error("Problem with download category for expense.")
+            const bsRelation =
+                await budgetSharesController.getRelationByUserAndBudget(
+                    Number(categoryDb.budget_id),
+                    req.user.id
+                );
+            if (!bsRelation)
+                throw new Error("Problem with role relation.");
+
+            return sendSuccessResponse(res, 200, { 
+                expense: expenseDb,
+                rolePriority: bsRelation.role
+            })
         } catch(err){
             return sendErrorResponse(res, 500)
         }

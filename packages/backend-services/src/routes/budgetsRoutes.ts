@@ -8,6 +8,7 @@ import {
 } from "../controllers/controllers";
 import { sendErrorResponse, sendSuccessResponse } from "../utils/responseUtils";
 import { isNumber } from "../utils/utils";
+import { UserRoles } from "../types/BudgetShareType";
 
 const router = Router();
 
@@ -17,8 +18,16 @@ router.get(buildApiPath("budgets", "me"), async (req, res) => {
         const budgets =
             await budgetSharesController.getAccessibleWithBudgetForUser(
                 req.user.id
-            );
-        return sendSuccessResponse(res, 200, { budgets }); // maybe with user-role for frontend
+        );
+
+        const dataToSend = budgets.map( data => {
+            const newData : any  = data;
+            newData.rolePriority = data.role;
+            delete newData.role
+            return newData;
+        })
+
+        return sendSuccessResponse(res, 200, { budgets: dataToSend }); // maybe with user-role for frontend
     } catch (err){
         return sendErrorResponse(res, 500)
     }
@@ -51,10 +60,15 @@ router.get( buildApiPath("budgets", ":id"), async (req, res) => {
         const budgetExist = await budgetController.getById(Number(id));
         if (!budgetExist)return sendErrorResponse(res, 404, "Budget don't exist.");
         
-        const access = (await budgetSharesController.isAccessUserToBudget( budgetExist, req.user))
+        const access = await budgetSharesController.isAccessUserToBudget( budgetExist, req.user)
         if (!access) return sendErrorResponse(res, 403, "Forbidden to resource.");
 
-        return sendSuccessResponse(res, 200, { budget: budgetExist });
+        const bsRelation = await budgetSharesController.getRelationByUserAndBudget( budgetExist.id , req.user.id);
+
+        return sendSuccessResponse(res, 200, {
+            budget: budgetExist,
+            rolePriority: bsRelation?.role,
+        });
     } catch (err) {
         sendErrorResponse(res, 500);
     }

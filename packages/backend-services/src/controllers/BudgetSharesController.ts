@@ -23,130 +23,144 @@ export default class BudgetSharesController extends AbstractCrudController<Budge
     }
 
     // CHANGE ON - createIfNotExist()
-    async findOrCreate (
-        data: Optional<BudgetShareType, "id" | "role">): Promise<BudgetShare | null> 
-    {
+    async findOrCreate(
+        data: Optional<BudgetShareType, "id" | "role">
+    ): Promise<BudgetShare | null> {
         try {
-            const { user_id, budget_id} = data;
-            const userExist = await userController.getById( user_id )
-            if (!userExist) throw new Error("User with id: " + user_id + ' not exist');
-            const budgetExist =  await budgetController.getById( budget_id )
-            if (!budgetExist) throw new Error("Budget with id: " + budget_id + ' not exist');
+            const { user_id, budget_id } = data;
+            const userExist = await userController.getById(user_id);
+            if (!userExist)
+                throw new Error("User with id: " + user_id + " not exist");
+            const budgetExist = await budgetController.getById(budget_id);
+            if (!budgetExist)
+                throw new Error("Budget with id: " + budget_id + " not exist");
 
-            const idExist = await this.getIdUserBudgetRelation( budgetExist.id, userExist.id);
+            const idExist = await this.getIdUserBudgetRelation(
+                budgetExist.id,
+                userExist.id
+            );
             if (idExist) return await this.getById(idExist);
-                
+
             return await super.create({
                 user_id: data.user_id,
                 budget_id: data.budget_id,
-                role: data.role
-            })        
-        } catch(err){
-            console.error(err)
-            throw new Error("Failed create BudgetShareType.create()")
-        }     
+                role: data.role,
+            });
+        } catch (err) {
+            console.error(err);
+            throw new Error("Failed create BudgetShareType.create()");
+        }
     }
 
-        async getAccessibleWithBudgetForUser( userId: number) {
+    async getAccessibleWithBudgetForUser(userId: number) {
         const allRelations = await this.model.findAll({
             include: {
-               model: Budget,
-               required: true
+                model: Budget,
+                required: true,
             },
             where: {
-                user_id: userId
-            }
-        })
+                user_id: userId,
+            },
+        });
 
-        const dataToSend = allRelations.map( r => {
-            const data : any = r.dataValues;
+        const dataToSend = allRelations.map((r) => {
+            const data: any = r.dataValues;
             delete data.budget_id;
             delete data.user_id;
-        })
-        return allRelations
+        });
+        return allRelations;
     }
 
-    async getAllUsersforBudget(
-        budget: BudgetType | Budget
-    ){
-        const budgetShares = await this.model.findAll(
-            {where: {budget_id: budget.id }});
+    async getAllUsersforBudget(budget: BudgetType | Budget) {
+        const budgetShares = await this.model.findAll({
+            where: { budget_id: budget.id },
+        });
 
-        const usersIds = budgetShares.map( bs => bs.user_id);
+        const usersIds = budgetShares.map((bs) => bs.user_id);
         if (!usersIds.length) return [];
 
-        return userController.getAll( "ASC" , "id", { id: { [Op.in] : usersIds}})
+        return userController.getAll("ASC", "id", {
+            id: { [Op.in]: usersIds },
+        });
     }
 
-    async getAllforUser( userId: number){
-        return await this.getAll("DESC", "id", { user_id: userId})
+    async getAllforUser(userId: number) {
+        return await this.getAll("DESC", "id", { user_id: userId });
     }
 
     async updateById(
-        id: number, 
-        data: Partial<Omit<BudgetShare, "id">>): Promise<Boolean> 
-    {
-        return await super.updateById( id , data)
+        id: number,
+        data: Partial<Omit<BudgetShare, "id">>
+    ): Promise<Boolean> {
+        return await super.updateById(id, data);
     }
 
-    async getIdUserBudgetRelation( 
-        budgetId: number,
-        userId: number,
-    ){
-        const relation = await this.model.findOne(
-            {where: { user_id: userId , budget_id: budgetId}})
+    async getIdUserBudgetRelation(budgetId: number, userId: number) {
+        const relation = await this.model.findOne({
+            where: { user_id: userId, budget_id: budgetId },
+        });
         if (!relation) return null;
-        return relation.id
+        return relation.id;
     }
-    
+
+    async getRelationByUserAndBudget(
+        budgetId: number, 
+        userId: number
+    ) {
+        const relation = await this.model.findOne({
+            where: { user_id: userId, budget_id: budgetId },
+        });
+        return relation;
+    }
+
     async isAccessUserToBudget(
         budget: BudgetType | Budget,
-        user: UserType | User,
-    ){
-        const result = await this.getIdUserBudgetRelation( budget.id, user.id )
-        return !!result
+        user: UserType | User
+    ) {
+        const result = await this.getIdUserBudgetRelation(budget.id, user.id);
+        return !!result;
     }
-    
+
     async isAccessUserToBudgetToModify(
         budget: BudgetType | Budget,
-        user: UserType | User,
-    ){
-        const id  = await this.getIdUserBudgetRelation( budget.id, user.id );
+        user: UserType | User
+    ) {
+        const id = await this.getIdUserBudgetRelation(budget.id, user.id);
         if (!id) return false;
 
-        const relation = await this.getById( id );
+        const relation = await this.getById(id);
         if (!relation) return false;
-        
-        const result = relation.role === UserRoles.ADMIN || relation.role === UserRoles.EDITOR;
-        return !!result
+
+        const result =
+            relation.role === UserRoles.ADMIN ||
+            relation.role === UserRoles.EDITOR;
+        return !!result;
     }
-    
+
     async isAccessUserToBudgetByAdminRole(
         budget: BudgetType | Budget,
-        user: UserType | User,
-    ){
-        const id  = await this.getIdUserBudgetRelation( budget.id, user.id );
+        user: UserType | User
+    ) {
+        const id = await this.getIdUserBudgetRelation(budget.id, user.id);
         if (!id) return false;
 
-        const relation = await this.getById( id );
+        const relation = await this.getById(id);
         if (!relation) return false;
-        
-        const result = relation.role === UserRoles.ADMIN;
-        return !!result
 
+        const result = relation.role === UserRoles.ADMIN;
+        return !!result;
     }
 
-    async deleteWhere( where :  {
-        user_id? : number ,
-        budget_id? : number
-    }){
+    async deleteWhere(where: { user_id?: number; budget_id?: number }) {
         try {
-            if (where.user_id) this.model.destroy( {where: { user_id: where.user_id}});
-            if (where.budget_id) this.model.destroy( {where: { budget_id: where.budget_id}});
+            if (where.user_id)
+                this.model.destroy({ where: { user_id: where.user_id } });
+            if (where.budget_id)
+                this.model.destroy({ where: { budget_id: where.budget_id } });
             return true;
-        } catch (err){
-            console.error(err)
-            throw new Error("Failed BudgetSharesController.deleteWher() ")
+        } catch (err) {
+            console.error(err);
+            throw new Error("Failed BudgetSharesController.deleteWher() ");
         }
     }
 }

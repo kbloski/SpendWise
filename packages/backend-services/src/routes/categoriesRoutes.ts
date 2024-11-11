@@ -47,7 +47,13 @@ router.get(
 
             const categories = await categoryController.getAllByBudgetId(Number(budgetId));
 
-            return sendSuccessResponse(res, 200, {categories: categories});
+            const bsRelation = await budgetSharesController.getRelationByUserAndBudget( budgetExist.id, req.user.id);
+            if (!bsRelation) throw new Error("Problem with role relation.")
+
+            return sendSuccessResponse(res, 200, {
+                categories: categories,
+                rolePriority: bsRelation.role,
+            });
         } catch (err) {
             return sendErrorResponse(res, 500);
         }
@@ -68,8 +74,17 @@ router.get(
 
             const accessToCategory = await categoryController.isAccessibleCategoryForUser( categoryDb, req.user )
             if (!accessToCategory) return sendErrorResponse(res, 403)
+
+            const bsRelation =
+                await budgetSharesController.getRelationByUserAndBudget(
+                    categoryDb.budget_id,  req.user.id );
+            if (!bsRelation)
+                throw new Error("Problem with role relation.");
             
-            return sendSuccessResponse(res, 200, {category: categoryDb})
+            return sendSuccessResponse(res, 200, {
+                category: categoryDb,
+                rolePriority: bsRelation.role,
+            });
         } catch (err){
             return sendErrorResponse( res, 500)
         }

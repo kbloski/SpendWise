@@ -12,7 +12,7 @@
                     :key="relation.Budget.id"
                     :id="relation.Budget.id"
                     :name="relation.Budget.name"
-                    :role="relation.role"
+                    :rolePriority="relation.role"
                 >
                 </my-budgets-list-item>
             </ul>
