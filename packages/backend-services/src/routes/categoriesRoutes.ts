@@ -132,8 +132,8 @@ router.delete(
             const categoryDb = await categoryController.getById( Number(id ));
             if (!categoryDb) return sendErrorResponse(res, 404)
 
-            const isAccess = await categoryController.isAccessibleCategoryForUser(categoryDb, req.user);
-            if (!isAccess) return sendErrorResponse(res, 403);
+            const isAccessToModify = await categoryController.isAccessibleCategoryForUserToModify(categoryDb, req.user);
+            if (!isAccessToModify) return sendErrorResponse(res, 403, "You don't have access by role.");
 
             const isDeleted = await categoryController.deleteById( Number(id));
             if (!isDeleted) throw new Error("Cannot delete resource with id " + id);

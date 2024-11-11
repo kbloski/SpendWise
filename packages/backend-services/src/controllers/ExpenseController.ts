@@ -94,6 +94,7 @@ export default class ExpenseController extends AbstractCrudController<Expense> {
         }
 
     }
+    
 
     async isAccessForUser( 
         expense: ExpenseType | Expense,
@@ -110,6 +111,23 @@ export default class ExpenseController extends AbstractCrudController<Expense> {
         } catch (err){
             console.error(err);
             throw new Error("Failed check access in ExpenseController.isAccessForUser()")
+        }
+    }
+
+    async isAcceessExpenseForUserToModify(
+        expense: Expense | ExpenseType,
+        user: User | UserType
+    ){
+        try {
+            const categoryDb = await categoryController.getById( expense.category_id );
+            if (!categoryDb) throw new Error("Not found category in database.")
+
+            const accessToCategoryModify = await categoryController.isAccessibleCategoryForUserToModify( categoryDb, user);
+            
+            return !!accessToCategoryModify;
+        } catch(err){
+            console.error(err)
+            throw new Error("Failed check access in ExpenseController.isAccessExpenseForUserToModify()")
         }
     }
 

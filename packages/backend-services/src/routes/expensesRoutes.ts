@@ -153,7 +153,6 @@ router.patch(
             const { amount, description, user_id, category_id  } : Partial<ExpenseType> = req.body;
             if ( !isNumber(id) ) return sendErrorResponse(res, 400, "Invalid type id, id must be a number");
 
-            console.log(amount && !isNumber(amount));
             if (
                 !amount && !description && !user_id && !category_id 
             ) return sendErrorResponse(res, 400, "Please provide amount, user_id or category_id");
@@ -197,9 +196,9 @@ router.delete(buildApiPath("expenses", ":id"), async (req, res) => {
         const expenseDb = await expenseController.getById(Number(id));
         if (!expenseDb) return sendErrorResponse(res, 404);
 
-        const accessToExpense = await expenseController.isAccessForUser(
-            expenseDb,req.user );
-        if (!accessToExpense) return sendErrorResponse(res, 403);
+        // Access to modify 
+        const accessToModify = await expenseController.isAcceessExpenseForUserToModify( expenseDb, req.user)
+        if (!accessToModify) return sendErrorResponse(res, 403, "You don't have access by role.");
         
         const isDeleted = await expenseController.deleteById( Number(id));
         if (!isDeleted) throw new Error("Cannot delete expense with id: " + id);

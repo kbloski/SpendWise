@@ -116,9 +116,24 @@ export default class BudgetSharesController extends AbstractCrudController<Budge
 
         const relation = await this.getById( id );
         if (!relation) return false;
-
+        
         const result = relation.role === UserRoles.ADMIN || relation.role === UserRoles.EDITOR;
         return !!result
+    }
+    
+    async isAccessUserToBudgetByAdminRole(
+        budget: BudgetType | Budget,
+        user: UserType | User,
+    ){
+        const id  = await this.getIdUserBudgetRelation( budget.id, user.id );
+        if (!id) return false;
+
+        const relation = await this.getById( id );
+        if (!relation) return false;
+        
+        const result = relation.role === UserRoles.ADMIN;
+        return !!result
+
     }
 
     async deleteWhere( where :  {

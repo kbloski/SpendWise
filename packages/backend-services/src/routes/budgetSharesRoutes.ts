@@ -72,7 +72,7 @@ router.put(
 
             const relationExist = await budgetSharesController.getIdUserBudgetRelation(budgetDb.id, userDb.id);
             if ( relationExist){
-                console.log('exist', relationExist)
+                // console.log('exist', relationExist)
                 await budgetSharesController.updateById( relationExist, { role})
             } else {
                 await budgetSharesController.findOrCreate({

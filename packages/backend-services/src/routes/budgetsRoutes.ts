@@ -105,8 +105,8 @@ router.delete(buildApiPath("budgets", ":id"), async (req, res) => {
         const budgetDb = await budgetController.getById(Number(id));
         if (!budgetDb) return sendErrorResponse(res, 404);
 
-        const access = await budgetSharesController.isAccessUserToBudget(budgetDb,req.user )
-        if (!access) return sendErrorResponse(res, 403);
+        const accessByAdmin = await budgetSharesController.isAccessUserToBudgetByAdminRole( budgetDb, req.user);
+        if (!accessByAdmin) return sendErrorResponse(res, 403, "You not a admin this budget.")
 
         const deleted = await budgetController.deleteById(budgetDb.id);
         if (!deleted) throw new Error("Cannot delete budget resource");
