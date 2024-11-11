@@ -83,10 +83,17 @@ export default class BudgetController extends AbstractCrudController<Budget> {
             if (!budgetDb) throw new Error("Budget don't exits");
             const userDb = await userController.getById(user.id);
             if (!userDb) throw new Error("User dont exis't in db");
-            
+
+            // Delete old owner
+            if (budgetDb.user_id !== user.id){
+                const oldOwnerRelationId = await budgetSharesController.getIdUserBudgetRelation(
+                    budgetDb.id, budgetDb.user_id )
+                if (oldOwnerRelationId) await budgetSharesController.deleteById( oldOwnerRelationId )
+            }
+
+            // Set new owner 
             const relatedId = await budgetSharesController.
             getIdUserBudgetRelation(budgetDb.id, budget.user_id )
-                
             let result = null;
             if (relatedId){ // update relation exist
                 const isUpdateBudgetShare = 

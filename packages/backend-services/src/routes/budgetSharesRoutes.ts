@@ -70,20 +70,33 @@ router.put(
             const accessToBudget = await budgetSharesController.isAccessUserToBudgetToModify(budgetDb, req.user);
             if (!accessToBudget) return sendErrorResponse(res, 403, "You can't modify by role.");
 
-            const relationExist = await budgetSharesController.getIdUserBudgetRelation(budgetDb.id, userDb.id);
-            if ( relationExist){
-                if (isNumber(role)) await budgetSharesController.updateById(relationExist, {
-                    role,
-                });
+            
+            const isAdminChange = isNumber(role) && role == UserRoles.ADMIN;
+            if (isAdminChange){
+                budgetController.setOwner( budgetDb, userDb);
             } else {
-                await budgetSharesController.findOrCreate({
+                const relationId =
+                await budgetSharesController.getIdUserBudgetRelation(
+                    budgetDb.id,
+                    userDb.id
+                );
+                
+                if (relationId){
+                    if(isNumber(role) && role !== null) await budgetSharesController.updateById(relationId, { role })
+                } else {
+                    await budgetSharesController.findOrCreate({
                     budget_id: budgetDb.id,
-                    user_id: userDb.id
+                    user_id: userDb.id,
+                    role: role === null ? undefined : role
                 })
+                }
             }
+            
+        
             transaction.commit()
             return sendSuccessResponse(res, 201)
         } catch (err){
+            console.error(err)
             transaction.rollback()
             return sendErrorResponse(res, 500)
         }
