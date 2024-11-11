@@ -1,13 +1,15 @@
 <template>
     <div>
         <base-title>Udostępnienia</base-title>
-        <ul>
-            <li v-for="user in shares">
-                {{ user.username }}
-                {{ user.email }}
-                <button @click="onDelete(user.id)">Delete</button>
+        <base-error v-if="error">{{  error }}</base-error>
+        <base-ul>
+            <li v-for="share in shares">
+                {{ share.user.username }}
+                {{ share.user.email }}
+                <base-button @click="onDelete(share.user.id)" v-if="share.role !== 0">Delete</base-button>
+                <div v-else>Admin</div>
             </li>
-        </ul>
+        </base-ul>
     </div>
 </template>
 
@@ -26,6 +28,11 @@ export default {
         const budgedId = computed( () => route.params?.budgetId )
         const fetchShares = useFetch('/api/budgets/'+budgedId.value+'/shares');
         const deleteShares = useDelete();
+
+        const shares = computed( () => fetchShares.data.value?.shares ?? [])
+        const loading = computed( () => fetchShares.loading.value ?? deleteShares.loading.value )
+        const error = computed( () => fetchShares.error.value || deleteShares.error.value )
+
         const refreshNeeded = computed(() => store.getters['refresh/isRefreshSharesNeeded'])
         watch( refreshNeeded, ()=>{
             if (!refreshNeeded.value) return;
@@ -49,11 +56,9 @@ export default {
 
         }
 
-        const shares = computed( () => fetchShares.data.value?.users)
-        
         return {
-            loading: fetchShares.loading,
-            error: fetchShares.error,
+            loading,
+            error,
             shares,
             onDelete
         }
@@ -61,3 +66,12 @@ export default {
     }
 }
 </script>
+
+<style lang="css" scoped>
+
+li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+</style>

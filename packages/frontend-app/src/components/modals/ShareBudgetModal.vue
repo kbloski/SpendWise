@@ -23,6 +23,7 @@ import { computed, reactive, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import useFetch from '../../hooks/useFetch.js'
 import usePut from '../../hooks/usePut';
+import { useRouter } from 'vue-router'
 import { validEmail } from '../../utils/validation.js'
 
 export default {
@@ -32,6 +33,7 @@ export default {
         }
     },
     setup( props ){
+        const router = useRouter()
         const store = useStore()
         const shareModal = ref();
 
@@ -64,20 +66,20 @@ export default {
         watch( putShare.response, () => {
             if (!putShare.response.ok) return;
             store.dispatch('refresh/triggerRefreshShares')
+            store.dispatch('refresh/triggerRefreshBudgets')
+
             putShare.clearResponse()
             clearErrors()
             shareModal.value.closeModal();
+            if (enteredRole.value === 0) router.replace('/')
         })
 
         function onSubmit(){
             clearErrors()
             const updatedData = {
                 email: enteredEmail.value,
-                role : 0
+                role : enteredRole.value
             };
-            // updatedData.role = enteredRole.value;
-            // error.email = validEmail( enteredEmail.value );
-
             if (error.email) return;
             putShare.putData(updatedData)
         }

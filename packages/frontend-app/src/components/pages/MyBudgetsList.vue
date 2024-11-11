@@ -35,6 +35,7 @@ export default {
     },
     setup(){
         const store = useStore()
+        
         const isNeededRefresh = computed(() => store.getters['refresh/isRefreshBudgetsNeeded'] );
         watch( isNeededRefresh, () => {
             if (!isNeededRefresh.value) return;

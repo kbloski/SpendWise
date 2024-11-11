@@ -44,7 +44,7 @@
 
                 <div v-if="rolePriority < 2">
                     <add-report-modal :budgetId="budgetId"></add-report-modal>
-                    <create-category :budgetId="budgetId"></create-category>
+                    
                     <modify-budget :budgetId="budgetId"></modify-budget>
                     <share-budget-modal :budgetId="budgetId"></share-budget-modal>
                 </div>
