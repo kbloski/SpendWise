@@ -62,8 +62,9 @@ ul {
     box-shadow: inset 0 0 4px black;
     list-style: none;
     padding: 1rem;
-    margin: 0;
+    margin: 1rem 0;
     max-height: 150px;
     overflow-y: auto;
+    direction: rtl;
 }
 </style>

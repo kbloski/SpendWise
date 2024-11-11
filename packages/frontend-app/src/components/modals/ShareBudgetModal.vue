@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <button @click="openModal">Share</button>
+        <base-button @click="openModal">Share budget</base-button>
         <base-modal :visible="false" ref="shareModal">
             <template v-slot:header> Share </template>
             <template v-slot:default>

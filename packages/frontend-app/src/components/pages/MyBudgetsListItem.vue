@@ -27,11 +27,14 @@ export default {
 
 <style scoped>
 li {
+    display: flex;
     padding: 0;
+    justify-content: end;
 }
 
 div {
     display: flex;
+    direction: ltr;
 }
 a {
     padding-left: 10px;

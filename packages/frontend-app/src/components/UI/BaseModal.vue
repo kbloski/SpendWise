@@ -64,7 +64,7 @@ export default {
     color: black;
     border-radius: 1rem;
     box-shadow: inset  0 0 10px black;
-    padding: 1rem;
+    padding: 0rem;
     position: relative;
     min-width: 30vw;
     max-width: 90vw;
