@@ -38,14 +38,17 @@
                 </section>
             </div>
             <div class="actions">
-                <modify-budget :budgetId="budgetId"></modify-budget>
-                <create-category :budgetId="budgetId"></create-category>
                 <base-button :link="true" :to="categoryLink">Categories</base-button>
                 <base-button :link="true" :to="expensesLink">All Expenses</base-button>
                 <base-button :link="true" :to="sharesLink">Shares</base-button>
-                <base-button @click="onDelete">Delete</base-button>                
-                <add-report-modal :budgetId="budgetId"></add-report-modal>
-                <share-budget-modal :budgetId="budgetId"></share-budget-modal>
+
+                <div v-if="rolePriority < 2">
+                    <modify-budget :budgetId="budgetId"></modify-budget>
+                    <create-category :budgetId="budgetId"></create-category>
+                    <base-button @click="onDelete">Delete</base-button>                
+                    <add-report-modal :budgetId="budgetId"></add-report-modal>
+                    <share-budget-modal :budgetId="budgetId"></share-budget-modal>
+                </div>
             </div>
         </div>
         <router-view :id="budget.id"></router-view>
@@ -128,6 +131,9 @@ export default {
         },
         budget() {
             return this.fetchBudget.data?.budget ?? {};
+        },
+        rolePriority(){
+            return this.fetchBudget.data?.rolePriority ?? 100;
         },
         categoryLink() {
             return {
