@@ -22,7 +22,7 @@
 import { ref, watch } from "vue";
 import { useStore } from 'vuex'
 import usePost from "../../hooks/usePost.js";
-import { validName} from '../../utils/validation.js'
+import { validName } from '../../utils/validation.js'
 
 export default {
     setup() {
