@@ -23,7 +23,6 @@ export default class BudgetSharesController extends AbstractCrudController<Budge
         super(BudgetShare);
     }
 
-    // CHANGE ON - createIfNotExist()
     async findOrCreate(
         data: Optional<BudgetShareType, "id" | "role">
     ): Promise<BudgetShare | null> {
@@ -75,12 +74,6 @@ export default class BudgetSharesController extends AbstractCrudController<Budge
             where: {
                 user_id: userId,
             },
-        });
-
-        const dataToSend = allRelations.map((r) => {
-            const data: any = r.dataValues;
-            delete data.budget_id;
-            delete data.user_id;
         });
         return allRelations;
     }

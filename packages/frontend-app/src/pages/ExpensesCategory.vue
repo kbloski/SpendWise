@@ -86,10 +86,7 @@ export default {
 
 
 
-<style>
-ul {
-    list-style: none;
-    margin: 1rem;
-    padding: 0;
-}
+<style scoped>
+
+
 </style>

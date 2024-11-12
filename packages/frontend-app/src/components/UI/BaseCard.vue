@@ -1,12 +1,12 @@
 <template>
-    <div>
+    <div class="base-card">
         <slot></slot>
     </div>
 </template>
 
 <style scoped>
 
-div {
+.base-card {
     background-color: var(--background-color-light);
     width: 80vw;
     margin: 2rem 0 0 0;

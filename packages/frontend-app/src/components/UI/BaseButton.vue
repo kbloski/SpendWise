@@ -34,10 +34,9 @@ export default {
     margin: 0;
     padding: 0;
 }
-
 .span-container-link {
     display: flex;
-    margin: .2rem 0;
+    margin: 0.2rem 0;
     padding: 0;
 }
 
@@ -65,7 +64,7 @@ a {
     background-color: transparent;
     color: black;
     position: relative;
-    padding: 0.5rem 1rem;
+    padding: .4rem;
     font-size: 1rem;
     font-weight: 900;
     margin: 0;
@@ -86,11 +85,9 @@ a {
 button,
 a {
     background: linear-gradient(45deg, #3b3b3b, #bdbdbd);
-    
-    
 }
 .inner-slot {
-     background: linear-gradient(45deg, #3b3b3b, #bdbdbd);
+    background: linear-gradient(45deg, #3b3b3b, #bdbdbd);
     color: transparent;
     -webkit-background-clip: text;
 }

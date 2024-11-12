@@ -77,9 +77,19 @@ const router = createRouter({
   ],
 });
 
+router.afterEach(() => {
+  setTimeout(() => {
+    window.scrollTo({
+      top: document.body.scrollHeight,
+    });
+  }, 100); // Opóźnienie 100 ms
+});
+
 // Guards
 router.beforeEach((to, from, next) => {
-  store.dispatch("auth/setStateToken");
+    
+
+    store.dispatch("auth/setStateToken");
 
   // Meta data
   const metaKeys = Object.keys(to.meta);

@@ -1,5 +1,5 @@
 <template>
-    <div class="title-container">
+    <div class="base-title">
         <div class="title">
             <slot></slot>
         </div>
@@ -7,6 +7,11 @@
 </template>
 
 <style scoped>
+
+.base-title {
+    margin: 0 !important;
+    padding: 0 !important;
+}
 
 .title {
     border-bottom: 2px solid black;

@@ -3,7 +3,13 @@
         <base-title>Kategorie budżetu</base-title>
         <create-category :budgetId="budgetId"></create-category>
         <category-cards></category-cards>
-        <router-view></router-view>
+        <div class="test">
+            <router-view v-slot="slotProps">
+                <transition name="card-route" mode="out-in">
+                    <component :is="slotProps.Component"></component>
+                </transition>
+            </router-view>
+        </div>
     </div>
 </template>
 

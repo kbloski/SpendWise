@@ -3,10 +3,8 @@
             <span class="category-name">Kategoria: {{ name }}</span>
             <div class="actions">
                 <base-button :link="true" :to="expensesLink">View Expenses</base-button>
-                <!-- <div v-if="rolePriority < 2"> -->
-                    <modify-category-modal :categoryId="id"></modify-category-modal>
-                    <base-button @click="onDelete" class="button-delete">Delete</base-button>
-                <!-- </div> -->
+                <modify-category-modal :categoryId="id"></modify-category-modal>
+                <base-button @click="onDelete" class="button-delete">Delete</base-button>
             </div>
         </li>
 </template>
@@ -73,11 +71,7 @@ li {
 
 
 .category-name {
-    padding:1rem;
     margin: 1rem;
-    box-shadow: inset 0 0 10px black;
-    background-color: rgb(82, 82, 82);
-    color: white;
 }
 
 .actions  {
@@ -85,6 +79,7 @@ li {
     flex-wrap: wrap;
     justify-content: space-between;
     margin: 0;
+    padding: 0;
     width: 50%;
 }
 

@@ -1,67 +1,74 @@
 <template>
-    <base-title>Informacje o budżecie</base-title>
-    <div v-if="errorMessage">
-        <base-error>{{ errorMessage }}</base-error>
-    </div>
-    <div v-if="loading">Loading...</div>
-    <div v-else-if="!loading && !errorMessage">
-        <div class="container">
-            <div>
-                <section class="budget-details">
-                    <header>
-                        <div>Budget details</div>
-                    </header>
-                    <div>
-                        <span>Name</span>
-                        <span>{{ budget.name }}</span>
-                    </div>
-                    <div>
-                        <span>Owner Id</span>
-                        <span>{{ budget.user_id }}</span>
-                    </div>
-                    <div>
-                        <span>CreatedAt</span>
-                        <span>{{ createDate }}</span>
-                    </div>
-                    <div>
-                        <span>Last update</span>
-                        <span>{{ updateDate }}</span>
-                    </div>
-                    <div>
-                        <span>Total</span>
-                        <span>{{ total }} zł</span>
-                    </div>
-                </section>
-            </div>
-            <div class="actions">
-                <base-button :link="true" :to="categoryLink">Categories</base-button>
-                <base-button :link="true" :to="expensesLink">All Expenses</base-button>
-                <base-button :link="true" :to="sharesLink">Shares</base-button>
-
-                <div v-if="rolePriority < 2">
-                    <add-report-modal :budgetId="budgetId"></add-report-modal>
-                    
-                    <modify-budget :budgetId="budgetId"></modify-budget>
-                    <share-budget-modal :budgetId="budgetId"></share-budget-modal>
+    <div>
+        <base-title>Informacje o budżecie</base-title>
+        <div v-if="errorMessage">
+            <base-error>{{ errorMessage }}</base-error>
+        </div>
+        <div v-if="loading">Loading...</div>
+        <div v-else-if="!loading && !errorMessage">
+            <div class="container-details">
+                <div>
+                    <section class="budget-details">
+                        <header>
+                            <div>Budget details</div>
+                        </header>
+                        <div>
+                            <span>Name</span>
+                            <span>{{ budget.name }}</span>
+                        </div>
+                        <div>
+                            <span>Owner Id</span>
+                            <span>{{ budget.user_id }}</span>
+                        </div>
+                        <div>
+                            <span>CreatedAt</span>
+                            <span>{{ createDate }}</span>
+                        </div>
+                        <div>
+                            <span>Last update</span>
+                            <span>{{ updateDate }}</span>
+                        </div>
+                        <div>
+                            <span>Total</span>
+                            <span>{{ total }} zł</span>
+                        </div>
+                    </section>
                 </div>
-                <div v-if="rolePriority < 1">
-                    <base-button @click="onDelete">Delete</base-button>                
+                <div class="actions">
+                    <base-button :link="true" :to="categoryLink">Categories</base-button>
+                    <base-button :link="true" :to="expensesLink"
+                        >All Expenses</base-button
+                    >
+                    <base-button :link="true" :to="sharesLink">Shares</base-button>
+
+                    <div v-if="rolePriority < 2">
+                        <add-report-modal :budgetId="budgetId"></add-report-modal>
+
+                        <modify-budget :budgetId="budgetId"></modify-budget>
+                        <share-budget-modal :budgetId="budgetId"></share-budget-modal>
+                    </div>
+                    <div v-if="rolePriority < 1">
+                        <base-button @click="onDelete">Delete</base-button>
+                    </div>
                 </div>
             </div>
         </div>
-        <router-view :id="budget.id"></router-view>
-            
+        <router-view :id="budget.id" v-slot="slotProps">
+            <transition name="card-route" mode="out-in">
+                <component :is="slotProps.Component"></component>
+            </transition>
+        </router-view>
     </div>
 </template>
 
 <script>
 import useFetch from "../hooks/useFetch.js";
-import useDelete from '../hooks/useDelete.js'
+import useDelete from "../hooks/useDelete.js";
 import { formatDate } from "../utils/dateUtils.js";
-import AddCategoryModal from '../components/modals/AddCategoryModal.vue'
+import AddCategoryModal from "../components/modals/AddCategoryModal.vue";
 import AddReportModal from "../components/modals/GenerateReportModal.vue";
 import ModifyBudgetModal from "../components/modals/ModifyBudgetModal.vue";
-import ShareBudgetModal from '../components/modals/ShareBudgetModal.vue';
+import ShareBudgetModal from "../components/modals/ShareBudgetModal.vue";
 
 export default {
     components: {
@@ -70,45 +77,44 @@ export default {
         AddReportModal,
         ShareBudgetModal,
     },
-    props: [
-        "budgetId",
-        "categoryId"
-    ],
+    props: ["budgetId", "categoryId"],
     data() {
         return {
             fetchBudget: useFetch(`/api/budgets/${this.budgetId}`),
-            fetchTotal: useFetch('/api/budgets/'+this.budgetId+'/summary'),
-            deleteBudget: useDelete()
+            fetchTotal: useFetch("/api/budgets/" + this.budgetId + "/summary"),
+            deleteBudget: useDelete(),
         };
     },
     watch: {
-        budgetId(){
-            this.fetchBudget.setNewUrl( '/api/budgets/'+ this.budgetId )
+        budgetId() {
+            this.fetchBudget.setNewUrl("/api/budgets/" + this.budgetId);
         },
-        isNeededRefresh(val){
+        isNeededRefresh(val) {
             if (val) {
-                this.fetchTotal.refetch()
-                this.fetchBudget.refetch()
+                this.fetchTotal.refetch();
+                this.fetchBudget.refetch();
             }
         },
-        isDeleted( val ){
+        isDeleted(val) {
             if (val) {
-                this.$store.dispatch('refresh/triggerRefreshBudgets')
-                this.$router.replace('/budgets')
+                this.$store.dispatch("refresh/triggerRefreshBudgets");
+                this.$router.replace("/budgets");
             }
-        }
+        },
     },
     computed: {
-        isDeleted(){
-            return this.deleteBudget.response?.ok
-        },  
-        isNeededRefresh(){
-            const result = this.$store.getters['refresh/isRefreshExpensesNeeded'] || this.$store.getters['refresh/isRefreshBudgetsNeeded']
-
-            return result
+        isDeleted() {
+            return this.deleteBudget.response?.ok;
         },
-        total(){
-            return this.fetchTotal.data?.total
+        isNeededRefresh() {
+            const result =
+                this.$store.getters["refresh/isRefreshExpensesNeeded"] ||
+                this.$store.getters["refresh/isRefreshBudgetsNeeded"];
+
+            return result;
+        },
+        total() {
+            return this.fetchTotal.data?.total;
         },
         errorMessage() {
             return this.fetchBudget.error ?? this.fetchTotal.error;
@@ -118,7 +124,7 @@ export default {
             return formatDate(date);
         },
         loading() {
-            return this.fetchBudget.loading || this.fetchTotal.loading 
+            return this.fetchBudget.loading || this.fetchTotal.loading;
         },
         updateDate() {
             const date = new Date(this.budget.updatedAt);
@@ -130,7 +136,7 @@ export default {
         budget() {
             return this.fetchBudget.data?.budget ?? {};
         },
-        rolePriority(){
+        rolePriority() {
             return this.fetchBudget.data?.rolePriority ?? 100;
         },
         categoryLink() {
@@ -139,29 +145,29 @@ export default {
                 params: { budgetId: this.budgetId },
             };
         },
-        expensesLink(){
+        expensesLink() {
             return {
-                name: 'budget-expenses',
-                params: { budgetId: this.budgetId}
-            }
+                name: "budget-expenses",
+                params: { budgetId: this.budgetId },
+            };
         },
-        sharesLink(){
+        sharesLink() {
             return {
-                name: 'budget-shares',
-                params: { budgetId: this.budgetId}
-            }
-        }
+                name: "budget-shares",
+                params: { budgetId: this.budgetId },
+            };
+        },
     },
     methods: {
-        onDelete(){
-            this.deleteBudget.setNewUrl('/api/budgets/'+ this.budgetId);
-        }
-    }
+        onDelete() {
+            this.deleteBudget.setNewUrl("/api/budgets/" + this.budgetId);
+        },
+    },
 };
 </script>
 
 <style scoped>
-.container {
+.container-details {
     display: flex;
     flex-wrap: wrap;
 }
@@ -179,7 +185,6 @@ export default {
     justify-content: space-between;
     border-bottom: 1px solid black;
 }
-
 
 span,
 span {

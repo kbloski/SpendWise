@@ -42,11 +42,12 @@ export default {
 
 * {
   box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 
 html, body {
   min-height: 100vh;
-  min-width: 100vw;
+  width: 100vw;
   margin: 0;
   padding: 0;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -83,7 +84,7 @@ html, body {
 }
 
 
-/* .card-route-enter-from {
+.card-route-enter-from {
   transform: translateX(-30px);
   opacity: 0;
 }
@@ -104,5 +105,5 @@ html, body {
 .card-route-leave-to {
   opacity: 0;
   transform: translateX(30px);
-} */
+}
 </style>
