@@ -50,8 +50,8 @@ router.put(
     async (req, res )=>{
         const transaction = await sequelize.transaction();
         try {
-
             if (!req.user) return sendErrorResponse(res, 401);
+            
             const {id} = req.params;
             if(!isNumber(id)) return sendErrorResponse(res, 400, "Invalid type id, id must be a number.");
 
@@ -83,7 +83,7 @@ router.put(
             const isAdminChange = isNumber(role) && role == UserRoles.ADMIN;
             if (isAdminChange){
                 budgetController.setOwner( budgetDb, userDb);
-            } else {
+            } else {  // Set relation for other roles
                 const relationId =
                 await budgetSharesController.getIdUserBudgetRelation(
                     budgetDb.id,
@@ -97,8 +97,7 @@ router.put(
                     budget_id: budgetDb.id,
                     user_id: userDb.id,
                     role: role === null ? undefined : role
-                })
-                }
+                })}
             }
             
         

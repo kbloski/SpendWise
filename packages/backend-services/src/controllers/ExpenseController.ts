@@ -6,7 +6,7 @@ import CategoryType from "../types/CategoryType";
 import ExpenseType from "../types/ExpenseType";
 import UserType from "../types/UserType";
 import AbstractCrudController from "./AbstractCrudController";
-import { budgetController, categoryController, userController } from "./controllers";
+import { budgetController, budgetSharesController, categoryController, userController } from "./controllers";
 import BudgetType from "../types/BudgetType";
 import Budget from "../models/BudgetModel";
 
@@ -26,15 +26,11 @@ export default class ExpenseController extends AbstractCrudController<Expense> {
 
         const categoriesIds = budgetCategories.map((cat) => cat.id);
         return this.model.findAll(
-            {
-                where: {
+            {  where: {
                     category_id: {
                         [Op.in]: categoriesIds,
-                    },
-                },
-            });
+                    }, },  });
     }
-
 
     async getTotalCategoryExpenses(
         categoryId: number,
@@ -55,6 +51,25 @@ export default class ExpenseController extends AbstractCrudController<Expense> {
         } catch (err) {
             console.error("Error calculating total expenses:", err);
             throw new Error("Failed to calculate total expenses"); //
+        }
+    }
+
+    async getUserRoleForExpense( expense : Expense | ExpenseType, user: UserType | User){
+        try {
+            const categoryDb = await categoryController.getById( expense.category_id );
+
+            if (!categoryDb) throw new Error("Problem with download category for expense.");
+
+            const bsRelation =
+                await budgetSharesController.getRelationByUserAndBudget(
+                    Number(categoryDb.budget_id),
+                    user.id
+            );
+             if (!bsRelation) return null; 
+             return bsRelation.role
+        } catch (err){
+            console.error( err )
+            throw new Error("Failed in ExpenseController.getUserRoleForExpense()")
         }
     }
 

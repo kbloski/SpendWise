@@ -97,6 +97,40 @@ router.get(
     }
 );
 
+router.get(buildApiPath("expenses", ":id"), async (req, res) => {
+    try {
+        if (!req.user) return sendErrorResponse(res, 401);
+
+        const { id } = req.params;
+        if (!isNumber(id))
+            return sendErrorResponse(
+                res,
+                400,
+                "Invalid type id, id must be a number"
+            );
+        const expenseDb = await expenseController.getById(Number(id));
+
+        if (!expenseDb) return sendErrorResponse(res, 404);
+
+        const accessToExpense = await expenseController.isAccessForUser(
+            expenseDb,
+            req.user
+        );
+        if (!accessToExpense) return sendErrorResponse(res, 403);
+
+        const rolePriority = expenseController.getUserRoleForExpense( expenseDb, req.user);
+        if (!rolePriority) throw new Error("Problem with role for exepense.")
+
+        return sendSuccessResponse(res, 200, {
+            expense: expenseDb,
+            rolePriority
+        });
+    } catch (err) {
+        return sendErrorResponse(res, 500);
+    }
+});
+
+
 router.post(
     buildApiPath(
         "budgets",
@@ -143,41 +177,6 @@ router.post(
     }
 );
 
-router.get(
-    buildApiPath("expenses", ":id"),
-    async (req, res) =>{
-        try {
-            if (!req.user) return sendErrorResponse(res, 401);
-
-            const {id} = req.params;
-            if (!isNumber(id)) return sendErrorResponse(res, 400, "Invalid type id, id must be a number");
-            const expenseDb = await expenseController.getById(Number(id));
-
-            if (!expenseDb) return sendErrorResponse(res, 404);
-
-            const accessToExpense = await expenseController.isAccessForUser(expenseDb,  req.user);
-            if (!accessToExpense) return sendErrorResponse(res, 403);
-
-            // Get role priority
-            const categoryDb = await categoryController.getById( expenseDb.category_id );
-            if (!categoryDb ) throw new Error("Problem with download category for expense.")
-            const bsRelation =
-                await budgetSharesController.getRelationByUserAndBudget(
-                    Number(categoryDb.budget_id),
-                    req.user.id
-                );
-            if (!bsRelation)
-                throw new Error("Problem with role relation.");
-
-            return sendSuccessResponse(res, 200, { 
-                expense: expenseDb,
-                rolePriority: bsRelation.role
-            })
-        } catch(err){
-            return sendErrorResponse(res, 500)
-        }
-    }
-);
 
 router.patch(
     buildApiPath("expenses", ":id"),
@@ -221,7 +220,9 @@ router.patch(
     }
 );
 
-router.delete(buildApiPath("expenses", ":id"), async (req, res) => {
+router.delete(
+    buildApiPath("expenses", ":id"), 
+    async (req, res) => {
     try {
         if (!req.user) return sendErrorResponse(res, 401);
 

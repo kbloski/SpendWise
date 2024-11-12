@@ -4,34 +4,8 @@ import { sendErrorResponse, sendSuccessResponse } from "../utils/responseUtils";
 import CategoryType from "../types/CategoryType";
 import { budgetController, budgetSharesController, categoryController } from "../controllers/controllers";
 import { isNumber } from "../utils/utils";
-import BudgetType from "../types/BudgetType";
 
 const router = Router();
-
-router.post(
-    buildApiPath("budgets", ":budgetId", "categories"),
-    async (req, res) => {
-        try {
-            if (!req.user) return sendErrorResponse(res, 401);
-
-            const { budgetId  } = req.params;
-            const { name }: Partial<CategoryType> = req.body;
-            if (!name || !isNumber(budgetId) ) return sendErrorResponse(res, 400, "Invalid Id or name. Id must be number. Name must be string. ");
-
-            const budgetExist = await budgetController.getById( Number(budgetId)  );
-            if (!budgetExist) return sendErrorResponse(
-                    res, 404,"Budget with id: " + budgetId + " not exist");
-
-            const newCategory = await categoryController.create({
-                budget_id: Number(budgetId), name: String(name) });
-            if (!newCategory) throw new Error("Cannot create category");
-
-            return sendSuccessResponse(res, 201);
-        } catch (err) {
-            return sendErrorResponse(res, 500);
-        }
-    }
-);
 
 router.get(
     buildApiPath("budgets", ":budgetId", "categories"),
@@ -87,6 +61,45 @@ router.get(
             });
         } catch (err){
             return sendErrorResponse( res, 500)
+        }
+    }
+);
+
+
+router.post(
+    buildApiPath("budgets", ":budgetId", "categories"),
+    async (req, res) => {
+        try {
+            if (!req.user) return sendErrorResponse(res, 401);
+
+            const { budgetId } = req.params;
+            const { name }: Partial<CategoryType> = req.body;
+            if (!name || !isNumber(budgetId))
+                return sendErrorResponse(
+                    res,
+                    400,
+                    "Invalid Id or name. Id must be number. Name must be string. "
+                );
+
+            const budgetExist = await budgetController.getById(
+                Number(budgetId)
+            );
+            if (!budgetExist)
+                return sendErrorResponse(
+                    res,
+                    404,
+                    "Budget with id: " + budgetId + " not exist"
+                );
+
+            const newCategory = await categoryController.create({
+                budget_id: Number(budgetId),
+                name: String(name),
+            });
+            if (!newCategory) throw new Error("Cannot create category");
+
+            return sendSuccessResponse(res, 201);
+        } catch (err) {
+            return sendErrorResponse(res, 500);
         }
     }
 );

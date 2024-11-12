@@ -8,7 +8,6 @@ import {
 } from "../controllers/controllers";
 import { sendErrorResponse, sendSuccessResponse } from "../utils/responseUtils";
 import { isNumber } from "../utils/utils";
-import { UserRoles } from "../types/BudgetShareType";
 
 const router = Router();
 
@@ -27,9 +26,79 @@ router.get(buildApiPath("budgets", "me"), async (req, res) => {
             return newData;
         })
 
-        return sendSuccessResponse(res, 200, { budgets: dataToSend }); // maybe with user-role for frontend
+        return sendSuccessResponse(res, 200, { budgets: dataToSend }); 
     } catch (err){
         return sendErrorResponse(res, 500)
+    }
+});
+
+
+router.get(buildApiPath("budgets", ":id", "summary"), async (req, res) => {
+    try {
+        if (!req.user) return sendErrorResponse(res, 401);
+
+        const { id } = req.params;
+        if (!isNumber(id))
+            return sendErrorResponse(
+                res,
+                400,
+                "Invalid type Id - Id must be number."
+            );
+
+        const budgetDb = await budgetController.getById(Number(id));
+        if (!budgetDb) return sendErrorResponse(res, 404);
+
+        const access = await budgetSharesController.isAccessUserToBudget(
+            budgetDb,
+            req.user
+        );
+        if (!access) return sendErrorResponse(res, 403);
+
+        const totalExpenses =
+            await budgetController.getTotalBudgetCategoryExpenses(budgetDb);
+
+        return sendSuccessResponse(res, 200, { total: totalExpenses });
+    } catch (err) {
+        return sendErrorResponse(res, 500);
+    }
+});
+
+router.get(buildApiPath("budgets", ":id"), async (req, res) => {
+    try {
+        if (!req.user)
+            return sendErrorResponse(res, 401, "Not authorized user.");
+
+        const { id } = req.params;
+        if (!isNumber(id))
+            return sendErrorResponse(
+                res,
+                400,
+                "Invalid type Id - Id must be number."
+            );
+
+        const budgetExist = await budgetController.getById(Number(id));
+        if (!budgetExist)
+            return sendErrorResponse(res, 404, "Budget don't exist.");
+
+        const access = await budgetSharesController.isAccessUserToBudget(
+            budgetExist,
+            req.user
+        );
+        if (!access)
+            return sendErrorResponse(res, 403, "Forbidden to resource.");
+
+        const bsRelation =
+            await budgetSharesController.getRelationByUserAndBudget(
+                budgetExist.id,
+                req.user.id
+            );
+
+        return sendSuccessResponse(res, 200, {
+            budget: budgetExist,
+            rolePriority: bsRelation?.role,
+        });
+    } catch (err) {
+        sendErrorResponse(res, 500);
     }
 });
 
@@ -47,30 +116,6 @@ router.post(buildApiPath("budgets", "me"), async (req, res) => {
         return sendSuccessResponse(res, 201);
     } catch (err) {
         return sendErrorResponse(res, 500);
-    }
-});
-
-router.get( buildApiPath("budgets", ":id"), async (req, res) => {
-    try {
-        if (!req.user) return sendErrorResponse(res, 401, "Not authorized user.");
-
-        const { id } = req.params;
-        if (!isNumber(id)) return sendErrorResponse(res, 400, "Invalid type Id - Id must be number.");
-
-        const budgetExist = await budgetController.getById(Number(id));
-        if (!budgetExist)return sendErrorResponse(res, 404, "Budget don't exist.");
-        
-        const access = await budgetSharesController.isAccessUserToBudget( budgetExist, req.user)
-        if (!access) return sendErrorResponse(res, 403, "Forbidden to resource.");
-
-        const bsRelation = await budgetSharesController.getRelationByUserAndBudget( budgetExist.id , req.user.id);
-
-        return sendSuccessResponse(res, 200, {
-            budget: budgetExist,
-            rolePriority: bsRelation?.role,
-        });
-    } catch (err) {
-        sendErrorResponse(res, 500);
     }
 });
 
@@ -119,7 +164,7 @@ router.delete(buildApiPath("budgets", ":id"), async (req, res) => {
         const budgetDb = await budgetController.getById(Number(id));
         if (!budgetDb) return sendErrorResponse(res, 404);
 
-        const accessByAdmin = await budgetSharesController.isAccessUserToBudgetByAdminRole( budgetDb, req.user);
+        const accessByAdmin = await budgetSharesController.isAccessUserToBudgetAsAdmin( budgetDb, req.user);
         if (!accessByAdmin) return sendErrorResponse(res, 403, "You not a admin this budget.")
 
         const deleted = await budgetController.deleteById(budgetDb.id);
@@ -131,25 +176,6 @@ router.delete(buildApiPath("budgets", ":id"), async (req, res) => {
     }
 });
 
-router.get(buildApiPath("budgets", ":id", "summary"), async (req, res) => {
-    try {
-        if (!req.user) return sendErrorResponse(res, 401);
 
-        const { id } = req.params;
-        if (!isNumber(id)) return sendErrorResponse(res, 400, "Invalid type Id - Id must be number.");
-
-        const budgetDb = await budgetController.getById(Number(id));
-        if (!budgetDb) return sendErrorResponse(res, 404);
-
-        const access =await budgetSharesController.isAccessUserToBudget(budgetDb, req.user)
-        if (!access)  return sendErrorResponse(res, 403);
-
-        const totalExpenses =   await budgetController.getTotalBudgetCategoryExpenses(budgetDb);
-
-        return sendSuccessResponse(res, 200, { total: totalExpenses });
-    } catch (err) {
-        return sendErrorResponse(res, 500);
-    }
-});
 
 export default router;

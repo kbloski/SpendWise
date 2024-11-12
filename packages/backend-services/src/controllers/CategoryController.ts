@@ -1,4 +1,3 @@
-import { Op } from "sequelize";
 import Budget from "../models/BudgetModel";
 import Category from "../models/CategoryModel";
 import User from "../models/UserModel";

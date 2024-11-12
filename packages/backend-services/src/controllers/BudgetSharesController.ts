@@ -7,7 +7,6 @@ import BudgetType from "../types/BudgetType";
 import UserType from "../types/UserType";
 import AbstractCrudController from "./AbstractCrudController";
 import { budgetController, userController } from "./controllers";
-import { sequelize } from "../utils/db";
 
 export default class BudgetSharesController extends AbstractCrudController<BudgetShare> {
     // I need more information, and i cannot use through relation in schema
@@ -28,6 +27,7 @@ export default class BudgetSharesController extends AbstractCrudController<Budge
     ): Promise<BudgetShare | null> {
         try {
             const { user_id, budget_id } = data;
+
             const userExist = await userController.getById(user_id);
             if (!userExist)
                 throw new Error("User with id: " + user_id + " not exist");
@@ -35,11 +35,10 @@ export default class BudgetSharesController extends AbstractCrudController<Budge
             if (!budgetExist)
                 throw new Error("Budget with id: " + budget_id + " not exist");
 
-            const idExist = await this.getIdUserBudgetRelation(
-                budgetExist.id,
-                userExist.id
-            );
-            if (idExist) return await this.getById(idExist);
+            const idRelationExist = await this.getIdUserBudgetRelation(
+                budgetExist.id,  userExist.id );
+
+            if (idRelationExist) return await this.getById(idRelationExist);
 
             return await super.create({
                 user_id: data.user_id,
@@ -99,10 +98,13 @@ export default class BudgetSharesController extends AbstractCrudController<Budge
         id: number,
         data: Partial<Omit<BudgetShare, "id">>
     ): Promise<Boolean> {
-            return await super.updateById(id, data);
+        return await super.updateById(id, data);
     }
 
-    async getIdUserBudgetRelation(budgetId: number, userId: number) {
+    async getIdUserBudgetRelation(
+        budgetId: number, 
+        userId: number
+    ) {
         const relation = await this.model.findOne({
             where: { user_id: userId, budget_id: budgetId },
         });
@@ -144,7 +146,7 @@ export default class BudgetSharesController extends AbstractCrudController<Budge
         return !!result;
     }
 
-    async isAccessUserToBudgetByAdminRole(
+    async isAccessUserToBudgetAsAdmin(
         budget: BudgetType | Budget,
         user: UserType | User
     ) {
