@@ -89,5 +89,10 @@ export default class CategoryController extends AbstractCrudController<Category>
         }
     }
 
+    async deleteAllForBudget( budgetId: number){
+        return await this.model.destroy({where: {
+            budget_id: budgetId
+        }})
+    }
 
 }

@@ -99,9 +99,7 @@ export default class BudgetSharesController extends AbstractCrudController<Budge
         id: number,
         data: Partial<Omit<BudgetShare, "id">>
     ): Promise<Boolean> {
-        
             return await super.updateById(id, data);
-        
     }
 
     async getIdUserBudgetRelation(budgetId: number, userId: number) {

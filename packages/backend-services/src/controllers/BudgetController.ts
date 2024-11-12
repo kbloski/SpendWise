@@ -84,28 +84,27 @@ export default class BudgetController extends AbstractCrudController<Budget> {
             const userDb = await userController.getById(user.id);
             if (!userDb) throw new Error("User dont exis't in db");
 
-            // Delete old owner
+            // delete old owner relation
             if (budgetDb.user_id !== user.id){
                 const oldOwnerRelationId = await budgetSharesController.getIdUserBudgetRelation(
                     budgetDb.id, budgetDb.user_id )
                 if (oldOwnerRelationId) await budgetSharesController.deleteById( oldOwnerRelationId )
             }
 
-            // Set new owner 
+            // set new owner relation and change user_id in budget
             const relatedId = await budgetSharesController.
             getIdUserBudgetRelation(budgetDb.id, budget.user_id )
+
             let result = null;
-            if (relatedId){ // update relation exist
+            if (relatedId){ // update user relation if exist
                 const isUpdateBudgetShare = 
                     await budgetSharesController.updateById(relatedId, {
-                        user_id: userDb.id,
-                        role: UserRoles.ADMIN
-                    });
+                        user_id: userDb.id, role: UserRoles.ADMIN });
+
                 const isUpdateBudget = await this.model.update(
-                    { user_id: userDb.id}, {
-                    where: { id: budget.id}
-                })
-                result = isUpdateBudgetShare && isUpdateBudget;
+                    { user_id: userDb.id}, { where: { id: budget.id} })
+
+                result = isUpdateBudgetShare || isUpdateBudget;
             } else { // create new relaction
                 const isCratedBudgetShare = await budgetSharesController.findOrCreate(
                     {
@@ -115,7 +114,7 @@ export default class BudgetController extends AbstractCrudController<Budget> {
                     });
                 const isUpdateBudget = await this.model.update(
                     { user_id: userDb.id}, {where: { id: budget.id}})
-                result = isCratedBudgetShare && isUpdateBudget
+                result = isCratedBudgetShare || isUpdateBudget
             }
 
             transaction.commit()
@@ -146,16 +145,13 @@ export default class BudgetController extends AbstractCrudController<Budget> {
     async deleteById(id: number): Promise<Boolean> {
         const transaction = await sequelize.transaction()
         try {
-            const budgetsCategories = await categoryController.getAllByBudgetId( id );
-            for(const c of budgetsCategories){
-                await categoryController.deleteById( c.id )
-            }
-
+            // Delete all categories for budget
             await reportController.deleteByBudgetId( id );
-
+            await categoryController.deleteAllForBudget( id )
             await budgetSharesController.deleteWhere({budget_id: id})
 
             const isDeleted = super.deleteById(id)
+
             transaction.commit()
             return isDeleted;
         } catch (err){
