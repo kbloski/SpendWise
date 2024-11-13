@@ -1,9 +1,8 @@
 <template>
-    <div class="container">
+    <div class="form-container">
         <form>
-            <div class="left">
                 <section v-if="!!register" class="register">
-                    <h1>Register</h1>
+                    <h1 class="form-title">Register</h1>
                     <base-error v-if="errors.others">{{ errors.others}}</base-error>
                     <div class="form-control">
                         <div>
@@ -74,7 +73,7 @@
                 </section>
 
                 <section v-if="!register" class="login">
-                    <h1>Login</h1>
+                    <h1 class="form-title">Login</h1>
                     <base-error v-if="errors.others">{{ errors.others}}</base-error>
                     <div class="form-control">
                         <div>
@@ -115,11 +114,6 @@
                         <router-link to="/auth?register=true">Sign Up</router-link>
                     </p>
                 </section>
-            </div>
-            <div class="right">
-                <h1>WELCOME <br />BACK!</h1>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing.</p>
-            </div>
         </form>
     </div>
 </template>
@@ -234,44 +228,21 @@ export default {
 </script>
 
 <style scoped>
-.container {
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    width: 100vw;
-    height: 100vh;
-    margin: 0;
-    padding: 2rem;
-    overflow: hidden;
+.form-container {
+    z-index: 1
 }
 
 form {
     display: flex;
     color: white;
-    justify-content: space-between;
     margin: auto;
-    z-index: 2;
+    z-index: 1;
 }
 
-.left {
-    display: flex;
-    justify-content: center;
-    width: 50%;
-}
 
-.right {
-    text-align: end;
-    width: 30%;
-}
-
-.left h1 {
+.form-title {
     text-align: center;
     margin-bottom: 3rem;
-}
-
-.right > p {
-    color: rgba(255, 255, 255, 0.8);
-    font-weight: 100;
 }
 
 .form-control * {
@@ -345,39 +316,5 @@ button {
     font-weight: bolder;
     text-decoration: none;
     color: #00d936;
-}
-
-@media screen and (min-width: 0px) and (max-width: 425px) {
-    .container {
-        padding: 1rem;
-    }
-
-    .right {
-        display: none;
-    }
-
-    form {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-    }
-
-    .left {
-        width: 100%;
-        min-width: none;
-        max-width: 100vw;
-    }
-
-    .form-control {
-        widows: 100%;
-    }
-}
-
-@media screen and (min-width: 1024px) {
-    .right {
-        right: 0;
-        transform: translateX(100%);
-    }
 }
 </style>

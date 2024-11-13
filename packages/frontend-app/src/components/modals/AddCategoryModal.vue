@@ -29,21 +29,23 @@ export default {
         const store = useStore();
 
         const categoryModal = ref(null);
-        let postBudget = usePost("/api/budgets/" + props.budgetId + "/categories");
+        let postCategory = usePost("/api/budgets/" + props.budgetId + "/categories");
         const name = ref("");
-        const created = computed(() => postBudget.response?.ok);
+        const created = computed(() => postCategory.response?.ok);
 
         function openModal() {
             categoryModal.value.openModal();
+            postCategory.clearResponse()
         }
         
         async function createBudget() {
-            postBudget.postData({ name: name.value });
+            console.log( name.value)
+            postCategory.postData({ name: name.value });
         }
         
         watch(created, () => {
             if (!created.value) return;
-            postBudget.clearResponse()
+            postCategory.clearResponse()
             name.value = ""
             store.dispatch("refresh/triggerRefreshCategories");
             categoryModal.value.closeModal();
