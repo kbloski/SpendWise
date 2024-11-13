@@ -10,6 +10,7 @@
     "frontend:start" : "cd ./packages/frontend-app & npm run start",
     "frontend:build" : "cd ./packages/frontend-app & npm run build",
     "frontend:dev" : "cd ./packages/frontend-app & npm run dev",
+    "build-project": "cd ./packages/frontend-app & npm build & cd ../backend-services & npm build & echo Built project.",
     "install": "cd ./packages/frontend-app & npm i & cd ../backend-services & npm i "
   },
   "keywords": [],
