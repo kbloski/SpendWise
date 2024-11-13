@@ -5,7 +5,7 @@
         <div>Start: {{ periodStart }}</div>
         <div>End: {{ periodEnd }}</div>
         <div>Created: {{ created }}</div>
-        <div class="actions"><base-button @click="onDelete">Delete</base-button></div>
+        <div class="actions"><button class="btn-success" @click="onDelete">Delete</button></div>
     </li>
 </template>
 
