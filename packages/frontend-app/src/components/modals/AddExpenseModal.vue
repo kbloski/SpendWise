@@ -1,22 +1,23 @@
 <template>
-    <div class="container">
-        <base-button @click="openModal">Create expense</base-button>
-        <base-modal :visible="false" ref="categoryModal">
-            <template v-slot:header> Expense create </template>
-            <template v-slot:default>
+    <button class="btn-success" @click="openModal">Create expense</button>
+    <base-modal :visible="false" ref="categoryModal">
+        <template v-slot:header> Expense create </template>
+        <template v-slot:default>
+            <base-error v-if="error"> {{  error }}</base-error>
+            <div v-if="loading">Loading...</div>
+            <div v-else>
                 <base-form-control v-model="description">Description</base-form-control>
                 <base-form-control v-model="amount">Amount (number)</base-form-control>
                 <br />
                 <base-button @click="createExpense">Create</base-button>
-            </template>
-        </base-modal>
-    </div>
+            </div>
+        </template>
+    </base-modal>
 </template>
 
 <script>
 import { computed, ref, watch } from "vue";
 import usePost from "../../hooks/usePost.js";
-import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 
 export default {
@@ -29,7 +30,6 @@ export default {
         }
     },
     setup(props) {
-        const router = useRouter();
         const store = useStore();
 
         const categoryModal = ref(null);
@@ -61,6 +61,8 @@ export default {
         });
 
         return {
+            error: postExpense.error,
+            loading: postExpense.loading,
             categoryModal,
             openModal,
             createExpense,

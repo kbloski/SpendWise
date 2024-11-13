@@ -1,15 +1,13 @@
 <template>
-    <div class="container">
-        <base-button @click="openModal" v-on:open="openInit">Modify Category</base-button>
-        <base-modal :visible="false" ref="modalModifyCategory" @open="openInit">
-            <template v-slot:header>Modify category</template>
-            <template v-slot:default>
-                <base-form-control v-model="name">Name</base-form-control>
-                <br />
-                <base-button @click="updateBudget">Update</base-button>
-            </template>
-        </base-modal>
-    </div>
+    <button class="btn-success" @click="openModal" v-on:open="openInit">Modify Category</button>
+    <base-modal :visible="false" ref="modalModifyCategory" @open="openInit">
+        <template v-slot:header>Modify category</template>
+        <template v-slot:default>
+            <base-form-control v-model="name">Name</base-form-control>
+            <br />
+            <base-button @click="updateBudget">Update</base-button>
+        </template>
+    </base-modal>
 </template>
 
 <script>
@@ -25,6 +23,7 @@ export default {
         const modalModifyCategory = ref(null);
         const patchCategory = usePatch("/api/categories/"+ categoryId);
         const name = ref(null);
+        const error = ref(null);
 
         function openInit(){}
         const updated = computed(() => patchCategory.response?.ok);
@@ -47,6 +46,8 @@ export default {
         }
 
         return {
+            error,
+            loading: patchCategory.loading,
             name,
             modalModifyCategory,
             openModal,

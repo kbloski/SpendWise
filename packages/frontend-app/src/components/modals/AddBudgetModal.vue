@@ -1,6 +1,5 @@
 <template>
-    <div class="container">
-        <base-button @click="openModal">Create budget</base-button>
+    <button class="btn-success" @click="openModal">Create budget</button>
         <base-modal :visible="false" ref="budgetModal" @open="openInit">
             <template v-slot:header> Budget creator </template>
             <template v-slot:default>
@@ -15,7 +14,6 @@
                 </div>
             </template>
         </base-modal>
-    </div>
 </template>
 
 <script>

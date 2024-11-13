@@ -1,22 +1,20 @@
 <template>
-    <div class="container">
-        <base-button @click="openModal">Update Budget</base-button>
-        <base-modal :visible="false" ref="budgetModal">
-            <template v-slot:header>Update Budget</template>
-            <template v-slot:default>
-                <div v-if="error.serwer">
-                    <base-error>{{  error.serwer  }}</base-error>
-                    <hr></hr>
-                </div>
-                <base-error v-if="error.name"> {{ error.name }} </base-error>
-                <base-form-control v-model="name">Name</base-form-control>
-                <base-error v-if="error.owner_email"> {{ error.owner_email }} </base-error>
-                <base-form-control v-model="newOwnerEmail">New owner email</base-form-control>
-                <br />
-                <base-button @click="updateBudget">Update</base-button>
-            </template>
-        </base-modal>
-    </div>
+    <button class="btn-success "@click="openModal">Update Budget</button>
+    <base-modal :visible="false" ref="budgetModal">
+        <template v-slot:header>Update Budget</template>
+        <template v-slot:default>
+            <div v-if="error.serwer">
+                <base-error>{{  error.serwer  }}</base-error>
+                <hr></hr>
+            </div>
+            <base-error v-if="error.name"> {{ error.name }} </base-error>
+            <base-form-control v-model="name">Name</base-form-control>
+            <base-error v-if="error.owner_email"> {{ error.owner_email }} </base-error>
+            <base-form-control v-model="newOwnerEmail">New owner email</base-form-control>
+            <br />
+            <base-button @click="updateBudget">Update</base-button>
+        </template>
+    </base-modal>
 </template>
 
 <script>

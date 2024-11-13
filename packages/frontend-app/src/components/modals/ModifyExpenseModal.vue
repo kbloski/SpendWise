@@ -1,16 +1,14 @@
 <template>
-    <div class="container">
-        <base-button @click="openModal">Modify Expense</base-button>
-        <base-modal :visible="false" ref="modalModifyCategory">
-            <template v-slot:header>Modify Expense</template>
-            <template v-slot:default>
-                <base-form-control v-model="description">Description</base-form-control>
-                <base-form-control v-model="amount">Amount</base-form-control>
-                <br />
-                <base-button @click="updateBudget">Update</base-button>
-            </template>
-        </base-modal>
-    </div>
+    <button class="btn-success" @click="openModal">Modify Expense</button>
+    <base-modal :visible="false" ref="modalModifyCategory">
+        <template v-slot:header>Modify Expense</template>
+        <template v-slot:default>
+            <base-form-control v-model="description">Description</base-form-control>
+            <base-form-control v-model="amount">Amount</base-form-control>
+            <br />
+            <base-button @click="updateBudget">Update</base-button>
+        </template>
+    </base-modal>
 </template>
 
 <script>

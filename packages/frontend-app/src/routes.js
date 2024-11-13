@@ -21,7 +21,6 @@ const router = createRouter({
   history: createWebHistory(),
   scrollBehavior(to, from, savedLastPosition) {
     if (savedLastPosition) return savedLastPosition;
-    // return { left: 0, top: 0 };
   },
   routes: [
     { path: "/", redirect: "/auth?register=true" },

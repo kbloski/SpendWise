@@ -1,6 +1,5 @@
 <template>
-    <div class="container">
-        <base-button @click="openModal">Create category</base-button>
+        <button class="btn-success" @click="openModal">Create category</button>
         <base-modal :visible="false" ref="categoryModal">
             <template v-slot:header> Category create </template>
             <template v-slot:default>
@@ -9,7 +8,6 @@
                 <base-button @click="createBudget">Create</base-button>
             </template>
         </base-modal>
-    </div>
 </template>
 
 <script>

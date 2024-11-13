@@ -1,15 +1,13 @@
 <template>
-    <div class="container">
-        <base-button @click="openModal">Generate Report</base-button>
-        <base-modal :visible="false" ref="reportModal">
-            <template v-slot:header>Generate report </template>
-            <template v-slot:default>
-                <input type="date" v-model="period_start"/>
-                <input type="date" v-model="period_end">
-                <base-button @click="createReport">Generate</base-button>
-            </template>
-        </base-modal>
-    </div>
+    <button class="btn-success"@click="openModal">Generate Report</button>
+    <base-modal :visible="false" ref="reportModal">
+        <template v-slot:header>Generate report </template>
+        <template v-slot:default>
+            <input type="date" v-model="period_start"/>
+            <input type="date" v-model="period_end">
+            <base-button @click="createReport">Generate</base-button>
+        </template>
+    </base-modal>
 </template>
 
 <script>

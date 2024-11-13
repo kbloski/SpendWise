@@ -7,6 +7,7 @@
             <expense-list-item
                 v-for="expense in expenses"
                 :key="expense.id"
+                :id="expense.id"
                 :amount="expense.amount"
                 :user_id="expense.user_id"
                 :date="expense.date"
@@ -18,9 +19,10 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import useFetch from '../hooks/useFetch';
 import { useRoute } from 'vue-router';
+import { useStore} from 'vuex';
 import ExpenseListItem from '../components/pages/ExpenseListItem.vue';
 
 export default {
@@ -29,10 +31,17 @@ export default {
     },
     setup(){
         const route = useRoute();
+        const store = useStore();
         const budgetId = route.params?.budgetId;
         const fetchExpenses = useFetch('/api/budgets/'+budgetId+'/expenses');
         const loading = computed(()=> fetchExpenses.loading.value);
         const expenses = computed(()=> fetchExpenses.data.value?.expenses ?? []);
+
+        const isNeededRefresh = computed(()=> store.getters['refresh/isRefreshExpensesNeeded']);
+        watch( isNeededRefresh, () => {
+            if (!isNeededRefresh.value) return;
+            fetchExpenses.refetch()
+        })
         const rolePriority = computed(()=> fetchExpenses.data.value?.rolePriority ?? 100);
         const error = computed( ()=> fetchExpenses.error.value)
         

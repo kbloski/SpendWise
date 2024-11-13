@@ -14,7 +14,6 @@ import { computed } from 'vue';
 export default{
     props: {
         userId: {
-            type: String,
             required: true
         },
         username: {
@@ -26,13 +25,12 @@ export default{
             required: true
         },
         rolePriority: {
-            type: String,
             required: true
         }
     },
     setup(props, ctx){
-        const userId = computed(() => props.userId )
-        const isAdmin = computed( () => props.rolePriority == 0)
+        const userId = computed(() => Number(props.userId) )
+        const isAdmin = computed( () => Number(props.rolePriority) === 0)
 
         function deleteShare(){
             ctx.emit("delete", userId.value)

@@ -2,9 +2,9 @@
         <li>
             <span class="category-name">Kategoria: {{ name }}</span>
             <div class="actions">
-                <base-button :link="true" :to="expensesLink">View Expenses</base-button>
+                <router-link class="btn-success" :link="true" :to="expensesLink">View Expenses</router-link>
                 <modify-category-modal :categoryId="id"></modify-category-modal>
-                <base-button @click="onDelete" class="button-delete">Delete</base-button>
+                <button @click="onDelete" class="btn-success">Delete</button>
             </div>
         </li>
 </template>

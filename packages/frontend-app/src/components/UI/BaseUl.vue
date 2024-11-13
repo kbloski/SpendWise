@@ -25,8 +25,7 @@ ul > *  {
     direction: ltr;
     text-align: start;
 
-    border: 2px solid rgba(199, 199, 199, 0.15);
-    box-shadow: 0 0 2px black;
+    box-shadow: inset 0 0 2px rgba(199, 199, 199, 1);
     background-color: rgba(226, 226, 226, 0.15);
     border-radius: .2rem;
     padding: .3rem;

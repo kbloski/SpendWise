@@ -35,21 +35,15 @@
                     </section>
                 </div>
                 <div class="actions">
-                    <base-button :link="true" :to="categoryLink">Categories</base-button>
-                    <base-button :link="true" :to="expensesLink"
-                        >All Expenses</base-button
+                    <router-link class="btn-success" :link="true" :to="categoryLink">Categories</router-link>
+                    <router-link class="btn-success" :link="true" :to="expensesLink"
+                        >All Expenses</router-link
                     >
-                    <base-button :link="true" :to="sharesLink">Shares</base-button>
-
-                    <div v-if="rolePriority < 2">
-                        <add-report-modal :budgetId="budgetId"></add-report-modal>
-
-                        <modify-budget :budgetId="budgetId"></modify-budget>
-                        <share-budget-modal :budgetId="budgetId"></share-budget-modal>
-                    </div>
-                    <div v-if="rolePriority < 1">
-                        <base-button @click="onDelete">Delete</base-button>
-                    </div>
+                    <router-link class="btn-success":link="true" :to="sharesLink">Shares</router-link>
+                    <add-report-modal :budgetId="budgetId"  v-if="rolePriority < 2"></add-report-modal>
+                    <modify-budget :budgetId="budgetId"  v-if="rolePriority < 2"></modify-budget>
+                    <share-budget-modal :budgetId="budgetId"  v-if="rolePriority < 2"></share-budget-modal>
+                    <button @click="onDelete" class="btn-success" v-if="rolePriority === 0">Delete</button>
                 </div>
             </div>
         </div>
@@ -195,17 +189,17 @@ span {
 .budget-details-title {
     background-color: white;
     padding: 0.5rem 1rem;
-    /* box-shadow: inset 0 0 4px rgb(0, 166, 196); */
     animation: title-light 3s infinite;
     border-radius: 1rem;
 }
 
-.actions {
-    padding: 1rem;
-}
 .actions > * {
-    padding-bottom: 0.4rem;
+    display: block;
+    /* justify-content: start; */
+    align-items: center;
+    margin: .5rem 1rem;
 }
+
 
 @keyframes title-light {
     0% {

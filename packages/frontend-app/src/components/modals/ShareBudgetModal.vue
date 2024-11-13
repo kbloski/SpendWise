@@ -1,21 +1,22 @@
 <template>
-    <div class="container">
-        <base-button @click="openModal">Share budget</base-button>
-        <base-modal :visible="false" ref="shareModal">
-            <template v-slot:header> Share </template>
-            <template v-slot:default>
-                <base-error v-if="error.server"> {{ error.server }} </base-error>
+    <button class="btn-success" @click="openModal">Share budget</button>
+    <base-modal :visible="false" ref="shareModal">
+        <template v-slot:header> Share </template>
+        <template v-slot:default>
+            <base-error v-if="error.server"> {{ error.server }} </base-error>
+            <div v-if="loading">Loading...</div>
+            <div v-else>
                 Role: 
-                <select v-model="enteredRole">
+                <select v-model="enteredRole" class="select-role">
                     <option v-for="role in roles" :value="role.priority">{{ role.name }}</option>
                 </select>
                 <base-error v-if="error.email">{{ error.email }}</base-error>
                 <base-form-control v-model="enteredEmail">Provide user email</base-form-control>
                 <br />
                 <base-button @click="onSubmit">Share</base-button>
-            </template>
-        </base-modal>
-    </div>
+            </div>
+        </template>
+    </base-modal>
 </template>
 
 <script>
@@ -44,7 +45,7 @@ export default {
         const enteredRole = ref(null)
 
 
-        const loading = computed( () => fetchRoles.loading || putShare.loading )
+        const loading = computed( () => fetchRoles.loading.value || putShare.loading.value )
         const error = reactive({
             email: null,
             server: null
@@ -80,6 +81,8 @@ export default {
                 email: enteredEmail.value,
                 role : enteredRole.value
             };
+            error.email = validEmail( enteredEmail.value )
+
             if (error.email) return;
             putShare.putData(updatedData)
         }
@@ -98,3 +101,14 @@ export default {
 }
 
 </script>
+
+<style lang="css" scoped>
+.select-role {
+    box-shadow: inset 0 0 2px black;
+    border: 0;
+    margin: .2rem 0;
+    padding: .3rem;
+    width: 100%;
+    text-align: center;
+}
+</style>

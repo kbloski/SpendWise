@@ -1,11 +1,10 @@
 <template>
     <li>
-        <!-- <span>Id: {{ id }}</span> -->
         <span>Kwota: {{ amount}}zł</span>
         <span>UserId: {{ user_id }}</span>
         <span>Date: {{ createdAt }}</span>
-        <modify-expense-modal v-if="rolePriority < 2":expenseId="id"></modify-expense-modal>
-        <span><base-button v-if="rolePriority < 2" @click="onDelete">Delete</base-button></span>
+        <modify-expense-modal v-if="rolePriority < 2" :expenseId="id"></modify-expense-modal>
+        <span><button class="btn-success" v-if="rolePriority < 2" @click="onDelete">Delete</button></span>
     </li>
 </template>
 
@@ -28,6 +27,12 @@ export default {
         isDeleted(val) {
             if (!val) return;
             this.$store.dispatch('refresh/triggerRefreshExpenses')
+            this.$router.replace({
+                name: 'budget-expenses',
+                params: {
+                    budgetId: this.$route.params.budgetId
+                }
+            })
         }
     },
     computed: {

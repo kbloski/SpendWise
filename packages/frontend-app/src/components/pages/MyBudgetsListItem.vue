@@ -35,12 +35,11 @@ li > div {
 }
 
 a {
-    background-color: rgba(128, 128, 128, 0.3);
-    padding: .3rem;
-    border: 2px solid gray;
-    color: black; 
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: rgba(0, 0, 0, 0.3); 
+    border-top-color:  rgba(0, 0, 0, 0.6); 
+    padding: 0 .3rem;
     text-decoration: none;
-    text-transform: uppercase;
 }
 
 </style>
