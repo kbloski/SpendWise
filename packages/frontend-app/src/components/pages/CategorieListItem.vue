@@ -1,6 +1,6 @@
 <template>
         <li>
-            <span class="category-name">Kategoria: {{ name }}</span>
+            <span class="category-name">{{ name }}</span>
             <base-dropdown>
                 <div class="actions">
                     <router-link class="btn-success" :link="true" :to="expensesLink">View Expenses</router-link>
