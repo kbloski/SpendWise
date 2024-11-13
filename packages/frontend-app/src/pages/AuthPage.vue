@@ -95,6 +95,10 @@ export default {
     position: relative;
 }
 
+.form-auth {
+    max-width: 250px
+}
+
 .info-start {
     /* transform: translateX(100%); */
     position: absolute;

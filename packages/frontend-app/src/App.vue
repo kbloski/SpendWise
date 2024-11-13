@@ -1,22 +1,22 @@
 <template>
     <sidebar v-if="isAuthorized"></sidebar>
-      <!-- Authorized -->
-      <base-card v-if="isAuthorized" >
-        <router-view v-slot="slotProps">
-          <transition name="change-side" mode="out-in">
-            <component :is="slotProps.Component"></component>
-          </transition>
-        </router-view>
-      </base-card>
-      
-      <!-- Unauthorize -->
-      <div v-else>
-        <router-view v-slot="slotProps" >
-          <transition name="change-side" mode="out-in">
-            <component :is="slotProps.Component"></component>
-          </transition>
-        </router-view>
-      </div>
+    <!-- Authorized -->
+    <base-card v-if="isAuthorized" >
+      <router-view v-slot="slotProps">
+        <transition name="change-side" mode="out-in">
+          <component :is="slotProps.Component"></component>
+        </transition>
+      </router-view>
+    </base-card>
+    
+    <!-- Unauthorize -->
+    <div v-else>
+      <router-view v-slot="slotProps" >
+        <transition name="change-side" mode="out-in">
+          <component :is="slotProps.Component"></component>
+        </transition>
+      </router-view>
+    </div>
 </template>
 
 <script>
@@ -58,6 +58,7 @@ html, body {
 
 #app {
   display: flex;
+  min-height: 100vh;
 }
 
 .change-side-enter-from {
@@ -105,5 +106,12 @@ html, body {
 .card-route-leave-to {
   opacity: 0;
   transform: translateX(30px);
+}
+
+
+@media screen and (max-width: 800px){
+  #app {
+    display: block;
+  }
 }
 </style>
