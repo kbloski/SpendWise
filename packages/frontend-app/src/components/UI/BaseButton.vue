@@ -30,10 +30,6 @@ export default {
 </script>
 
 <style scoped>
-* {
-    margin: 0;
-    padding: 0;
-}
 .span-container-link {
     display: flex;
     margin: 0.2rem 0;

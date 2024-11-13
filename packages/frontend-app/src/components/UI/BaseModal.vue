@@ -71,18 +71,18 @@ export default {
 }
 
 .close-button {
-    position: absolute;
-    width: auto;
-    right: 1rem;
-    bottom: 5px;
+    bottom: 0px;
     box-shadow: 0 0 4px black;
-    background: transparent;
-    border: 0;
+    background: var(--background-color-light);
     border-radius: 1rem;
     cursor: pointer;
     margin: 0;
     margin-bottom: 1rem;
-    padding: 0.3rem;
+    padding: .7rem;
+    position: absolute;
+    right: 1rem;
+    transform: translateY(2.9rem);
+    width: auto;
     z-index: 100;
 
 

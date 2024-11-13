@@ -10,7 +10,7 @@
                 <div>
                     <section class="budget-details">
                         <header>
-                            <div>Budget details</div>
+                            <div class="budget-details-title">Budget details</div>
                         </header>
                         <div>
                             <span>Name</span>
@@ -192,15 +192,11 @@ span {
     padding: 0.2rem 1rem;
 }
 
-header {
-    padding: 0.5rem 1rem;
-    box-shadow: inset 0 0 8px green;
-    border-radius: 1rem;
-}
-
-header:hover {
-    box-shadow: inset 0 0 8px rgb(0, 255, 0);
+.budget-details-title {
     background-color: white;
+    padding: 0.5rem 1rem;
+    /* box-shadow: inset 0 0 4px rgb(0, 166, 196); */
+    animation: title-light 3s infinite;
     border-radius: 1rem;
 }
 
@@ -209,5 +205,18 @@ header:hover {
 }
 .actions > * {
     padding-bottom: 0.4rem;
+}
+
+@keyframes title-light {
+    0% {
+        box-shadow: inset 0 0 4px rgb(0, 166, 196);
+    } 
+    50% {
+        box-shadow: inset 0 0 8px rgb(0, 217, 255);
+        background-color: rgb(244, 255, 255);
+    }
+    100% {
+        box-shadow: inset 0 0 4px rgb(0, 166, 196);
+    }
 }
 </style>

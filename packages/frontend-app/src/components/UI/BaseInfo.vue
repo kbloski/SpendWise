@@ -1,8 +1,8 @@
 <template>
-    <div class="container">
+    <div class="container-info">
         <div>
             <div class="container">
-                <h4 v-if="title">{{ title }}</h4>
+                <h4 class="info-title"v-if="title">{{ title }}</h4>
             </div>
             <p>
                 <slot></slot>
@@ -18,13 +18,13 @@
 </script>
 
 <style scoped>
-.container {
+.container-info {
     display: flex;
-    margin: 1rem 0;
-    padding: 0;
+    /* margin: 1rem 0; */
+    padding: 1rem 0;
 }
 
-h4 {
+.info-title {
     border: 2px solid #888888;
     border-top: 0;
     border-right: 0;

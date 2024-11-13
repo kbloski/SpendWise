@@ -49,6 +49,7 @@ export default {
     width: auto;
     height: auto;
     margin: .2rem 0;
+    overflow: hidden;
 }
 
 input {
