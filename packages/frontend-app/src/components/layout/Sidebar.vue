@@ -31,6 +31,7 @@ export default {
     setup(props) {
         const sidebar = ref()
         const router = useRouter()
+
         const store = useStore();
         const title = appTitle;
         const fetchUser = useFetch("/api/users/me")
@@ -41,7 +42,11 @@ export default {
         const isMobile = computed( () =>  widthWindow.value < mobileMaxWidth)
         const isVisible = ref( isMobile.value ? false : true)
 
-
+        // Close nav in mobile after change link
+        router.afterEach( () => {
+            if (isMobile.value) isVisible.value = false
+        })
+       
         window.addEventListener('resize', () => {
             widthWindow.value = window.innerWidth;
             if (widthWindow.value > mobileMaxWidth) isVisible.value = true 

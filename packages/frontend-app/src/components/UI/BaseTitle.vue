@@ -9,8 +9,9 @@
 <style scoped>
 
 .base-title {
-    margin: 0 !important;
-    padding: 0 !important;
+    margin: 0;
+    padding: 0;
+    padding-top: 1rem;
 }
 
 .title {

@@ -8,6 +8,7 @@
 
 .base-card {
     background-color: var(--background-color-light);
+    box-shadow: 0 0 8px white;
     width: 100%;
     height: auto;
     margin: 2rem 0 0 0;
