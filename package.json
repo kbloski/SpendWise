@@ -6,14 +6,15 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "backend:start" : "cd ./packages/backend-services & npm run start",
     "backend:build" : "cd ./packages/backend-services & npm run build",
-    "backend:dev" : "cd ./packages/backend-services & npm run dev"
+    "backend:dev" : "cd ./packages/backend-services & npm run dev",
+    "frontend:start" : "cd ./packages/frontend-app & npm run start",
+    "frontend:build" : "cd ./packages/frontend-app & npm run build",
+    "frontend:dev" : "cd ./packages/frontend-app & npm run dev",
+    "install": "cd ./packages/frontend-app & npm i & cd ../backend-services & npm i "
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
-  "workspaces": [
-    "./packages/backend-services",
-    "./packages/frontend-app"
-  ]
+  "description": ""
+
 }
