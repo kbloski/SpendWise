@@ -29,6 +29,7 @@ const BaseFormControl = defineAsyncComponent(() =>
 );
 const BaseModal = defineAsyncComponent( ()=> import("./components/UI/BaseModal.vue"))
 const BaseUl = defineAsyncComponent( ()=> import("./components/UI/BaseUl.vue"))
+const BaseDropdown = defineAsyncComponent( ()=> import("./components/UI/BaseDropdown.vue"))
 
 const app = createApp(App);
 
@@ -42,6 +43,7 @@ app.component("base-error", BaseError);
 app.component("base-form-control", BaseFormControl);
 app.component("base-modal", BaseModal);
 app.component("base-ul", BaseUl);
+app.component("base-dropdown", BaseDropdown);
 
 app.use(store);
 app.use(router);

@@ -61,15 +61,6 @@ export default {
 .btn-success:hover {
   background-color: rgb(0, 180, 81);
 }
-
-.btn- {
-    border: 4px solid rgba(0, 0, 0, 0.1);
-    border-left-color: rgba(0, 0, 0, 0.3); 
-    border-top-color:  rgba(0, 0, 0, 0.6); 
-    padding: 0 .3rem;
-    text-decoration: none;
-}
-
 html, body {
   min-height: 100vh;
   width: 100vw;

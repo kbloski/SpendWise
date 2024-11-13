@@ -3,8 +3,10 @@
         <span>Kwota: {{ amount}}zł</span>
         <span>UserId: {{ user_id }}</span>
         <span>Date: {{ createdAt }}</span>
-        <modify-expense-modal v-if="rolePriority < 2" :expenseId="id"></modify-expense-modal>
-        <span><button class="btn-success" v-if="rolePriority < 2" @click="onDelete">Delete</button></span>
+        <base-dropdown>
+            <modify-expense-modal v-if="rolePriority < 2" :expenseId="id"></modify-expense-modal>
+            <span><button class="btn-success" v-if="rolePriority < 2" @click="onDelete">Delete</button></span>
+        </base-dropdown>
     </li>
 </template>
 

@@ -1,11 +1,13 @@
 <template>
         <li>
             <span class="category-name">Kategoria: {{ name }}</span>
-            <div class="actions">
-                <router-link class="btn-success" :link="true" :to="expensesLink">View Expenses</router-link>
-                <modify-category-modal :categoryId="id"></modify-category-modal>
-                <button @click="onDelete" class="btn-success">Delete</button>
-            </div>
+            <base-dropdown>
+                <div class="actions">
+                    <router-link class="btn-success" :link="true" :to="expensesLink">View Expenses</router-link>
+                    <modify-category-modal :categoryId="id"></modify-category-modal>
+                    <button @click="onDelete" class="btn-success">Delete</button>
+                </div>
+            </base-dropdown>
         </li>
 </template>
 

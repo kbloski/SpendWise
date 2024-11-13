@@ -34,17 +34,22 @@
                         </div>
                     </section>
                 </div>
+
                 <div class="actions">
                     <router-link class="btn-success" :link="true" :to="categoryLink">Categories</router-link>
                     <router-link class="btn-success" :link="true" :to="expensesLink"
                         >All Expenses</router-link
                     >
                     <router-link class="btn-success":link="true" :to="sharesLink">Shares</router-link>
-                    <add-report-modal :budgetId="budgetId"  v-if="rolePriority < 2"></add-report-modal>
-                    <modify-budget :budgetId="budgetId"  v-if="rolePriority < 2"></modify-budget>
-                    <share-budget-modal :budgetId="budgetId"  v-if="rolePriority < 2"></share-budget-modal>
-                    <button @click="onDelete" class="btn-success" v-if="rolePriority === 0">Delete</button>
                 </div>
+                <base-dropdown title="More actions...">
+                    <div class="actions">
+                        <add-report-modal :budgetId="budgetId"  v-if="rolePriority < 2"></add-report-modal>
+                        <modify-budget :budgetId="budgetId"  v-if="rolePriority < 2"></modify-budget>
+                        <share-budget-modal :budgetId="budgetId"  v-if="rolePriority < 2"></share-budget-modal>
+                        <button @click="onDelete" class="btn-success" v-if="rolePriority === 0">Delete</button>
+                    </div>
+                </base-dropdown>
             </div>
         </div>
         <router-view :id="budget.id" v-slot="slotProps">
