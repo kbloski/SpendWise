@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container-authpage">
         <span :class="background"></span>
         
         <div class="content-side">
@@ -46,7 +46,7 @@ export default {
 </script>
 
 <style scoped>
-.container {
+.container-authpage {
     width: 100vw;
     height: 100vh;
     position: relative;

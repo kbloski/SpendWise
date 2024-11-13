@@ -3,12 +3,15 @@
         <base-title>Udostępnienia</base-title>
         <base-error v-if="error">{{  error }}</base-error>
         <base-ul>
-            <li v-for="share in shares">
-                {{ share.user.username }}
-                {{ share.user.email }}
-                <base-button @click="onDelete(share.user.id)" v-if="share.role !== 0">Delete</base-button>
-                <div v-else>Admin</div>
-            </li>
+            <share-list-item
+                v-for="share in shares"
+                :key="share.user.id"
+                :userId="share.user.id"
+                :username="share.user.username"
+                :email="share.user.email"
+                :rolePriority="share.role"
+                @delete="onDelete"
+            ></share-list-item>
         </base-ul>
     </div>
 </template>
@@ -19,8 +22,12 @@ import { computed, watch } from 'vue';
 import useFetch from '../hooks/useFetch';
 import { useStore } from 'vuex';
 import useDelete from '../hooks/useDelete';
+import ShareListItem from '../components/pages/ShareListItem.vue';
 
 export default {
+    components: {
+        ShareListItem
+    },
     setup(){
         const store = useStore()
         const route = useRoute()
