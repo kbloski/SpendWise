@@ -3,18 +3,25 @@
         <base-modal :visible="false" ref="categoryModal">
             <template v-slot:header> Category create </template>
             <template v-slot:default>
-                <base-form-control v-model="name">Category name</base-form-control>
-                <br />
-                <base-button @click="createBudget">Create</base-button>
+                <base-error v-if="errors.name || errors.server">
+                    {{ errors.server }}
+                    {{ errors.name }}
+                </base-error>
+                <div v-if="loading">Loading...</div>
+                <div v-else>
+                    <base-form-control v-model="name">Category name</base-form-control>
+                    <base-button @click="createBudget">Create</base-button>
+                </div>
             </template>
         </base-modal>
 </template>
 
 <script>
-import { computed, ref, watch, inject } from "vue";
+import {  ref, watch, reactive } from "vue";
 import usePost from "../../hooks/usePost.js";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
+import { validName } from "../../utils/validation.js";
 
 export default {
     props: {
@@ -23,13 +30,16 @@ export default {
         },
     },
     setup(props) {
-        const router = useRouter();
         const store = useStore();
 
         const categoryModal = ref(null);
         let postCategory = usePost("/api/budgets/" + props.budgetId + "/categories");
+
+        const errors = reactive({
+            name: null,
+            server: null
+        })
         const name = ref("");
-        const created = computed(() => postCategory.response?.ok);
 
         function openModal() {
             categoryModal.value.openModal();
@@ -37,12 +47,15 @@ export default {
         }
         
         async function createBudget() {
-            console.log( name.value)
+            errors.name = validName(name.value);
+            if (errors.name) return;
             postCategory.postData({ name: name.value });
         }
         
-        watch(created, () => {
-            if (!created.value) return;
+        watch( postCategory.error , () => errors.server = postCategory.error.value)
+
+        watch(postCategory.response, () => {
+            if (!postCategory.response.ok) return;
             postCategory.clearResponse()
             name.value = ""
             store.dispatch("refresh/triggerRefreshCategories");
@@ -50,11 +63,12 @@ export default {
         });
 
         return {
+            errors,
+            loading: postCategory.loading,
             name,
             categoryModal,
             openModal,
             createBudget,
-            created,
         };
     },
 };

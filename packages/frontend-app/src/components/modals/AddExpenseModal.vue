@@ -36,7 +36,6 @@ export default {
         const postExpense = usePost("/api/budgets/" + props.budgetId + "/categories/" + props.categoryId + '/expenses');
         const description = ref("");
         const amount = ref("");
-        const created = computed(() => postExpense.response?.ok);
 
         function openModal() {
             categoryModal.value.openModal();
@@ -49,14 +48,13 @@ export default {
             });
         }
         
-        watch(created, () => {
-            if (!created.value) return;
+        watch(postExpense.response, () => {
+            if (!postExpense.response.ok) return;
             postExpense.clearResponse()
             description.value = ""
             amount.value = ""
 
             store.dispatch("refresh/triggerRefreshExpenses");
-
             categoryModal.value.closeModal();
         });
 
@@ -66,7 +64,6 @@ export default {
             categoryModal,
             openModal,
             createExpense,
-            created,
             amount,
             description
         };

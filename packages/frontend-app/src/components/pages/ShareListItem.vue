@@ -2,8 +2,7 @@
     <li>
         {{ username }}
         {{ email }}
-        {{ rolePriority }}
-        <base-button v-if="!isAdmin" @click="deleteShare">Delete</base-button>
+        <button class="btn-success" v-if="!isAdmin" @click="deleteShare">Delete</button>
         <div v-else>Admin</div>
     </li>
 </template>

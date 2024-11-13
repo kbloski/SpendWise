@@ -64,8 +64,8 @@ export default {
 
         async function updateBudget() {
             clearError;
-            error.name = validName( name.value );
-            error.owner_email = validEmail( newOwnerEmail.value )
+            if (name.value) error.name = validName( name.value );
+            if(newOwnerEmail.value) error.owner_email = validEmail( newOwnerEmail.value )
 
             if (error.name || error.owner_email) return;
 

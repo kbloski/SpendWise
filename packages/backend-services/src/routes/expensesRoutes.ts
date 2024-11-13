@@ -152,7 +152,7 @@ router.post(
             if (
                 !amount
                 || !isNumber(amount)
-            ) return sendErrorResponse( res, 400, "Please provide amout. Amout must be type number.")
+            ) return sendErrorResponse( res, 400, "Please provide amount. Amount must be type number.")
 
             const budgetDb = await budgetController.getById( Number(budgetId));
             if (!budgetDb) return sendErrorResponse(res, 404, "Budget with id " + budgetId + ' not exist.')
@@ -190,13 +190,14 @@ router.patch(
 
             if (
                 !amount && !description && !user_id && !category_id 
-            ) return sendErrorResponse(res, 400, "Please provide amount, user_id or category_id");
+            ) return sendErrorResponse(res, 400, "Please provide amount or description.");
+                //  user_id or category_id
 
             if ( 
-                amount && !isNumber(amount) ||
-                user_id && !isNumber(user_id) ||
-                category_id && !isNumber(category_id)
-            ) return sendErrorResponse(res, 400, 'Provided amount, user_id or category_id must be a number.')
+                amount && !isNumber(amount) 
+                // user_id && !isNumber(user_id) ||
+                // category_id && !isNumber(category_id)
+            ) return sendErrorResponse(res, 400, 'Invalid amount. Amount must be a number')
             
             const expenseDb = await expenseController.getById(Number(id));
             if (!expenseDb) return sendErrorResponse(res, 404);

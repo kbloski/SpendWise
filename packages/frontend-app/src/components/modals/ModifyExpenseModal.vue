@@ -3,10 +3,13 @@
     <base-modal :visible="false" ref="modalModifyCategory">
         <template v-slot:header>Modify Expense</template>
         <template v-slot:default>
-            <base-form-control v-model="description">Description</base-form-control>
-            <base-form-control v-model="amount">Amount</base-form-control>
-            <br />
-            <base-button @click="updateBudget">Update</base-button>
+            <base-error v-if="error">{{ error }}</base-error>
+            <div v-if="loading">Loading...</div>
+            <div v-else>
+                <base-form-control v-model="description">Description</base-form-control>
+                <base-form-control v-model="amount">Amount</base-form-control>
+                <base-button @click="updateBudget">Update</base-button>
+            </div>
         </template>
     </base-modal>
 </template>
@@ -42,6 +45,7 @@ export default {
         }
 
         async function updateBudget() {
+            
             patchCategory.patchData(
                 { 
                     description: description.value ,
@@ -51,6 +55,8 @@ export default {
         }
 
         return {
+            loading: patchCategory.loading,
+            error: patchCategory.error,
             description,
             amount,
             modalModifyCategory,
