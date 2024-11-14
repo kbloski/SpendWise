@@ -8,7 +8,7 @@
                 :budgetId="budgetId"
                 :categoryId="categoryId"
             ></create-expense-modal>
-            <base-ul v-if="expenses.length">
+            <base-ul v-if="expenses.length" title="Koszta kategorii">
                 <list-item 
                     v-for="expense in expenses"
                     :key="expense.id"

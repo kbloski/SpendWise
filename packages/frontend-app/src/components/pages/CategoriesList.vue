@@ -2,7 +2,7 @@
     <base-error v-if="error">{{ error }}</base-error>
     <div v-else-if="loading">Loading...</div>
     <div v-if="categories?.length">
-        <base-ul>
+        <base-ul :title="`Kategorie budżetu`">
             <category-card-item 
                 v-for="category in categories"
                 :key="category.id"
@@ -49,7 +49,8 @@ export default {
             loading,    
             categories,
             error,
-            rolePriority
+            rolePriority,
+            budgetId
         }
     }
 }

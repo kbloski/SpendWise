@@ -3,7 +3,7 @@
         <base-title>Wszystkie koszta budżetu</base-title>
         <base-error v-if="error">{{ error }}</base-error>
         <div v-else-if="loading">Loading...</div>
-        <base-ul v-else-if="expenses.length">
+        <base-ul v-else-if="expenses.length" title="Wszytkie koszta budżetu">
             <expense-list-item
                 v-for="expense in expenses"
                 :key="expense.id"
