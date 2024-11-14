@@ -9,7 +9,6 @@
             <input type="radio" name='create' v-model="sortedFilter" value="ASC">Od najnowszych</input>
             <br>
             <input type="radio" name='create'  v-model="sortedFilter" value="DESC" >Od najstarszych</input>
-            <hr></hr>
         </div>
 
         <ul v-if="reports?.length">
@@ -64,7 +63,7 @@ export default {
         const sortedFilter = ref('ASC');
         watch( [sortedFilter, fetchReports.data]  , () => {
             const data = fetchReports.data.value?.reports ?? [];
-            if (!data.length) return;
+            // if (!data.length) return;
 
             const repArr = []
             for( const i in data){
