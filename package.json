@@ -11,8 +11,7 @@
     "frontend:build" : "cd ./packages/frontend-app & npm run build",
     "frontend:dev" : "cd ./packages/frontend-app & npm run dev",
     "build-project": "cd ./packages/frontend-app & npm run build & cd ../backend-services & npm run build",
-    "install": "cd ./packages/frontend-app & npm i & cd ../backend-services & npm i ",
-    "run-backend": "cd ./packages/backend-services & npm i & npm run build & npm run start"
+    "install": "cd ./packages/frontend-app & npm i & cd ../backend-services & npm i"
   },
   "keywords": [],
   "author": "",
