@@ -67,7 +67,7 @@ export default {
         const searchName = ref(null);
         const findedBudgets = ref([]);
         watch( searchName, () => {
-            findedBudgets.value =  budgetList.value.filter( rel => rel.Budget.name.includes( searchName.value ))
+            findedBudgets.value =  budgetList.value.filter( rel => rel.Budget.name.toLowerCase().includes( searchName.value ))
         })
 
         return {

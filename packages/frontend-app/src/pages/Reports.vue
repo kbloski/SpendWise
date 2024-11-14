@@ -4,6 +4,14 @@
         <base-error v-if="error">{{ error }}</base-error>
         <div v-else-if="loading">Loading... </div>
 
+        <div>
+            <base-title>Sortuj po dacie utworzenia</base-title>
+            <input type="radio" name='create' v-model="sortedFilter" value="ASC">Od najnowszych</input>
+            <br>
+            <input type="radio" name='create'  v-model="sortedFilter" value="DESC" >Od najstarszych</input>
+            <hr></hr>
+        </div>
+
         <ul v-if="reports?.length">
             <transition-group tag="ul" name="report-list">
                 <report-list-item
@@ -24,7 +32,7 @@
 </template>
 
 <script>
-import { computed, watch } from 'vue';
+import { computed, watch, ref} from 'vue';
 import useFetch from '../hooks/useFetch';
 import useDelete from '../hooks/useDelete';
 import { useRouter } from 'vue-router';
@@ -38,7 +46,7 @@ export default {
         const router = useRouter()
         const fetchReports = useFetch('/api/reports/all');
         const fetchDelete = useDelete()
-        const reports = computed( () => fetchReports.data.value?.reports)
+        const reports = ref([]);
         const loading = computed( ()=> fetchReports.loading.value )
         const error = computed( ()=> fetchReports.error.value )
 
@@ -53,11 +61,37 @@ export default {
             fetchDelete.setNewUrl('/api/reports/'+ reportId);
         }
 
+        const sortedFilter = ref('ASC');
+        watch( [sortedFilter, fetchReports.data]  , () => {
+            const data = fetchReports.data.value?.reports ?? [];
+            if (!data.length) return;
+
+            const repArr = []
+            for( const i in data){
+                repArr.push(data[i])
+            }
+
+            const sortedArr = repArr.sort( (elA, elB) => {
+                const timeElA =  new Date(elA.createdAt).getTime() 
+                const timeElB =  new Date(elB.createdAt).getTime() 
+
+                if (timeElA > timeElB) return -1;
+                if (timeElA < timeElB) return 1;
+                return 0;
+            })
+
+
+
+            if ( sortedFilter.value === 'ASC') return  reports.value = sortedArr;
+            return reports.value = sortedArr.reverse();
+        })
+
         return {
             reports,
             loading,
             error,
-            onDelete
+            onDelete,
+            sortedFilter
         }
     }
 }
