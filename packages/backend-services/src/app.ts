@@ -1,8 +1,10 @@
 import express, { RequestHandler } from 'express';
 import cors from 'cors'
 import authTokenMiddleware from './middlewares/authToken';
+import checkConnection from './middlewares/checkConnection';
 
 const app = express();
+
 
 app.use(
     cors({
@@ -16,7 +18,7 @@ app.use(
         allowedHeaders: ['Content-Type', "authorization"]
     })
 )
-
+app.use( checkConnection );
 app.use( express.urlencoded());
 app.use( express.json() );
 app.use( express.static('./public') )

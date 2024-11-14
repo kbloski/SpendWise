@@ -6,20 +6,29 @@ const HOST = process.env.DATABASE_HOST
 const USER = process.env.DATABASE_USER
 const PASSWORD = process.env.DATABASE_PASSWORD
 
-const sequelize = new Sequelize({
+let sequelize = new Sequelize({
     port: PORT,
     database: DB_NAME,
-    dialect: 'mysql',
+    dialect: "mysql",
     host: HOST,
     username: USER,
-    password: PASSWORD
+    password: PASSWORD,
 });
+
+
+let timeIntervalCheckConnection = 10000;
+let timeoutId: any = null;
 
 function connectDb(){
     sequelize.authenticate()
     .then( ()=>console.log(`Connected with database`))
     .catch( (err) => {
-        throw new Error("Don't connect with database: Error: " + err.message)
+        console.error("Don't connect with database: Error: " + err.message )
+        if (!timeoutId) timeoutId = setTimeout( 
+            () => {
+                timeoutId = null;
+                connectDb()
+            },  timeIntervalCheckConnection )
     })
 }
 
