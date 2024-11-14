@@ -101,8 +101,8 @@ export default {
     scale: 100%;
     opacity: 1;
 }
-.search-fade-leave-from {
-}
+/* .search-fade-leave-from {
+} */
 
 .search-fade-leave-active {
     transition: all 0.3s ease-out;
