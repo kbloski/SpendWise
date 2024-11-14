@@ -1,13 +1,35 @@
 <template>
+    <div class="ul-title" v-if="title">{{ title }}</div>
     <ul>
         <slot></slot>
     </ul>
 </template>
 
+<script>
+export default {
+    props: ['title']
+}
+</script>
+
 <style scoped>
+@property --border-color {
+    syntax: "<color>";
+        inherits: true;
+        initial-value: rgb(240, 240, 240);
+}
+
+.ul-title{
+    text-align: left;
+    padding: 0.5rem;
+    padding-left: 3rem;
+    font-weight: bolder;
+    text-transform: uppercase;
+}
+
 ul {
     background-color: white;
-    border: 0.3rem solid rgb(240, 240, 240);
+    border: 0.3rem solid var(--border-color);
+    border-top: 0;
     box-shadow: inset 0 0 4px black;
     list-style: none;
     padding: 1rem;
@@ -31,7 +53,5 @@ ul > *  {
     padding: .3rem;
     font-weight: bold;
 }
-
-
 
 </style>

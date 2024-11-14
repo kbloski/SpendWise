@@ -4,7 +4,7 @@
         <div v-if="loading" >Loading... </div>
 
         <div v-if="budgetList.length">
-            <base-ul>
+            <base-ul title="Moje budżety">
                 <my-budgets-list-item 
                     v-for="relation in budgetList"
                     :key="relation.Budget.id"
